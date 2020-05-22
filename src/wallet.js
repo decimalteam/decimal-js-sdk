@@ -23,6 +23,11 @@ export function mnemonicToSeedSync(mnemonic) {
 export default class Wallet {
   constructor(mnemonic) {
     const _mnemonic = mnemonic || generateMnemonic();
+
+    if (!validateMnemonic(_mnemonic)) {
+      throw new Error('Invalid mnemonic');
+    }
+
     const wallet = createWalletFromMnemonic(_mnemonic, '', prefix, path);
 
     this.mnemonic = _mnemonic;
