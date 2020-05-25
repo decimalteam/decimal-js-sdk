@@ -1,24 +1,22 @@
-import { Wallet, Decimal, TX_TYPE } from '../index';
+/* eslint-disable */
+
+import { Wallet, Decimal } from '../index';
 
 const decimal = new Decimal({ baseURL: 'http://139.59.133.148/rest/', chainId: 'decimal-testnet' });
-
-const mn = 'repair furnace west loud peasant false six hockey poem tube now alien service phone hazard winter favorite away sand fuel describe version tragic vendor';
-const wallet = new Wallet(mn);
-const wallet2 = new Wallet();
+const wallet = new Wallet();
 
 
-const txParams = {
-  type: TX_TYPE.COIN_SEND,
-  data: {
-    sender: wallet.address,
-    receiver: wallet2.address,
-    coin: 'tDEL',
-    amount: '1010101',
-  },
-  gas: '200000',
-};
+// const txParams = {
+//   data: {
+//     seller: wallet.address,
+//     coin_to_buy: 'CRT',
+//     coin_to_sell: 'tDEL',
+//     amount_to_buy: '500000',
+//     amount_to_sell: '100000',
+//   },
+//   gas: '200000',
+// };
 
 (async function test() {
-  const sendCoin = await decimal.sendCoin(txParams, wallet);
-  console.log(sendCoin);
+  // await decimal.sellCoin(txParams, wallet);
 }());
