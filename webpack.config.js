@@ -82,7 +82,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     library: 'decimalJS',
     libraryTarget:'umd',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    globalObject: 'this'
   },
   resolve: {
     modules: [
