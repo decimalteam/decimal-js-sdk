@@ -1,9 +1,16 @@
-# Decimal js sdk
+# Decimal JS SDK
 
 ## Install
 
 ```bash
 $ npm install decimal-js-sdk
+```
+## Publish
+
+```bash
+$ git commit -m "message"
+$ npm version patch
+$ git push
 ```
 
 For detailed explanation on how things work, checkout the:
