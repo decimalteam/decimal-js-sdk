@@ -21,7 +21,7 @@ async function prepareAndPostTx(api, txParams, type, wallet) {
 /*
 {
   data: {
-    sender: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
+    sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     receiver: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
     coin: 'tDEL',
     amount: '50000000000000',
@@ -29,7 +29,7 @@ async function prepareAndPostTx(api, txParams, type, wallet) {
   gas: '200000',
 }
 */
-export function sendCoin(api) {
+export function sendCoins(api) {
   return async (txParams, wallet) => {
     const txResult = await prepareAndPostTx(api, txParams, TX_TYPE.COIN_SEND, wallet);
     return txResult;
@@ -40,7 +40,7 @@ export function sendCoin(api) {
 /*
 {
   data: {
-    buyer: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
+    buyer: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     coin_to_buy: 'CRT',
     coin_to_sell: 'tDEL',
     amount_to_buy: '500000',
@@ -49,7 +49,7 @@ export function sendCoin(api) {
   gas: '200000',
 }
 */
-export function buyCoin(api) {
+export function buyCoins(api) {
   return async (txParams, wallet) => {
     const txResult = await prepareAndPostTx(api, txParams, TX_TYPE.COIN_BUY, wallet);
     return txResult;
@@ -59,7 +59,7 @@ export function buyCoin(api) {
 /*
 {
   data: {
-    seller: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
+    seller: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     coin_to_buy: 'CRT',
     coin_to_sell: 'tDEL',
     amount_to_buy: '500000',
@@ -68,10 +68,53 @@ export function buyCoin(api) {
   gas: '200000',
 }
 */
-export function sellCoin(api) {
+export function sellCoins(api) {
   return async (txParams, wallet) => {
     const txResult = await prepareAndPostTx(api, txParams, TX_TYPE.COIN_SELL, wallet);
     return txResult;
   };
 }
+
+/*
+{
+  data: {
+    seller: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    coin_to_sell: 'tDEL',
+    coin_to_buy: 'CRT',
+    amount_to_buy: '500',
+  },
+  gas: '200000',
+}
+*/
+
+export function sellAllCoins(api) {
+  return async (txParams, wallet) => {
+    const txResult = await prepareAndPostTx(api, txParams, TX_TYPE.COIN_SELL_ALL, wallet);
+    return txResult;
+  };
+}
+
+
+/*
+{
+  data: {
+    creator: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    title: 'Test coin',
+    symbol: 'TST',
+    constant_reserve_ratio: '45',
+    initial_volume: '1000000000000000000',
+    initial_reserve: '1000000000000000000000',
+    limit_volume: '1000000000000000000000000000',
+  },
+  gas: '200000',
+}
+*/
+export function createCoin(api) {
+  return async (txParams, wallet) => {
+    const txResult = await prepareAndPostTx(api, txParams, TX_TYPE.COIN_CREATE, wallet);
+    return txResult;
+  };
+}
+
+
 export default true;

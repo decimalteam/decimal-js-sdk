@@ -63,10 +63,6 @@ const plugins = () => {
           collapseWhitespace: isProd,
         }
       }),
-      new HTMLWebpackPlugin({
-        filename: 'doc.html',
-        template: './test/doc.html'
-      })
     );
   }
   return plugins;

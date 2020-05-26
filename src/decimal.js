@@ -2,7 +2,13 @@ import DecimalApi from './api/index';
 import getCoinslist from './api/get-coins-list';
 import getCoin from './api/get-coin';
 import { prepareTx, makeSignature, postTx } from './txUtils';
-import { sendCoin, buyCoin, sellCoin } from './tx';
+import {
+  sendCoins,
+  buyCoins,
+  sellCoins,
+  sellAllCoins,
+  createCoin,
+} from './tx';
 
 export default class Decimal {
   constructor(options) {
@@ -20,8 +26,10 @@ export default class Decimal {
     this.makeSignature = makeSignature(apiInstance);
     this.postTx = postTx(apiInstance);
 
-    this.sendCoin = sendCoin(apiInstance);
-    this.buyCoin = buyCoin(apiInstance);
-    this.sellCoin = sellCoin(apiInstance);
+    this.sendCoins = sendCoins(apiInstance);
+    this.buyCoins = buyCoins(apiInstance);
+    this.sellCoins = sellCoins(apiInstance);
+    this.sellAllCoins = sellAllCoins(apiInstance);
+    this.createCoin = createCoin(apiInstance);
   }
 }
