@@ -6,6 +6,6 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 const wallet = new Wallet();
 
 
-(async function test() {
 
+(async function test() {
 }());

@@ -72,6 +72,7 @@ const txParams = {
     amount: '50000000000000',
   },
   gas: '200000',
+  message: 'message'
 };
 
 decimal.sendCoins(txParams, wallet);
@@ -88,6 +89,7 @@ const txParams = {
     amount_to_sell: '100000',
   },
   gas: '200000',
+  message: 'message'
 };
 
 decimal.buyCoins(txParams, wallet);
@@ -104,6 +106,7 @@ const txParams = {
     amount_to_sell: '100000',
   },
   gas: '200000',
+  message: 'message'
 }
 
 decimal.sellCoins(txParams, wallet);
@@ -119,6 +122,7 @@ const txParams = {
     amount_to_buy: '500',
   },
   gas: '200000',
+  message: 'message'
 }
 
 decimal.sellAllCoins(txParams, wallet);
@@ -137,6 +141,7 @@ const txParams = {
     limit_volume: '1000000000000000000000000000',
   },
   gas: '200000',
+  message: 'message'
 }
 
 decimal.createCoin(txParams, wallet);

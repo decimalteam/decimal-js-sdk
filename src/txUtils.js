@@ -35,7 +35,9 @@ export function prepareTx() {
       throw new Error('Tx params is required');
     }
 
-    const { type, data, gas } = txParams;
+    const {
+      type, data, gas, message,
+    } = txParams;
 
     const tx = {
       msg: [{ type, value: data }],
@@ -43,9 +45,8 @@ export function prepareTx() {
         amount: [],
         gas,
       },
-      memo: '',
+      memo: message || '',
     };
-
     return tx;
   };
 }
@@ -61,7 +62,6 @@ export function makeSignature(api) {
       chain_id: nodeInfoResp.data.node_info.network,
     };
     const stdTx = signTx(tx, signMeta, wallet);
-
     return stdTx;
   };
 }
