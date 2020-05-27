@@ -7,5 +7,5 @@ const wallet = new Wallet();
 
 
 (async function test() {
-;
+
 }());

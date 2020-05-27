@@ -78,7 +78,7 @@ export function postTx(api) {
       }
     }
 
-    const resp = await api.post('/rpc/txs', JSON.stringify({ tx: _tx, mode: 'sync' }));
+    const resp = await api.post('/rpc/txs', { tx: _tx, mode: 'sync' });
     return transactionResult(resp.data);
   };
 }
