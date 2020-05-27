@@ -47,16 +47,19 @@ wallet.getPublicKeyString();
 
 ```js
 import Decimal from 'decimal-js-sdk';
-const decimal = new Decimal({ baseURL: 'http://139.59.133.148/rest/', chainId: 'decimal-testnet' });
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', chainId: 'decimal-testnet' });
 ```
 ### .getCoinsList()
 ```js
-coins = await decimal.getCoinsList()
-// ["CRT", "tDEL"]
+const coins = await decimal.getCoinsList(limit, offset, query)
 ```
 ### .getCoin()
 ```js
-coin = await decimal.getCoin('tDEL');
+const coin = await decimal.getCoin('tDEL');
+```
+### .getAddress()
+```js
+const address = await decimal.getAddress(addressId, txLimit);
 ```
 
 ### .sendCoins()

@@ -52,8 +52,8 @@ export function prepareTx() {
 
 export function makeSignature(api) {
   return async (tx, wallet) => {
-    const nodeInfoResp = await api.get('/node_info');
-    const accountResp = await api.get(`/auth/accounts/${wallet.address}`);
+    const nodeInfoResp = await api.get('/rpc/node_info');
+    const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
 
     const signMeta = {
       account_number: `${accountResp.data.result.value.account_number}`,
@@ -78,7 +78,7 @@ export function postTx(api) {
       }
     }
 
-    const resp = await api.post('/txs', JSON.stringify({ tx: _tx, mode: 'sync' }));
+    const resp = await api.post('/rpc/txs', JSON.stringify({ tx: _tx, mode: 'sync' }));
     return transactionResult(resp.data);
   };
 }

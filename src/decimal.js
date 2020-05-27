@@ -1,6 +1,7 @@
 import DecimalApi from './api/index';
 import getCoinslist from './api/get-coins-list';
 import getCoin from './api/get-coin';
+import getAddress from './api/get-address';
 import { prepareTx, makeSignature, postTx } from './txUtils';
 import {
   sendCoins,
@@ -21,6 +22,7 @@ export default class Decimal {
 
     this.getCoinsList = getCoinslist(apiInstance);
     this.getCoin = getCoin(apiInstance);
+    this.getAddress = getAddress(apiInstance);
 
     this.prepareTx = prepareTx();
     this.makeSignature = makeSignature(apiInstance);
