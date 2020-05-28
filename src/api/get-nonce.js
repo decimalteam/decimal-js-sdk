@@ -4,8 +4,8 @@ export default function getNonce(api) {
       throw new Error('The address is required');
     }
 
-    const url = `/address/${address}`;
+    const url = `/rpc/auth/accounts/${address}`;
     const { data } = await api.get(url);
-    return data.result.address.nonce + 1;
+    return data.result.value.sequence + 1;
   };
 }
