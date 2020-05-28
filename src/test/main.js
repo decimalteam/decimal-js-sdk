@@ -8,4 +8,7 @@ const wallet = new Wallet();
 
 
 (async function test() {
+  const nonce = await decimal.getNonce(wallet.address);
+
+  console.log('nonce', nonce);
 }());

@@ -45,6 +45,11 @@ wallet.getPublicKeyString();
 
 ## Decimal instance
 
+### .getNonce()
+```js
+const nonce = await decimal.getNonce('dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp'); // 44
+```
+
 ```js
 import Decimal from 'decimal-js-sdk';
 const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', chainId: 'decimal-testnet' });

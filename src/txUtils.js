@@ -82,5 +82,3 @@ export function postTx(api) {
     return transactionResult(resp.data);
   };
 }
-
-export default true;
