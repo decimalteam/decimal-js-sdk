@@ -3,15 +3,8 @@ import getCoinslist from './api/get-coins-list';
 import getCoin from './api/get-coin';
 import getAddress from './api/get-address';
 import getNonce from './api/get-nonce';
-
+import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
-import {
-  sendCoins,
-  buyCoins,
-  sellCoins,
-  sellAllCoins,
-  createCoin,
-} from './tx';
 
 export default class Decimal {
   constructor(options) {
@@ -31,10 +24,17 @@ export default class Decimal {
     this.makeSignature = makeSignature(apiInstance);
     this.postTx = postTx(apiInstance);
 
-    this.sendCoins = sendCoins(apiInstance);
-    this.buyCoins = buyCoins(apiInstance);
-    this.sellCoins = sellCoins(apiInstance);
-    this.sellAllCoins = sellAllCoins(apiInstance);
-    this.createCoin = createCoin(apiInstance);
+    this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND);
+    this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY);
+    this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL);
+    this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL);
+    this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE);
+
+    this.declareCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE);
+    this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE);
+    this.validatorSetOnline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_ONLINE);
+    this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE);
+    this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND);
+    this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT);
   }
 }

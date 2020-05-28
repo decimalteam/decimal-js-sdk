@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { signTx } from '@tendermint/sig';
 
 
@@ -45,6 +46,7 @@ export function prepareTx() {
         amount: [],
         gas,
       },
+      fee_coin: '',
       memo: message || '',
     };
     return tx;
@@ -66,19 +68,31 @@ export function makeSignature(api) {
   };
 }
 
-export function postTx(api) {
-  return async (tx, wallet) => {
-    let _tx = tx;
+export function postTx(api, txType) {
+  return async (txValue, wallet) => {
+    if (txType) {
+      txValue.type = txType;
+      txValue = await prepareTx(api)(txValue);
+    }
 
-    if (!_tx.signatures) {
+    if (!txValue.signatures) {
       if (wallet) {
-        _tx = await makeSignature(api)(tx, wallet);
+        txValue = await makeSignature(api)(txValue, wallet);
       } else {
         throw new Error('The transaction is not signed and the wallet is not provided');
       }
     }
 
-    const resp = await api.post('/rpc/txs', { tx: _tx, mode: 'sync' });
+
+    const tx = {
+      type: 'decimal/StdTx',
+      value: txValue,
+      mode: 'sync',
+    };
+
+    console.log('tx: ', tx);
+
+    const resp = await api.post('/rpc/txs', tx);
     return transactionResult(resp.data);
   };
 }

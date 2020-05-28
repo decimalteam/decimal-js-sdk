@@ -7,4 +7,10 @@ export default {
   COIN_SELL_ALL: 'coin/SellAllCoin',
   COIN_REDEEM_CHECK: 'coin/RedeemCheck',
   MULTISIG_CREATE: 'multisig/CreateMultisig',
+  VALIDATOR_CANDIDATE: 'validator/declare_candidate',
+  VALIDATOR_DELEGATE: 'validator/delegate',
+  VALIDATOR_SET_ONLINE: 'validator/set-online',
+  VALIDATOR_SET_OFFLINE: 'validator/set-offline',
+  VALIDATOR_UNBOND: 'validator/unbond',
+  VALIDATOR_CANDIDATE_EDIT: 'validator/edit-candidate',
 };

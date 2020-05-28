@@ -14,7 +14,8 @@
   "dependencies": {
     "@tendermint/sig": "^0.4.1",
     "axios": "^0.19.2",
-    "bip39": "^3.0.2"
+    "bip39": "^3.0.2",
+    "jsonschema": "^1.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
