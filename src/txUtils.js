@@ -63,6 +63,8 @@ export function makeSignature(api) {
       sequence: `${accountResp.data.result.value.sequence}`,
       chain_id: nodeInfoResp.data.node_info.network,
     };
+
+    console.log(signMeta);
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
   };
@@ -85,12 +87,11 @@ export function postTx(api, txType) {
 
 
     const tx = {
-      type: 'decimal/StdTx',
-      value: txValue,
+      tx: txValue,
       mode: 'sync',
     };
 
-    console.log('tx: ', tx);
+    console.log(tx);
 
     const resp = await api.post('/rpc/txs', tx);
     return transactionResult(resp.data);

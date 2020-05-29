@@ -2,6 +2,7 @@ import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 
 const prefix = 'dx';
+const validatorPrefix = 'dxvaloper';
 const path = "m/44'/60'/0'/0/0";
 
 export function generateMnemonic() {
@@ -29,11 +30,13 @@ export default class Wallet {
     }
 
     const wallet = createWalletFromMnemonic(_mnemonic, '', prefix, path);
+    const validatorAddress = createWalletFromMnemonic(_mnemonic, '', validatorPrefix, path).address;
 
     this.mnemonic = _mnemonic;
     this.privateKey = wallet.privateKey;
     this.publicKey = wallet.publicKey;
     this.address = wallet.address;
+    this.validatorAddress = validatorAddress;
   }
 
   getPrivateKeyString() {

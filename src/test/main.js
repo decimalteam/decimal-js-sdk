@@ -7,11 +7,10 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 
 const txParams = {
   data: {
-    buyer: wallet.address,
-    coin_to_buy: 'CRT',
-    coin_to_sell: 'tDEL',
-    amount_to_buy: '500000',
-    amount_to_sell: '100000',
+    sender: wallet.address,
+    receiver: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
+    coin: 'tdel',
+    amount: '101010',
   },
   gas: '200000',
   message: 'message'
@@ -19,6 +18,6 @@ const txParams = {
 
 
 (async function test() {
-  const result = await decimal.buyCoins(txParams, wallet);
+  const result = await decimal.sendCoins(txParams, wallet);
   console.log(result);
 }());
