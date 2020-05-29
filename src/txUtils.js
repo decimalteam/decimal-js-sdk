@@ -46,7 +46,6 @@ export function prepareTx() {
         amount: [],
         gas,
       },
-      fee_coin: '',
       memo: message || '',
     };
     return tx;
