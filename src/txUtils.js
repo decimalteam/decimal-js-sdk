@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { signTx } from '@tendermint/sig';
-
+import Validator from './validator';
 
 function transactionResult(json) {
   if (json.code) {
@@ -36,6 +36,8 @@ export function prepareTx() {
     if (!txParams) {
       throw new Error('Tx params is required');
     }
+
+    // const test = Validator(txParams);
 
     const {
       type, data, gas, message,
