@@ -4,13 +4,14 @@ import { signTx } from '@tendermint/sig';
 
 function transactionResult(json) {
   if (json.code) {
-    const rawLogAsString = json.raw_log.toString();
     let errorMessage = '';
-
-    if (rawLogAsString[0] === '{' && rawLogAsString.message) {
-      errorMessage = rawLogAsString.message;
-    } else {
-      errorMessage = rawLogAsString;
+    if (json.raw_log) {
+      const rawLogAsString = json.raw_log.toString();
+      if (rawLogAsString[0] === '{' && rawLogAsString.message) {
+        errorMessage = rawLogAsString.message;
+      } else {
+        errorMessage = rawLogAsString;
+      }
     }
 
     return {
@@ -59,7 +60,7 @@ export function makeSignature(api) {
 
     const signMeta = {
       account_number: `${accountResp.data.result.value.account_number}`,
-      sequence: `${accountResp.data.result.value.sequence}`,
+      sequence: `${accountResp.data.result.value.sequence + 1}`,
       chain_id: nodeInfoResp.data.node_info.network,
     };
 

@@ -151,3 +151,23 @@ const txParams = {
 
 decimal.createCoin(txParams, wallet);
 ```
+
+## Validators
+
+### delegate()
+```js
+const txParams = {
+  data: {
+    delegator_address: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    validator_address: 'dxvaloper16rr3cvdgj8jsywhx8lfteunn9uz0xg2czw6gx5',
+    amount: {
+      denom: 'tdel',
+      amount: '1000000000000000000',
+    },
+  },
+  gas: '200000',
+  message: 'message',
+};
+
+decimal.delegate(txParams, wallet);
+```
