@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { signTx } from '@tendermint/sig';
-import Validator from './validator';
+// import Validator from './validator';
 
 function transactionResult(json) {
   if (json.code) {
