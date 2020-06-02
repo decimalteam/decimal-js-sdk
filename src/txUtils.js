@@ -51,6 +51,7 @@ export function prepareTx() {
       },
       memo: message || '',
     };
+    console.log(JSON.stringify(tx));
     return tx;
   };
 }
@@ -62,12 +63,13 @@ export function makeSignature(api) {
 
     const signMeta = {
       account_number: `${accountResp.data.result.value.account_number}`,
-      sequence: `${accountResp.data.result.value.sequence + 1}`,
+      sequence: `${accountResp.data.result.value.sequence}`,
       chain_id: nodeInfoResp.data.node_info.network,
     };
 
     console.log(signMeta);
     const stdTx = signTx(tx, signMeta, wallet);
+    console.log(JSON.stringify(stdTx));
     return stdTx;
   };
 }

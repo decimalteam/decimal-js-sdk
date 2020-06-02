@@ -5,6 +5,7 @@ import getAddress from './api/get-address';
 import getNonce from './api/get-nonce';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
+import { multisigCreateWallet } from './multisig';
 
 export default class Decimal {
   constructor(options) {
@@ -36,5 +37,9 @@ export default class Decimal {
     this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE);
     this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND);
     this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT);
+
+    this.multisigCreateWallet = multisigCreateWallet(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
+    // this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
+    // this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
   }
 }

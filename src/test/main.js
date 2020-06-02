@@ -8,16 +8,16 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 
 const txParams = {
   data: {
-    sender: wallet.address,
-    receiver: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
-    coin: 'tDEL',
-    amount: '50000000000000',
+    creator: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1vcsnqezhtnyur8vanxhhhdsj3y3t4yzum9a865'],
+    weights: ['1', '1'],
+    threshold: '2',
   },
   gas: '200000',
-  message: ''
+  message: 'message',
 };
 
 (async function test() {
-  const res = await decimal.sendCoins(txParams, wallet);
-  console.log(res);
+  const test = await decimal.multisigCreateWallet(txParams, wallet);
+  console.log(test);
 }());

@@ -171,3 +171,22 @@ const txParams = {
 
 decimal.delegate(txParams, wallet);
 ```
+
+## Multisig
+
+### multisigCreateWallet()
+```js
+const txParams = {
+  data: {
+    creator: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1vcsnqezhtnyur8vanxhhhdsj3y3t4yzum9a865'],
+    weights: ['1', '1'],
+    threshold: '2',
+  },
+  gas: '200000',
+  message: 'message',
+};
+
+decimal.multisigCreateWallet(txParams, wallet);
+//dx1vg9p25dqfefhdqu3ar8ejl5k0p422w2aqe93zy
+```
