@@ -73,8 +73,10 @@ const txParams = {
   data: {
     sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     receiver: 'dx12k95ukkqzjhkm9d94866r4d9fwx7tsd82r8pjd',
-    coin: 'tDEL',
-    amount: '50000000000000',
+    coin: {
+      amount: '50000000000000',
+      denom: 'tdel',
+    },
   },
   gas: '200000',
   message: 'message'
@@ -87,11 +89,15 @@ decimal.sendCoins(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    buyer: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
-    coin_to_buy: 'CRT',
-    coin_to_sell: 'tDEL',
-    amount_to_buy: '500000',
-    amount_to_sell: '100000',
+    sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    coin_to_buy: {
+      amount: '500000',
+      denom: 'crt',
+    },
+    max_coin_to_sell: {
+      amount: '100000',
+      denom: 'tdel',
+    },
   },
   gas: '200000',
   message: 'message'
@@ -104,11 +110,15 @@ decimal.buyCoins(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    seller: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
-    coin_to_buy: 'CRT',
-    coin_to_sell: 'tDEL',
-    amount_to_buy: '500000',
-    amount_to_sell: '100000',
+    sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    coin_to_sell: {
+      amount: '100000',
+      denom: 'tdel',
+    },
+    min_coin_to_buy: {
+      amount: '500000',
+      denom: 'crt',
+    },
   },
   gas: '200000',
   message: 'message'
@@ -121,10 +131,15 @@ decimal.sellCoins(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    seller: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
-    coin_to_sell: 'tDEL',
-    coin_to_buy: 'CRT',
-    amount_to_buy: '500',
+    sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    coin_to_sell: {
+      amount: '0',
+      denom: 'tdel',
+    },
+    min_coin_to_buy: {
+      amount: '500',
+      denom: 'crt',
+    },
   },
   gas: '200000',
   message: 'message'
@@ -137,7 +152,7 @@ decimal.sellAllCoins(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    creator: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
+    sender: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     title: 'Test coin',
     symbol: 'TST',
     constant_reserve_ratio: '45',
@@ -160,9 +175,9 @@ const txParams = {
   data: {
     delegator_address: 'dx1twxl6ajpzur08mscql5z56r2n7eyurpy5q0hnp',
     validator_address: 'dxvaloper16rr3cvdgj8jsywhx8lfteunn9uz0xg2czw6gx5',
-    amount: {
-      denom: 'tdel',
+    coin: {
       amount: '1000000000000000000',
+      denom: 'tdel',
     },
   },
   gas: '200000',
@@ -178,7 +193,7 @@ decimal.delegate(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    creator: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1vcsnqezhtnyur8vanxhhhdsj3y3t4yzum9a865'],
     weights: ['1', '1'],
     threshold: '2',
