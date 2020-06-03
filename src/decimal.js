@@ -40,6 +40,6 @@ export default class Decimal {
 
     this.multisigCreateWallet = multisigCreateWallet(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
     // this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
-    // this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
+    this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
   }
 }

@@ -8,7 +8,7 @@ import getTransaction from './api/get-tx';
 export function multisigCreateWallet(api) {
   return async (txParams, wallet) => {
     const tx = await postTx(api, TX_TYPE.MULTISIG_CREATE_WALLET)(txParams, wallet);
-    console.log(tx);
+    
     if (tx.success) {
       const txInfo = await getTransaction(api)(tx.hash);
 
@@ -16,17 +16,16 @@ export function multisigCreateWallet(api) {
       log = JSON.parse(log);
       const events = log[0].events[0].attributes;
       
-      let address = '';
+      let multisig = '';
 
       for (let i = 0; i < events.length; i++) {
         if (events[i].key === 'wallet') {
-          address = events[i].value;
+          multisig = events[i].value;
           break;
         }
       }
-      return address;
+      return {...tx, address: multisig};
     } else {
       return tx;
-    }
-  }
+    }  }
 }

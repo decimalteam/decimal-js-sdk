@@ -24,11 +24,19 @@ function transactionResult(json) {
     };
   }
 
-  return {
+  const txResult = {
     hash: json.txhash,
     success: true,
     error: null,
   };
+
+  if (txResult.success) {
+    console.log(`[SUCCESS]: ${txResult.hash}`);
+  } else {
+    console.error(`[FAIL]: ${txResult.hash} (${txResult.error.errorMessage})`);
+  }
+
+  return txResult;
 }
 
 export function prepareTx() {
@@ -51,7 +59,6 @@ export function prepareTx() {
       },
       memo: message || '',
     };
-    console.log(JSON.stringify(tx));
     return tx;
   };
 }
@@ -67,9 +74,7 @@ export function makeSignature(api) {
       chain_id: nodeInfoResp.data.node_info.network,
     };
 
-    console.log(signMeta);
     const stdTx = signTx(tx, signMeta, wallet);
-    console.log(JSON.stringify(stdTx));
     return stdTx;
   };
 }
@@ -95,7 +100,7 @@ export function postTx(api, txType) {
       mode: 'sync',
     };
 
-    console.log(tx);
+    console.log(`[SEND TX]: ${txValue.msg[0].type}`);
 
     const resp = await api.post('/rpc/txs', tx);
     return transactionResult(resp.data);
