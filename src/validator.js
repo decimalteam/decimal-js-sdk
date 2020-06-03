@@ -18,13 +18,18 @@ SCHEMA[TX_TYPE.COIN_SEND] = {
           required: true,
         },
         coin: {
-          type: 'string',
-          required: true,
-        },
-        amount: {
-          type: 'string',
-          required: true,
-        },
+          type: 'object',
+          properties: {
+            amount: {
+              type: 'string',
+              required: true,
+            },
+            denom: {
+              type: 'string',
+              required: true,
+            },
+          },
+        }
       },
     },
     gas: {

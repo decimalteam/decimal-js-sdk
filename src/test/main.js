@@ -8,7 +8,7 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 
 const txParams = {
   data: {
-    creator: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1vcsnqezhtnyur8vanxhhhdsj3y3t4yzum9a865'],
     weights: ['1', '1'],
     threshold: '2',
