@@ -29,7 +29,7 @@ SCHEMA[TX_TYPE.COIN_SEND] = {
               required: true,
             },
           },
-        }
+        },
       },
     },
     gas: {

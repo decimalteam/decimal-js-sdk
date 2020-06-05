@@ -3,6 +3,8 @@ import getCoinslist from './api/get-coins-list';
 import getCoin from './api/get-coin';
 import getAddress from './api/get-address';
 import getNonce from './api/get-nonce';
+import getMultisigsByAddress from './api/get-multisigs';
+import getMultisig from './api/get-multisig';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
 import { multisigCreateWallet } from './multisig';
@@ -20,6 +22,8 @@ export default class Decimal {
     this.getCoin = getCoin(apiInstance);
     this.getAddress = getAddress(apiInstance);
     this.getNonce = getNonce(apiInstance);
+    this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
+    this.getMultisig = getMultisig(apiInstance);
 
     this.prepareTx = prepareTx();
     this.makeSignature = makeSignature(apiInstance);
