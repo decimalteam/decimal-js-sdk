@@ -42,7 +42,7 @@ export default class Decimal {
     this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND);
     this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT);
 
-    this.multisigCreateWallet = multisigCreateWallet(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
+    this.multisigCreateWallet = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
     this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
     this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
   }
