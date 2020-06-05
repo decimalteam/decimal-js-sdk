@@ -210,7 +210,28 @@ decimal.multisigCreateWallet(txParams, wallet);
 ```js
 const txParams = {
   data: {
-    creator: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    wallet: 'dx1e6wcusw3z0wsrsmyq0hmvcnj9w6008y3lvd9vk',
+    receiver: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coins: [
+      {
+        denom: 'tdel',
+        amount: '1000000000000',
+      },
+    ]
+  },
+  gas: '200000',
+  message: 'message',
+};
+
+decimal.multisigCreateTx(txParams, wallet);
+```
+
+### multisigCreateTx()
+```js
+const txParams = {
+  data: {
+    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     wallet: 'dx1e6wcusw3z0wsrsmyq0hmvcnj9w6008y3lvd9vk',
     receiver: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     coins: [

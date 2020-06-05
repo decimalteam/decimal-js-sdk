@@ -31,7 +31,7 @@ function transactionResult(json) {
   };
 
   if (txResult.success) {
-    console.log(`[SUCCESS]: ${txResult.hash}`);
+    console.log(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
   } else {
     console.error(`[FAIL]: ${txResult.hash} (${txResult.error.errorMessage})`);
   }
