@@ -7,7 +7,7 @@ import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
-import { multisigCreateWallet } from './multisig';
+import issueCheck from './check';
 
 export default class Decimal {
   constructor(options) {
@@ -28,6 +28,7 @@ export default class Decimal {
     this.prepareTx = prepareTx();
     this.makeSignature = makeSignature(apiInstance);
     this.postTx = postTx(apiInstance);
+    this.issueCheck = issueCheck(apiInstance);
 
     this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND);
     this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY);

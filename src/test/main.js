@@ -23,8 +23,16 @@ const txParams = {
 
 
 (async function test() {
-  // console.log(wallet.address);
-  // const {address} = await decimal.multisigCreateWallet();
+  console.log(wallet.address);
+  const check = await decimal.issueCheck({
+    chain_id: 'decimal-testnet-06-08-15-00',
+    coin: 'tdel',
+    amount: 7000000000000000000,
+    nonce: 1,
+    due_block: 500000,
+    passphrase: '1234567890',
+  }, wallet);
+  console.log(check)
   // const test = await decimal.multisigCreateTx(txParams, wallet);
 
   // console.log(test);
