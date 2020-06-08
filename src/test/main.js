@@ -32,8 +32,10 @@ const txParams = {
     due_block: 500000,
     passphrase: '1234567890',
   }, wallet);
-  console.log(check)
-  // const test = await decimal.multisigCreateTx(txParams, wallet);
-
-  // console.log(test);
+  console.log(`Issued check: ${check}`);
+  const test = await decimal.redeemCheck({
+    passphrase: '1234567890',
+    check: check,
+  }, wallet);
+  console.log(test);
 }());

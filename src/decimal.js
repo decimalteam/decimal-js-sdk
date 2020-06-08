@@ -7,7 +7,7 @@ import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
-import issueCheck from './check';
+import { issueCheck, redeemCheck } from './check';
 
 export default class Decimal {
   constructor(options) {
@@ -35,6 +35,7 @@ export default class Decimal {
     this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL);
     this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL);
     this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE);
+    this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK);
 
     this.declareCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE);
     this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE);

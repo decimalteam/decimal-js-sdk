@@ -1,16 +1,21 @@
-import { encode } from 'rlp';
+import { encode as rlpEncode } from 'rlp';
 import secp256k1 from 'secp256k1';
 import shajs from 'sha.js';
 import { Keccak } from 'sha3';
+import {
+  decode as bech32Decode,
+  fromWords as bech32FromWords,
+} from 'bech32';
+import { postTx } from './txUtils';
 
 
 function rlpHash(input) {
   const hash = new Keccak(256);
-  hash.update(encode(input));
+  hash.update(rlpEncode(input));
   return hash.digest();
 }
 
-export default function issueCheck() {
+export function issueCheck() {
   return async (txParams, wallet) => {
     const passphraseHash = shajs('sha256').update(txParams.passphrase).digest();
     const passphrasePrivKey = passphraseHash;
@@ -41,7 +46,7 @@ export default function issueCheck() {
     ]);
 
     const checkObj = secp256k1.ecdsaSign(checkLockedHash, wallet.privateKey);
-    const check = encode([
+    const check = rlpEncode([
       txParams.chain_id,
       txParams.coin,
       txParams.amount,
@@ -54,5 +59,33 @@ export default function issueCheck() {
     ]);
 
     return check.toString('base64');
+  };
+}
+
+export function redeemCheck(api, txType) {
+  return async (txParams, wallet) => {
+    const passphraseHash = shajs('sha256').update(txParams.passphrase).digest();
+    const passphrasePrivKey = passphraseHash;
+
+    const { words } = bech32Decode(wallet.address);
+    const senderAddressHash = rlpHash([Buffer.from(bech32FromWords(words))]);
+
+    const proofObj = secp256k1.ecdsaSign(senderAddressHash, passphrasePrivKey);
+    const proofSignature = new Uint8Array(65);
+    // TODO: Optimize appending recovery byte to the signature
+    for (let i = 0; i < 64; i += 1) {
+      proofSignature[i] = proofObj.signature[i];
+    }
+    proofSignature[64] = proofObj.recid;
+
+    return postTx(api, txType)({
+      data: {
+        sender: wallet.address,
+        check: txParams.check,
+        proof: Buffer.from(proofSignature).toString('base64'),
+      },
+      gas: '200000',
+      message: '',
+    }, wallet);
   };
 }
