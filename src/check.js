@@ -67,7 +67,7 @@ export function issueCheck(api) {
 
 export function redeemCheck(api, txType) {
   return async (txParams, wallet) => {
-    const passphraseHash = shajs('sha256').update(txParams.data.passphrase).digest();
+    const passphraseHash = shajs('sha256').update(txParams.data.proof).digest();
     const passphrasePrivKey = passphraseHash;
 
     const { words } = bech32Decode(wallet.address);
@@ -80,6 +80,9 @@ export function redeemCheck(api, txType) {
       proofSignature[i] = proofObj.signature[i];
     }
     proofSignature[64] = proofObj.recid;
+
+    // eslint-disable-next-line no-param-reassign
+    txParams.data.proof = Buffer.from(proofSignature).toString('base64');
 
     return postTx(api, txType)(txParams, wallet);
   };
