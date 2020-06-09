@@ -67,7 +67,7 @@ export function issueCheck(api) {
 
 export function redeemCheck(api, txType) {
   return async (txParams, wallet) => {
-    const passphraseHash = shajs('sha256').update(txParams.passphrase).digest();
+    const passphraseHash = shajs('sha256').update(txParams.data.passphrase).digest();
     const passphrasePrivKey = passphraseHash;
 
     const { words } = bech32Decode(wallet.address);
@@ -81,14 +81,6 @@ export function redeemCheck(api, txType) {
     }
     proofSignature[64] = proofObj.recid;
 
-    return postTx(api, txType)({
-      data: {
-        sender: wallet.address,
-        check: txParams.check,
-        proof: Buffer.from(proofSignature).toString('base64'),
-      },
-      gas: '200000',
-      message: '',
-    }, wallet);
+    return postTx(api, txType)(txParams, wallet);
   };
 }
