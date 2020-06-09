@@ -5,6 +5,7 @@ import getAddress from './api/get-address';
 import getNonce from './api/get-nonce';
 import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
+import getMultisigTxs from './api/get-txs-multisig';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
 import { issueCheck, redeemCheck } from './check';
@@ -24,18 +25,20 @@ export default class Decimal {
     this.getNonce = getNonce(apiInstance);
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
+    this.getMultisigTxs = getMultisigTxs(apiInstance);
 
     this.prepareTx = prepareTx();
     this.makeSignature = makeSignature(apiInstance);
     this.postTx = postTx(apiInstance);
+
     this.issueCheck = issueCheck(apiInstance);
+    this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK);
 
     this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND);
     this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY);
     this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL);
     this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL);
     this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE);
-    this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK);
 
     this.declareCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE);
     this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE);
