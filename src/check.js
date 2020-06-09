@@ -15,13 +15,16 @@ function rlpHash(input) {
   return hash.digest();
 }
 
-export function issueCheck() {
+export function issueCheck(api) {
   return async (txParams, wallet) => {
+    const nodeInfoResp = await api.get('/rpc/node_info');
+    const chainID = nodeInfoResp.data.node_info.network;
+
     const passphraseHash = shajs('sha256').update(txParams.passphrase).digest();
     const passphrasePrivKey = passphraseHash;
 
     const checkHash = rlpHash([
-      txParams.chain_id,
+      chainID,
       txParams.coin,
       txParams.amount,
       txParams.nonce,
@@ -37,7 +40,7 @@ export function issueCheck() {
     lockSignature[64] = lockObj.recid;
 
     const checkLockedHash = rlpHash([
-      txParams.chain_id,
+      chainID,
       txParams.coin,
       txParams.amount,
       txParams.nonce,
@@ -47,7 +50,7 @@ export function issueCheck() {
 
     const checkObj = secp256k1.ecdsaSign(checkLockedHash, wallet.privateKey);
     const check = rlpEncode([
-      txParams.chain_id,
+      chainID,
       txParams.coin,
       txParams.amount,
       txParams.nonce,
