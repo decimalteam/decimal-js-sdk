@@ -35,8 +35,7 @@ export default function getCommission(api) {
     const type = tx.msg[0].type;
     // const textSize = getStringMemorySize(JSON.stringify(tx.msg[0]));
     // const feeForText = new Decimaljs(textSize).times(2).times(unit);
-    const feeForText = 0.5; // TODO
-    const feeInBase = new Decimaljs(unit).times(FEES[type]).plus(feeForText); 
+    const feeInBase = 2000 * unit //new Decimaljs(unit).times(FEES[type]).plus(feeForText); 
 
     // const ticker = tx.fee.amount[0].denom;
     const coin = await getCoin(api)(ticker);
