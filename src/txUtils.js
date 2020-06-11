@@ -60,7 +60,7 @@ export function prepareTx(api) {
       memo: message || '',
     };
 
-    if (feeCoin) {
+    if (feeCoin && feeCoin !== 'tdel') {
       tx.fee.amount.push({
         denom: feeCoin,
         amount: await getCommission(api)(tx, feeCoin),
