@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { signTx } from '@tendermint/sig';
+import getCommission from './fees';
 // import Validator from './validator';
+
 
 function transactionResult(json) {
   if (json.code) {
@@ -33,22 +35,20 @@ function transactionResult(json) {
   if (txResult.success) {
     console.log(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
   } else {
-    console.error(`[FAIL]: ${txResult.hash} (${txResult.error.errorMessage})`);
+    console.log(`[FAIL]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
   }
 
   return txResult;
 }
 
-export function prepareTx() {
+export function prepareTx(api) {
   return async (txParams) => {
     if (!txParams) {
       throw new Error('Tx params is required');
     }
 
-    // const test = Validator(txParams);
-
     const {
-      type, data, gas, message,
+      type, data, gas, message, feeCoin,
     } = txParams;
 
     const tx = {
@@ -59,6 +59,14 @@ export function prepareTx() {
       },
       memo: message || '',
     };
+
+    if (feeCoin) {
+      tx.fee.amount.push({
+        denom: feeCoin,
+        amount: await getCommission(api)(tx, feeCoin),
+      });
+    }
+
     return tx;
   };
 }

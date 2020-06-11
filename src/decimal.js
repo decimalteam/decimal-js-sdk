@@ -6,6 +6,7 @@ import getNonce from './api/get-nonce';
 import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
+import getCommission from './fees';
 import TX_TYPE from './txTypes';
 import { prepareTx, makeSignature, postTx } from './txUtils';
 import { issueCheck, redeemCheck } from './check';
@@ -27,7 +28,7 @@ export default class Decimal {
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
 
-    this.prepareTx = prepareTx();
+    this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance);
     this.postTx = postTx(apiInstance);
 
@@ -50,5 +51,7 @@ export default class Decimal {
     this.multisigCreateWallet = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
     this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
     this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
+
+    this.getCommission = getCommission(apiInstance);
   }
 }
