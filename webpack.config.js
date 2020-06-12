@@ -79,7 +79,7 @@ module.exports = {
     library: 'decimalJS',
     libraryTarget:'umd',
     umdNamedDefine: true,
-    globalObject: 'this'
+    globalObject: `(typeof self !== 'undefined' ? self : this)`
   },
   resolve: {
     modules: [
