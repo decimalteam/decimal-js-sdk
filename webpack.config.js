@@ -27,11 +27,7 @@ const jsLoaders = () => {
   return loaders;
 }
 const optimization = () => {
-  const config = {
-    // splitChunks: {
-    //   chunks: 'all'
-    // }
-  }
+  const config = {};
   if (isProd) {
     config.minimizer = [
       new TerserPlugin
@@ -42,7 +38,7 @@ const optimization = () => {
 }
 const entryFile = () => {
   const entry = {
-    'decimal-sdk-js': ['@babel/polyfill', './index.js']
+    'decimal-sdk-web': ['@babel/polyfill', './index.js'],
   }
   if (isDev) {
     entry.test = './test/main.js'
@@ -59,9 +55,6 @@ const plugins = () => {
       new HTMLWebpackPlugin({
         filename: 'index.html',
         template: './test/index.html',
-        minify: {
-          collapseWhitespace: isProd,
-        }
       }),
     );
   }
@@ -69,9 +62,8 @@ const plugins = () => {
 }
 
 
-module.exports = {
+const clientConfig = {
   context: path.resolve(__dirname, 'src'),
-  mode: 'development',
   entry: entryFile(),
   output: {
     filename: `[name].js`,
@@ -87,13 +79,13 @@ module.exports = {
     ],
     extensions: ['.js', '.json'],
   },
+  plugins: plugins(),
   optimization: optimization(),
   devServer: {
     port: 8080,
     hot: isDev,
     host: 'localhost'
   },
-  plugins: plugins(),
   module: {
     rules: [
       {
@@ -106,3 +98,49 @@ module.exports = {
     fs: 'empty'
   }
 }
+
+const serverConfig = {
+  target: 'node',
+  context: path.resolve(__dirname, 'src'),
+  entry: {
+    'decimal-sdk-node': ['@babel/polyfill', './index.js'],
+  },
+  output: {
+    filename: `[name].js`,
+    path: path.resolve(__dirname, 'dist'),
+    library: 'decimalJS',
+    libraryTarget:'umd',
+    umdNamedDefine: true,
+    globalObject: `(typeof self !== 'undefined' ? self : this)`
+  },
+  resolve: {
+    modules: [
+      'node_modules'
+    ],
+    extensions: ['.js', '.json'],
+  },
+  plugins:   [
+    new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+  ],
+  optimization: {
+    minimizer: [
+      new TerserPlugin
+    ]
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: jsLoaders()
+      }
+    ]
+  },
+}
+
+const configs = [clientConfig];
+
+if (isProd) {
+  configs.push(serverConfig);
+}
+
+module.exports = configs;

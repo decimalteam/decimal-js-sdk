@@ -1,10 +1,8 @@
 /* eslint-disable */
 
-// import BigNumber from 'bignumber.js';
 import Decimaljs from 'decimal.js-light'
 import TX_TYPE from './txTypes';
 import getCoin from './api/get-coin';
-import BigNumber from 'bignumber.js';
 
 // 1 unit = 0.001 DEL
 // SendCoin fee is 10 unit.

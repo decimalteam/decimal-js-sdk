@@ -4,10 +4,8 @@
   "description": "",
   "main": "dist/decimal-sdk-js.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --mode development",
     "build": "cross-env NODE_ENV=production webpack --mode production",
-    "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
   },
   "author": "DecimalTeam",
   "license": "MIT",
@@ -15,7 +13,6 @@
     "@tendermint/sig": "^0.4.1",
     "axios": "^0.19.2",
     "bech32": "^1.1.4",
-    "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "decimal.js-light": "^2.5.0",
     "jsonschema": "^1.2.6",

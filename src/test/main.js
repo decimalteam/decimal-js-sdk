@@ -57,4 +57,5 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
   };
   
   const test = await decimal.sendCoins(txParams, wallet);
+  console.log(test);
 }());
