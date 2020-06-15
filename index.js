@@ -5,4 +5,4 @@ try {
 catch (e) {
 }
 
-module.exports = node ? require('./dist/node') : require('./dist/web');
+module.exports = node ? require('./dist/decimal-sdk-node') : require('./dist/decimal-sdk-web');
