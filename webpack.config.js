@@ -47,7 +47,7 @@ const entryFile = () => {
 }
 const plugins = () => {
   const plugins = [
-    new CleanWebpackPlugin,
+    // new CleanWebpackPlugin,
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
   ]
   if (isDev) {

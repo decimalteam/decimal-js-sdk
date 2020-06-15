@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import { Wallet, Decimal } from '../index';
 import TX_TYPE from '../txTypes';
 
