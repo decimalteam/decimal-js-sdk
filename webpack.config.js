@@ -1,6 +1,4 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
@@ -26,16 +24,7 @@ const jsLoaders = () => {
   }
   return loaders;
 }
-const optimization = () => {
-  const config = {};
-  if (isProd) {
-    config.minimizer = [
-      new TerserPlugin
-    ]
-  }
 
-  return config;
-}
 const entryFile = () => {
   const entry = {
     'decimal-sdk-web': ['@babel/polyfill', './index.js'],
@@ -47,7 +36,6 @@ const entryFile = () => {
 }
 const plugins = () => {
   const plugins = [
-    // new CleanWebpackPlugin,
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
   ]
   if (isDev) {
@@ -80,7 +68,6 @@ const clientConfig = {
     extensions: ['.js', '.json'],
   },
   plugins: plugins(),
-  optimization: optimization(),
   devServer: {
     port: 8080,
     hot: isDev,
@@ -122,11 +109,6 @@ const serverConfig = {
   plugins:   [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
   ],
-  optimization: {
-    minimizer: [
-      new TerserPlugin
-    ]
-  },
   module: {
     rules: [
       {
