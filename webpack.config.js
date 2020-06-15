@@ -135,6 +135,9 @@ const serverConfig = {
       }
     ]
   },
+  node: {
+    fs: 'empty'
+  }
 }
 
 const configs = [clientConfig];
