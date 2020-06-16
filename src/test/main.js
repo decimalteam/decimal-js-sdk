@@ -47,15 +47,14 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
       sender: wallet.address,
       receiver: wallet.address,
       coin: {
-        amount: '5000000000000000000000',
+        amount: '10000000000000000000',
         denom: 'tdel',
       },
     },
-    feeCoin: '',
+    feeCoin: 'tdel',
     gas: '200000',
     message: 'message'
   };
   
-  const test = await decimal.sendCoins(txParams, wallet);
-  console.log(test);
+  await decimal.sendCoins(txParams, wallet);
 }());
