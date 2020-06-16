@@ -124,7 +124,7 @@ export function estimateTxCommission(api) {
 
 export function postTx(api, type) {
   return async (txParams, wallet) => {
-    let tx = await getTransaction(api)(txParams, type, wallet);
+    let tx = await getTransaction(api)(type, txParams, wallet);
 
     console.log(`[SEND TX]: ${tx.tx.msg[0].type}`);
     const resp = await api.post('/rpc/txs', tx);

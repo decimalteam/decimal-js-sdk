@@ -28,6 +28,32 @@ FEES[TX_TYPE.MULTISIG_CREATE_WALLET] = 100;
 FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
+function getCommissionForCreateCoin(ticker) {
+  let baseCoinFee = 0;
+  switch (ticker.length) {
+    case 3:
+      baseCoinFee = 1000000;
+      break;
+    case 4:
+      baseCoinFee = 100000;
+      break;
+    case 5:
+      baseCoinFee = 10000;
+      break;
+    case 6:
+      baseCoinFee = 1000;
+      break;
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+      baseCoinFee = 100;
+      break;
+    default:
+      return new Error('Invalid ticker length');
+  }
+  return baseCoinFee / unit;
+}
 
 function getAmountFromSatoshi(amount) {
   return new Decimaljs(amount).times(new Decimaljs(10).pow(-18)).toFixed(0);
@@ -86,16 +112,20 @@ export default function getCommission(api) {
   return async (tx) => {
     const { type } = tx.msg[0];
     const ticker = tx.fee.amount[0].denom || 'tdel';
+    const createTicker = type === TX_TYPE.COIN_CREATE ? tx.msg[0].value.symbol : null;
     const textSize = 1000; // TODO кол-во байт в транзакции, добавить расчет
     const feeForText = new Decimaljs(textSize).times(2).times(unit);
-    const feeInBase = new Decimaljs(unit).times(FEES[type]).plus(feeForText);
+    const fixedFee = type === TX_TYPE.COIN_CREATE ? getCommissionForCreateCoin(createTicker) : FEES[type];
+    const feeInBase = new Decimaljs(unit).times(fixedFee).plus(feeForText);
 
     if (ticker !== 'tdel') {
       const coin = await getCoin(api)(ticker);
       const coinPrice = getCoinPrice(coin);
       const feeInCustom = coinPrice.times(feeInBase);
+      // console.log(`fee: ${feeInCustom} ${ticker}`);
       return getAmountToSatoshi(feeInCustom);
     }
+    // console.log(`fee: ${feeInBase} ${ticker}`);
     return getAmountToSatoshi(feeInBase);
   };
 }

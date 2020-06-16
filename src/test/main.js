@@ -11,19 +11,22 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
   const txParams = {
     data: {
       sender: wallet.address,
-      receiver: wallet.address,
-      coin: {
-        amount: '10000000000000000000',
-        denom: 'tdel',
-      },
+      title: 'Test coin',
+      symbol: 'q11',
+      constant_reserve_ratio: '45',
+      initial_volume: '1000000000000000000',
+      initial_reserve: '10000000000000000000000',
+      limit_volume: '1000000000000000000000000000',
     },
-    feeCoin: 'pivas',
-    gas: '200000',
+    feeCoin: 'fake',
+    gas: '9223372036854775800',
     message: 'message'
-  };
+  }
   
-  const commission = await decimal.estimateTxCommission(TX_TYPE.COIN_SEND, txParams, wallet);
+  // decimal.createCoin(txParams, wallet);
+  
+  const commission = await decimal.estimateTxCommission(TX_TYPE.COIN_CREATE, txParams, wallet);
   console.log(commission);
 
-  const testSend = await decimal.sendCoins(txParams, wallet);
+  const testSend = await decimal.createCoin(txParams, wallet);
 }());
