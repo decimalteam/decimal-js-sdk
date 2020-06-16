@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 import { signTx } from '@tendermint/sig';
 import getCommission from './fees';
 // import Validator from './validator';
@@ -48,24 +48,28 @@ export function prepareTx(api) {
     }
 
     const {
-      type, data, gas, message, feeCoin,
+      type,
+      data,
+      gas,
+      message,
+      feeCoin,
     } = txParams;
 
     const tx = {
       msg: [{ type, value: data }],
       fee: {
-        amount: [],
+        amount: [{
+            denom: feeCoin || 'tdel',
+            amount: '0',
+          },
+        ],
         gas,
       },
       memo: message || '',
     };
 
-    if (feeCoin && feeCoin !== 'tdel') {
-      tx.fee.amount.push({
-        denom: feeCoin,
-        amount: await getCommission(api)(tx, feeCoin),
-      });
-    }
+    const fee = await getCommission(api)(tx);
+    tx.fee.amount[0].amount = fee;
 
     return tx;
   };
@@ -87,29 +91,42 @@ export function makeSignature(api) {
   };
 }
 
-export function postTx(api, txType) {
-  return async (txValue, wallet) => {
-    if (txType) {
-      txValue.type = txType;
-      txValue = await prepareTx(api)(txValue);
+export function getTransaction(api) {
+  return async (type, txParams, wallet) => {
+    if (type) {
+      txParams.type = type;
+      txParams = await prepareTx(api)(txParams);
     }
 
-    if (!txValue.signatures) {
+    if (!txParams.signatures) {
       if (wallet) {
-        txValue = await makeSignature(api)(txValue, wallet);
+        txParams = await makeSignature(api)(txParams, wallet);
       } else {
         throw new Error('The transaction is not signed and the wallet is not provided');
       }
     }
 
-
     const tx = {
-      tx: txValue,
+      tx: txParams,
       mode: 'sync',
     };
 
-    console.log(`[SEND TX]: ${txValue.msg[0].type}`);
+    return tx;
+  };
+}
 
+export function estimateTxCommission(api) {
+  return async (type, txParams, wallet) => {
+    let tx = await getTransaction(api)(type, txParams, wallet);
+    return tx.tx.fee.amount[0].amount;
+  }
+}
+
+export function postTx(api, type) {
+  return async (txParams, wallet) => {
+    let tx = await getTransaction(api)(txParams, type, wallet);
+
+    console.log(`[SEND TX]: ${tx.tx.msg[0].type}`);
     const resp = await api.post('/rpc/txs', tx);
     return transactionResult(resp.data);
   };

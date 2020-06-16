@@ -1,6 +1,7 @@
-/* eslint-disable */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-continue */
 
-import Decimaljs from 'decimal.js-light'
+import Decimaljs from 'decimal.js-light';
 import TX_TYPE from './txTypes';
 import getCoin from './api/get-coin';
 
@@ -27,27 +28,13 @@ FEES[TX_TYPE.MULTISIG_CREATE_WALLET] = 100;
 FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
-export default function getCommission(api) {
-  return async (tx, ticker) => {
-    console.log(tx, ticker);
-    const type = tx.msg[0].type;
-    // const textSize = getStringMemorySize(JSON.stringify(tx.msg[0]));
-    // const feeForText = new Decimaljs(textSize).times(2).times(unit);
-    const feeInBase = 2000 * unit //new Decimaljs(unit).times(FEES[type]).plus(feeForText); 
 
-    // const ticker = tx.fee.amount[0].denom;
-    const coin = await getCoin(api)(ticker);
-    const coinPrice = getCoinPrice(coin);
-    const feeInCustom = coinPrice.times(feeInBase);
-
-    // console.log('fee in base: ', feeInBase.toNumber());
-    // console.log(`fee in ${ticker}: `, feeInCustom.toNumber());
-
-
-    return getAmountToSatoshi(feeInCustom);
-  };
+function getAmountFromSatoshi(amount) {
+  return new Decimaljs(amount).times(new Decimaljs(10).pow(-18)).toFixed(0);
 }
-
+function getAmountToSatoshi(amount) {
+  return new Decimaljs(amount).times(new Decimaljs(10).pow(18)).toFixed(0);
+}
 
 function getCoinPrice(coin) {
   const reserve = getAmountFromSatoshi(coin.reserve);
@@ -68,37 +55,47 @@ function getCoinPrice(coin) {
   return result;
 }
 
-function getAmountFromSatoshi(amount) {
-  return new Decimaljs(amount).times(new Decimaljs(10).pow(-18)).toNumber();
-}
-function getAmountToSatoshi(amount) {
-  return new Decimaljs(amount).times(new Decimaljs(10).pow(18)).toFixed();
-}
-
+// eslint-disable-next-line no-unused-vars
 function getStringMemorySize(_string) {
-  var codePoint
-      , accum = 0
-  ;
+  let codePoint;
+  let accum = 0;
+  for (let stringIndex = 0, endOfString = _string.length; stringIndex < endOfString; stringIndex++) {
+    codePoint = _string.charCodeAt(stringIndex);
 
-  for( var stringIndex = 0, endOfString = _string.length; stringIndex < endOfString; stringIndex++ ) {
-      codePoint = _string.charCodeAt( stringIndex );
+    if (codePoint < 0x100) {
+      accum += 1;
+      continue;
+    }
 
-      if( codePoint < 0x100 ) {
-          accum += 1;
-          continue;
-      }
+    if (codePoint < 0x10000) {
+      accum += 2;
+      continue;
+    }
 
-      if( codePoint < 0x10000 ) {
-          accum += 2;
-          continue;
-      }
-
-      if( codePoint < 0x1000000 ) {
-          accum += 3;
-      } else {
-          accum += 4;
-      }
+    if (codePoint < 0x1000000) {
+      accum += 3;
+    } else {
+      accum += 4;
+    }
   }
 
   return accum * 2;
+}
+
+export default function getCommission(api) {
+  return async (tx) => {
+    const { type } = tx.msg[0];
+    const ticker = tx.fee.amount[0].denom || 'tdel';
+    const textSize = 1000; // TODO кол-во байт в транзакции, добавить расчет
+    const feeForText = new Decimaljs(textSize).times(2).times(unit);
+    const feeInBase = new Decimaljs(unit).times(FEES[type]).plus(feeForText);
+
+    if (ticker !== 'tdel') {
+      const coin = await getCoin(api)(ticker);
+      const coinPrice = getCoinPrice(coin);
+      const feeInCustom = coinPrice.times(feeInBase);
+      return getAmountToSatoshi(feeInCustom);
+    }
+    return getAmountToSatoshi(feeInBase);
+  };
 }

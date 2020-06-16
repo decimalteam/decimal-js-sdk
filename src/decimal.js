@@ -6,9 +6,14 @@ import getNonce from './api/get-nonce';
 import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
-import getCommission from './fees';
 import TX_TYPE from './txTypes';
-import { prepareTx, makeSignature, postTx } from './txUtils';
+import {
+  prepareTx,
+  makeSignature,
+  postTx,
+  getTransaction,
+  estimateTxCommission,
+} from './txUtils';
 import { issueCheck, redeemCheck } from './check';
 
 export default class Decimal {
@@ -52,6 +57,7 @@ export default class Decimal {
     this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
     this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
 
-    this.getCommission = getCommission(apiInstance);
+    this.estimateTxCommission = estimateTxCommission(apiInstance);
+    this.getTransaction = getTransaction(apiInstance);
   }
 }
