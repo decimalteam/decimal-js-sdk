@@ -8,25 +8,26 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
 
 (async function test() {
+  const check = await decimal.issueCheck({
+    coin: 'tdel',
+    amount: 7000000000000,
+    nonce: 47,
+    due_block: 500000,
+    passphrase: '1234567890',
+  }, wallet);
+  console.log(`Issued check: ${check}`);
+
   const txParams = {
     data: {
       sender: wallet.address,
-      title: 'Test coin',
-      symbol: 'q11',
-      constant_reserve_ratio: '45',
-      initial_volume: '1000000000000000000',
-      initial_reserve: '10000000000000000000000',
-      limit_volume: '1000000000000000000000000000',
+      check: check,
+      proof: '1234567890',
     },
-    feeCoin: 'fake',
-    gas: '9223372036854775800',
-    message: 'message'
-  }
-  
-  // decimal.createCoin(txParams, wallet);
-  
-  const commission = await decimal.estimateTxCommission(TX_TYPE.COIN_CREATE, txParams, wallet);
-  console.log(commission);
+    feeCoin: '',
+    gas: '200000',
+    message: 'message',
+  };
 
-  const testSend = await decimal.createCoin(txParams, wallet);
+  const test = await decimal.redeemCheck(txParams, wallet);
+  console.log(test);
 }());

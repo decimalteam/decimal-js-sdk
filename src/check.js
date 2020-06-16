@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { encode as rlpEncode } from 'rlp';
 import secp256k1 from 'secp256k1';
 import shajs from 'sha.js';
@@ -5,6 +6,8 @@ import { Keccak } from 'sha3';
 import {
   decode as bech32Decode,
   fromWords as bech32FromWords,
+  toWords as bech32ToWords,
+  encode as bech32Encode,
 } from 'bech32';
 import { postTx } from './txUtils';
 
@@ -61,7 +64,8 @@ export function issueCheck(api) {
       checkObj.signature.slice(32, 64),
     ]);
 
-    return check.toString('base64');
+    let words = bech32ToWords(check);
+    return bech32Encode('dxcheck', words, 1000);
   };
 }
 
