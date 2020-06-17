@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { signTx } from '@tendermint/sig';
 import getCommission from './fees';
+import TX_TYPE from './txTypes';
 // import Validator from './validator';
 
 
@@ -67,9 +68,13 @@ export function prepareTx(api) {
       },
       memo: message || '',
     };
-
-    const fee = await getCommission(api)(tx);
-    tx.fee.amount[0].amount = fee;
+    
+    if (type === TX_TYPE.COIN_REDEEM_CHECK) {
+      tx.fee.amount = [];
+    } else {
+      const fee = await getCommission(api)(tx);
+      tx.fee.amount[0].amount = fee;
+    }
 
     return tx;
   };

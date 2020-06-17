@@ -2,6 +2,7 @@
 import { encode as rlpEncode } from 'rlp';
 import secp256k1 from 'secp256k1';
 import shajs from 'sha.js';
+import bs58 from 'bs58';
 import { Keccak } from 'sha3';
 import {
   decode as bech32Decode,
@@ -63,9 +64,8 @@ export function issueCheck(api) {
       checkObj.signature.slice(0, 32),
       checkObj.signature.slice(32, 64),
     ]);
-
-    let words = bech32ToWords(check);
-    return bech32Encode('dxcheck', words, 1000);
+    
+    return bs58.encode(check);
   };
 }
 
