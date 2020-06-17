@@ -124,10 +124,10 @@ export default function getCommission(api) {
       const coin = await getCoin(api)(ticker);
       const coinPrice = getCoinPrice(coin);
       const feeInCustom = coinPrice.times(feeInBase);
-      console.log(`fee: ${feeInCustom} ${ticker}`);
+      // console.log(`fee: ${feeInCustom} ${ticker}`);
       return getAmountToSatoshi(feeInCustom);
     }
-    console.log(`fee: ${feeInBase} ${ticker}`);
+    // console.log(`fee: ${feeInBase} ${ticker}`);
     return getAmountToSatoshi(feeInBase);
   };
 }
