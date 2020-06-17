@@ -112,14 +112,10 @@ function getStringMemorySize(_string) {
 
 export default function getCommission(api) {
   return async (tx) => {
-    const _tx = { ...tx };
-    delete _tx.fee;
-    // console.log(tx);
-    // console.log(_tx);
     const { type } = tx.msg[0];
     const ticker = tx.fee.amount[0].denom || 'tdel';
     const createTicker = type === TX_TYPE.COIN_CREATE ? tx.msg[0].value.symbol : null;
-    const textSize = toCanonicalJSONBytes(_tx).length; // TODO кол-во байт в транзакции, добавить расчет
+    const textSize = toCanonicalJSONBytes(tx).length; // TODO кол-во байт в транзакции, добавить расчет
     const feeForText = new Decimaljs(textSize).times(2).times(unit);
     const fixedFee = type === TX_TYPE.COIN_CREATE ? getCommissionForCreateCoin(createTicker) : FEES[type];
     const feeInBase = new Decimaljs(unit).times(fixedFee).plus(feeForText);

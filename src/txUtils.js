@@ -74,6 +74,7 @@ export function prepareTx(api) {
     } else {
       const fee = await getCommission(api)(tx);
       tx.fee.amount[0].amount = fee;
+      // tx.fee.amount = [];
     }
 
     return tx;
@@ -115,7 +116,7 @@ export function getTransaction(api) {
       tx: txParams,
       mode: 'sync',
     };
-    
+
     return tx;
   };
 }
