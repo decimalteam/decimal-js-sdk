@@ -76,8 +76,6 @@ export function prepareTx(api) {
       tx.fee.amount[0].amount = fee;
     }
 
-    tx.fee.amount = [];
-
     return tx;
   };
 }
@@ -117,7 +115,7 @@ export function getTransaction(api) {
       tx: txParams,
       mode: 'sync',
     };
-
+    
     return tx;
   };
 }
@@ -125,7 +123,7 @@ export function getTransaction(api) {
 export function estimateTxCommission(api) {
   return async (type, txParams, wallet) => {
     let tx = await getTransaction(api)(type, txParams, wallet);
-    return tx.tx.fee.amount[0].amount;
+    return tx.tx.fee.amount.length ? tx.tx.fee.amount[0].amount : '0';
   }
 }
 
