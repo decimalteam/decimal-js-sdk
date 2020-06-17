@@ -1,6 +1,6 @@
 {
   "name": "decimal-js-sdk",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "description": "",
   "main": "dist/decimal-sdk-js.js",
   "scripts": {
