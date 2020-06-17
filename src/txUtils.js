@@ -76,6 +76,8 @@ export function prepareTx(api) {
       tx.fee.amount[0].amount = fee;
     }
 
+    tx.fee.amount = [];
+
     return tx;
   };
 }
