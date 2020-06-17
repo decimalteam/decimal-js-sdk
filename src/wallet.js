@@ -6,7 +6,7 @@ const validatorPrefix = 'dxvaloper';
 const path = "m/44'/60'/0'/0/0";
 
 export function generateMnemonic() {
-  return bip39.generateMnemonic();
+  return bip39.generateMnemonic(256);
 }
 
 export function validateMnemonic(mnemonic) {
