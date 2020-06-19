@@ -69,7 +69,7 @@ export function prepareTx(api) {
       memo: message || '',
     };
     
-    if (type === TX_TYPE.COIN_REDEEM_CHECK || tx.fee.amount[0].denom === 'tdel') {
+    if (type === TX_TYPE.COIN_REDEEM_CHECK) {
       tx.fee.amount = [];
     } else {
       const fee = await getCommission(api)(tx);
@@ -98,10 +98,17 @@ export function makeSignature(api) {
 }
 
 export function getTransaction(api) {
-  return async (type, txParams, wallet) => {
+  return async (type, txParams, wallet, isEstimate) => {
     if (type) {
       txParams.type = type;
       txParams = await prepareTx(api)(txParams);
+    }
+
+    if (!isEstimate && type !== TX_TYPE.COIN_REDEEM_CHECK) {
+      const feeCoin = txParams.fee.amount[0].denom;
+      if (feeCoin === 'tdel') {
+        txParams.fee.amount = [];
+      }
     }
 
     if (!txParams.signatures) {
@@ -123,7 +130,7 @@ export function getTransaction(api) {
 
 export function estimateTxCommission(api) {
   return async (type, txParams, wallet) => {
-    let tx = await getTransaction(api)(type, txParams, wallet);
+    let tx = await getTransaction(api)(type, txParams, wallet, true);
     return tx.tx.fee.amount.length ? tx.tx.fee.amount[0].amount : '0';
   }
 }
