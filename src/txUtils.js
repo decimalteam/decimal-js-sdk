@@ -69,7 +69,7 @@ export function prepareTx(api) {
       memo: message || '',
     };
     
-    if (type === TX_TYPE.COIN_REDEEM_CHECK) {
+    if (type === TX_TYPE.COIN_REDEEM_CHECK || tx.fee.amount[0].denom === 'tdel') {
       tx.fee.amount = [];
     } else {
       const fee = await getCommission(api)(tx);

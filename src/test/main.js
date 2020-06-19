@@ -37,12 +37,13 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
     data: {
       sender: wallet.address,
       title: 'Test coin',
-      symbol: 'feeeeee',
+      symbol: 'feeeeee3',
       constant_reserve_ratio: '45',
       initial_volume: '1000000000000000000',
       initial_reserve: '10000000000000000000000',
       limit_volume: '1000000000000000000000000000',
     },
+    feeCoin: 'feee',
     gas: '200000',
     message: 'message'
   }
