@@ -20,20 +20,34 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 
   // const test = await decimal.redeemCheck(txParams, wallet);
   // console.log(test);
+  // const txParams = {
+  //   data: {
+  //     sender: wallet.address,
+  //     receiver: wallet.address,
+  //     coin: {
+  //       amount: '50000000000000000000',
+  //       denom: 'tdel',
+  //     },
+  //   },
+  //   gas: '200000',
+  //   message: '11111111111'
+  // };
+
   const txParams = {
     data: {
       sender: wallet.address,
-      receiver: wallet.address,
-      coin: {
-        amount: '50000000000000000000',
-        denom: 'tdel',
-      },
+      title: 'Test coin',
+      symbol: 'feeeeee',
+      constant_reserve_ratio: '45',
+      initial_volume: '1000000000000000000',
+      initial_reserve: '10000000000000000000000',
+      limit_volume: '1000000000000000000000000000',
     },
     gas: '200000',
-    message: '11111111111'
-  };
+    message: 'message'
+  }
 
-  const fee = await decimal.estimateTxCommission(TX_TYPE.COIN_REDEEM_CHECK, txParams, wallet);
+  const fee = await decimal.estimateTxCommission(TX_TYPE.COIN_CREATE, txParams, wallet);
   console.log(111, fee);
-  await decimal.sendCoins(txParams, wallet);
+  await decimal.createCoin(txParams, wallet);
 }());
