@@ -15,7 +15,7 @@ const unit = 0.001;
 const FEES = {};
 FEES[TX_TYPE.COIN_SEND] = 10;
 FEES[TX_TYPE.COIN_BUY] = 100;
-FEES[TX_TYPE.COIN_CREATE] = 0; // TODO
+FEES[TX_TYPE.COIN_CREATE] = 100;
 FEES[TX_TYPE.COIN_SELL] = 100;
 FEES[TX_TYPE.COIN_MULTISEND] = 0; // TODO
 FEES[TX_TYPE.COIN_SELL_ALL] = 100;
@@ -114,10 +114,9 @@ export default function getCommission(api) {
   return async (tx) => {
     const { type } = tx.msg[0];
     const ticker = tx.fee.amount[0].denom || 'tdel';
-    const createTicker = type === TX_TYPE.COIN_CREATE ? tx.msg[0].value.symbol : null;
-    const textSize = toCanonicalJSONBytes(tx).length; // TODO кол-во байт в транзакции, добавить расчет
+    const textSize = toCanonicalJSONBytes(tx).length;
     const feeForText = new Decimaljs(textSize).times(2).times(unit);
-    const fixedFee = type === TX_TYPE.COIN_CREATE ? getCommissionForCreateCoin(createTicker) : FEES[type];
+    const fixedFee = type === FEES[type];
     const feeInBase = new Decimaljs(unit).times(fixedFee).plus(feeForText);
 
     if (ticker !== 'tdel') {
