@@ -49,6 +49,9 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
   //   message: 'message'
   // }
 
-  const fee = await decimal.estimateTxCommission(TX_TYPE.COIN_SEND, txParams, wallet);
-  await decimal.sendCoins(txParams, wallet);
+  // const fee = await decimal.estimateTxCommission(TX_TYPE.COIN_SEND, txParams, wallet);
+  // await decimal.sendCoins(txParams, wallet);
+
+  const stakes = await decimal.getStakesByAddress(wallet.address);
+  console.log(stakes);
 }());
