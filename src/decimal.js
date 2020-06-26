@@ -7,6 +7,7 @@ import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
 import getStakesByAddress from './api/get-stakes';
+import getValidator from './api/get-validator';
 import TX_TYPE from './txTypes';
 import {
   prepareTx,
@@ -34,6 +35,7 @@ export default class Decimal {
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
+    this.getValidator = getValidator(apiInstance);
 
     this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance);
