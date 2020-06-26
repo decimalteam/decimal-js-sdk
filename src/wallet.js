@@ -1,6 +1,5 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
-import { fromSeed } from 'bip32';
 
 const prefix = 'dx';
 const validatorPrefix = 'dxvaloper';
@@ -33,20 +32,11 @@ export default class Wallet {
     const wallet = createWalletFromMnemonic(_mnemonic, '', prefix, path);
     const validatorAddress = createWalletFromMnemonic(_mnemonic, '', validatorPrefix, path).address;
 
-    // const test = b32.fromSeed(seed);
-
     this.mnemonic = _mnemonic;
     this.privateKey = wallet.privateKey;
     this.publicKey = wallet.publicKey;
     this.address = wallet.address;
     this.validatorAddress = validatorAddress;
-    bip39.mnemonicToSeed(_mnemonic).then((res) => {
-      this.seed = res;
-      console.log(res);
-      const test1 = fromSeed(res);
-      console.log('test111', test1);
-      console.log(test1.derivePath(path));
-    });
   }
 
   getPrivateKeyString() {
