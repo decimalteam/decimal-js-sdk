@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { signTx } from '@tendermint/sig';
+import { signTx, createBroadcastTx } from '@tendermint/sig';
 import getCommission from './fees';
 import TX_TYPE from './txTypes';
 // import Validator from './validator';
@@ -41,6 +41,54 @@ function transactionResult(json) {
 
   return txResult;
 }
+
+export function _prepareTx(api) {
+  return async (type, value, options) => {
+    const tx = {
+      msg: [{ type, value }],
+      fee: {
+        amount: [],
+        gas: options.gas || '9000000000000000000',
+      },
+      memo: options.message || '',
+    };
+
+    if (!options.feeCoin ||
+        type === TX_TYPE.COIN_REDEEM_CHECK) {
+      return tx;
+    }
+
+    tx.fee.amount = [{
+      denom: options.feeCoin,
+      amount: ''
+    }]
+    const fee = await getCommission(api)(tx);
+    tx.fee.amount[0].amount = fee;
+
+    return tx
+  }
+}
+
+export function formAndSendTx(api) {
+  return async (type, value, options, wallet) => {
+    const unsignTx = _prepareTx(api)(type, value, options);
+    const signTx = makeSignature(api)(unsignTx, wallet);
+    return await _postTx(api)(signTx);
+  }
+}
+
+export function _postTx(api) {
+  return async (tx) => {
+    const broadcastTx = createBroadcastTx(tx);
+    const resp = await api.post('/rpc/txs', broadcastTx);
+    return transactionResult(resp.data);
+  };
+}
+
+
+
+
+
 
 export function prepareTx(api) {
   return async (txParams) => {

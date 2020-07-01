@@ -18,6 +18,8 @@ import {
 } from './txUtils';
 import { issueCheck, redeemCheck } from './check';
 
+import { sendCoins as _sendCoins } from './tx';
+
 export default class Decimal {
   constructor(options) {
     const apiInstance = new DecimalApi(options.baseURL);
@@ -50,7 +52,10 @@ export default class Decimal {
     this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL);
     this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE);
 
-    this.declareCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE);
+
+    this._sendCoins = _sendCoins(apiInstance);
+
+
     this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE);
     this.validatorSetOnline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_ONLINE);
     this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE);

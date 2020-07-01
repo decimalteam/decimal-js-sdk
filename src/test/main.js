@@ -6,6 +6,6 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 
 
 (async function test() {
-  const coin = await decimal.getCoin('coin11');
-  console.log(coin);
+  const res = await decimal._sendCoins({to: wallet.address, coin: 'tdel', amount: '111'}, {feeCoin: 'coin1'}, wallet);
+  console.log(res);
 }());
