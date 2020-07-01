@@ -5,7 +5,11 @@ export default function getCoin(api) {
     }
 
     const url = `/coin/${symbol}`;
-    const { data } = await api.get(url);
-    return data.result;
+    try {
+      const { data } = await api.get(url);
+      return data.result;
+    } catch (e) {
+      return null;
+    }
   };
 }
