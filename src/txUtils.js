@@ -2,7 +2,6 @@
 import { signTx, createBroadcastTx } from '@tendermint/sig';
 import getCommission from './fees';
 import TX_TYPE from './txTypes';
-// import Validator from './validator';
 
 
 function transactionResult(json) {
@@ -42,7 +41,7 @@ function transactionResult(json) {
   return txResult;
 }
 
-export function _prepareTx(api) {
+export function prepareTx(api) {
   return async (type, value, options) => {
     const tx = {
       msg: [{ type, value }],
@@ -69,68 +68,9 @@ export function _prepareTx(api) {
   }
 }
 
-export function formAndSendTx(api) {
-  return async (type, value, options, wallet) => {
-    const unsignTx = _prepareTx(api)(type, value, options);
-    const signTx = makeSignature(api)(unsignTx, wallet);
-    return await _postTx(api)(signTx);
-  }
-}
-
-export function _postTx(api) {
+export function makeSignature(api, wallet) {
   return async (tx) => {
-    const broadcastTx = createBroadcastTx(tx);
-    const resp = await api.post('/rpc/txs', broadcastTx);
-    return transactionResult(resp.data);
-  };
-}
-
-
-
-
-
-
-export function prepareTx(api) {
-  return async (txParams) => {
-    if (!txParams) {
-      throw new Error('Tx params is required');
-    }
-
-    const {
-      type,
-      data,
-      gas,
-      message,
-      feeCoin,
-    } = txParams;
-
-    const tx = {
-      msg: [{ type, value: data }],
-      fee: {
-        amount: [{
-            denom: feeCoin || 'tdel',
-            amount: '0',
-          },
-        ],
-        gas,
-      },
-      memo: message || '',
-    };
-    
-    if (type === TX_TYPE.COIN_REDEEM_CHECK) {
-      tx.fee.amount = [];
-    } else {
-      const fee = await getCommission(api)(tx);
-      tx.fee.amount[0].amount = fee;
-      // tx.fee.amount = [];
-    }
-
-    return tx;
-  };
-}
-
-export function makeSignature(api) {
-  return async (tx, wallet) => {
+    console.log(wallet);
     const nodeInfoResp = await api.get('/rpc/node_info');
     const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
 
@@ -145,50 +85,18 @@ export function makeSignature(api) {
   };
 }
 
-export function getTransaction(api) {
-  return async (type, txParams, wallet, isEstimate) => {
-    if (type) {
-      txParams.type = type;
-      txParams = await prepareTx(api)(txParams);
-    }
-
-    if (!isEstimate && type !== TX_TYPE.COIN_REDEEM_CHECK) {
-      const feeCoin = txParams.fee.amount[0].denom;
-      if (feeCoin === 'tdel') {
-        txParams.fee.amount = [];
-      }
-    }
-
-    if (!txParams.signatures) {
-      if (wallet) {
-        txParams = await makeSignature(api)(txParams, wallet);
-      } else {
-        throw new Error('The transaction is not signed and the wallet is not provided');
-      }
-    }
-
-    const tx = {
-      tx: txParams,
-      mode: 'sync',
-    };
-
-    return tx;
-  };
-}
-
-export function estimateTxCommission(api) {
-  return async (type, txParams, wallet) => {
-    let tx = await getTransaction(api)(type, txParams, wallet, true);
-    return tx.tx.fee.amount.length ? tx.tx.fee.amount[0].amount : '0';
-  }
-}
-
-export function postTx(api, type) {
-  return async (txParams, wallet) => {
-    let tx = await getTransaction(api)(type, txParams, wallet);
-
-    console.log(`[SEND TX]: ${tx.tx.msg[0].type}`);
-    const resp = await api.post('/rpc/txs', tx);
+// send signed prepared tx for broadcast
+export function postTx(api) {
+  return async (broadcastTx) => {
+    const resp = await api.post('/rpc/txs', broadcastTx);
     return transactionResult(resp.data);
   };
+}
+
+export function formTx(api, wallet) {
+  return async (type, value, options) => {
+    const unsignTx = await prepareTx(api)(type, value, options);
+    const signTx = await makeSignature(api, wallet)(unsignTx, wallet);
+    return createBroadcastTx(signTx);
+  }
 }

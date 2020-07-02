@@ -36,6 +36,8 @@ export default function validateTx(txParams) {
 }
 
 export function validateTxData(data, type) {
+  if (!SCHEMA[type]) return true;
+
   const test = validate(data, SCHEMA[type]);
   if (!test.valid) {
     throw new Error('[decimal-js-sdk]: invalid inputs');

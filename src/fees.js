@@ -1,11 +1,11 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-continue */
 /* eslint-disable */
 
-import Decimaljs from 'decimal.js-light';
+import DecimalNumber from 'decimal.js-light';
 import { toCanonicalJSONBytes, toCanonicalJSONString, bytesToString } from '@tendermint/belt';
 import TX_TYPE from './txTypes';
 import getCoin from './api/get-coin';
+import { getTransaction } from './tx'
+import {getAmountFromUNI, getAmountToUNI} from './math';
 
 // 1 unit = 0.001 DEL
 // SendCoin fee is 10 unit.
@@ -31,16 +31,9 @@ FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
 
-function getAmountFromSatoshi(amount) {
-  return new Decimaljs(amount).times(new Decimaljs(10).pow(-18)).toFixed(0);
-}
-function getAmountToSatoshi(amount) {
-  return new Decimaljs(amount).times(new Decimaljs(10).pow(18)).toFixed(0);
-}
-
 function getCoinPrice(coin) {
-  const reserve = getAmountFromSatoshi(coin.reserve);
-  const supply = getAmountFromSatoshi(coin.volume);
+  const reserve = getAmountFromUNI(coin.reserve);
+  const supply = getAmountFromUNI(coin.volume);
   const crr = coin.crr / 100;
 
   const amount = Math.min(supply, 1);
@@ -49,10 +42,10 @@ function getCoinPrice(coin) {
     return 0;
   }
 
-  let result = new Decimaljs(amount).div(supply);
-  result = new Decimaljs(1).minus(result);
-  result = result.pow(new Decimaljs(1).div(crr));
-  result = new Decimaljs(1).minus(result).times(reserve);
+  let result = new DecimalNumber(amount).div(supply);
+  result = new DecimalNumber(1).minus(result);
+  result = result.pow(new DecimalNumber(1).div(crr));
+  result = new DecimalNumber(1).minus(result).times(reserve);
 
   return result;
 }
@@ -62,21 +55,30 @@ export default function getCommission(api) {
     const { type } = tx.msg[0];
     const ticker = tx.fee.amount[0].denom || 'tdel';
     const textSize = toCanonicalJSONBytes(tx).length;
-    const feeForText = new Decimaljs(textSize).times(2).times(unit);
-    const feeInBase = new Decimaljs(unit).times(FEES[type]).plus(feeForText);
+    const feeForText = new DecimalNumber(textSize).times(2).times(unit);
+    const feeInBase = new DecimalNumber(unit).times(FEES[type]).plus(feeForText);
 
     if (ticker !== 'tdel') {
       const coin = await getCoin(api)(ticker);
       const coinPrice = getCoinPrice(coin);
       const feeInCustom = coinPrice.times(feeInBase);
       // console.log(`fee: ${feeInCustom} ${ticker}`);
-      return getAmountToSatoshi(feeInCustom);
+      return getAmountToUNI(feeInCustom);
     }
     // console.log(`fee: ${feeInBase} ${ticker}`);
-    return getAmountToSatoshi(feeInBase);
+    return getAmountToUNI(feeInBase);
   };
 }
 
 export function getTxBytes(value) {
   return toCanonicalJSONBytes(value);
+}
+
+export function estimateTxFee(api, wallet) {
+  return async (type, data, options) => {
+    const broadcastTx = await getTransaction(api, wallet)(type, data, options);
+    const feeAmounts = broadcastTx.tx.fee.amount;
+    const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+    return getAmountFromUNI(fee);
+  }
 }

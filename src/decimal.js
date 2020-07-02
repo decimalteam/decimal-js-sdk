@@ -13,22 +13,17 @@ import {
   prepareTx,
   makeSignature,
   postTx,
-  getTransaction,
-  estimateTxCommission,
 } from './txUtils';
 import { issueCheck, redeemCheck } from './check';
-
-import { sendCoins as _sendCoins } from './tx';
+import { estimateTxFee } from './fees';
+import { getTransaction, sendTransaction } from './tx';
 
 export default class Decimal {
   constructor(options) {
     const apiInstance = new DecimalApi(options.baseURL);
-    const { chainId } = options;
+    const { wallet } = options;
 
-    if (!(chainId === 'decimal-testnet' || chainId === 'decimal-mainnet')) {
-      throw new Error('Invalid chainID');
-    }
-
+    // api
     this.getCoinsList = getCoinslist(apiInstance);
     this.getCoin = getCoin(apiInstance);
     this.getAddress = getAddress(apiInstance);
@@ -39,34 +34,37 @@ export default class Decimal {
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
 
+    // tx utils
     this.prepareTx = prepareTx(apiInstance);
-    this.makeSignature = makeSignature(apiInstance);
+    this.makeSignature = makeSignature(apiInstance, wallet);
     this.postTx = postTx(apiInstance);
 
-    this.issueCheck = issueCheck(apiInstance);
-    this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK);
+    // get fee
+    this.estimateTxFee = estimateTxFee(apiInstance, wallet);
 
-    this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND);
-    this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY);
-    this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL);
-    this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL);
-    this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE);
+    this.getTransaction = getTransaction(apiInstance, wallet);
+    this.sendTransaction = sendTransaction(apiInstance, wallet);
 
 
-    this._sendCoins = _sendCoins(apiInstance);
+    // this.issueCheck = issueCheck(apiInstance); // deprecated
+    // this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK); // deprecated
 
+    // this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND); // deprecated
+    // this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY); // deprecated
+    // this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL); // deprecated
+    // this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL); // deprecated
+    // this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE); // deprecated
 
-    this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE);
-    this.validatorSetOnline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_ONLINE);
-    this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE);
-    this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND);
-    this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT);
+    // this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE); // deprecated
+    // this.validatorSetOnline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_ONLINE); // deprecated
+    // this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE); // deprecated
+    // this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND); // deprecated
+    // this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT); // deprecated
 
-    this.multisigCreateWallet = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET);
-    this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX);
-    this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX);
-
-    this.estimateTxCommission = estimateTxCommission(apiInstance);
-    this.getTransaction = getTransaction(apiInstance);
+    // this.multisigCreateWallet = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET); // deprecated
+    // this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX); // deprecated
+    // this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX); // deprecated
+    // this.estimateTxCommission = estimateTxCommission(apiInstance); // deprecated
+    // this.getTransaction = getTransaction(apiInstance); // deprecated
   }
 }

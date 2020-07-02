@@ -1,11 +1,18 @@
 /* eslint-disable */
-import { Wallet, Decimal } from '../index';
+import { Wallet, Decimal, TX_TYPE } from '../index';
+import TYPE_TX from '../txTypes';
+import {data, options} from './data';
 
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', chainId: 'decimal-testnet' });
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet});
 
 
 (async function test() {
-  const res = await decimal._sendCoins({to: wallet.address, coin: 'tdel', amount: '111'}, {feeCoin: 'coin1'}, wallet);
-  console.log(res);
+  // const fee = await decimal.estimateTxFee(TX_TYPE.COIN_BUY, data.buy, options, wallet);
+  // console.log('fee', fee);
+  
+
+  const tx = await decimal.getTransaction(TX_TYPE.COIN_SELL_ALL, data.sellAll, options, wallet);
+  const txResult = await decimal.postTx(tx);
+  console.log(txResult);
 }());
