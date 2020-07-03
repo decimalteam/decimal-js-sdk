@@ -1,11 +1,9 @@
-/* eslint-disable */
 
 import DecimalNumber from 'decimal.js-light';
-import { toCanonicalJSONBytes, toCanonicalJSONString, bytesToString } from '@tendermint/belt';
+import { toCanonicalJSONBytes } from '@tendermint/belt';
 import TX_TYPE from './txTypes';
 import getCoin from './api/get-coin';
-import { getTransaction } from './tx'
-import {getAmountFromUNI, getAmountToUNI} from './math';
+import { getAmountFromUNI, getAmountToUNI } from './math';
 
 // 1 unit = 0.001 DEL
 // SendCoin fee is 10 unit.
@@ -60,6 +58,7 @@ export default function getCommission(api) {
 
     if (ticker !== 'tdel') {
       const coin = await getCoin(api)(ticker);
+      if (!coin) throw new Error('Coin not found');
       const coinPrice = getCoinPrice(coin);
       const feeInCustom = coinPrice.times(feeInBase);
       // console.log(`fee: ${feeInCustom} ${ticker}`);
@@ -72,13 +71,4 @@ export default function getCommission(api) {
 
 export function getTxBytes(value) {
   return toCanonicalJSONBytes(value);
-}
-
-export function estimateTxFee(api, wallet) {
-  return async (type, data, options) => {
-    const broadcastTx = await getTransaction(api, wallet)(type, data, options);
-    const feeAmounts = broadcastTx.tx.fee.amount;
-    const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
-    return getAmountFromUNI(fee);
-  }
 }

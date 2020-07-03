@@ -6,6 +6,7 @@ export default {
   COIN_MULTISEND: 'coin/multi_send_coin',
   COIN_SELL_ALL: 'coin/sell_all_coin',
   COIN_REDEEM_CHECK: 'coin/redeem_check',
+  COIN_ISSUE_CHECK: 'coin/issue_check',
   VALIDATOR_CANDIDATE: 'validator/declare_candidate',
   VALIDATOR_DELEGATE: 'validator/delegate',
   VALIDATOR_SET_ONLINE: 'validator/set_online',

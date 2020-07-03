@@ -14,9 +14,6 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 
 
 (async function test() {
-  // setInterval(async () => {
-    const txResult = await decimal.sellAllCoins(data.sellAll, options);
-    console.log(txResult);
-    // console.log(JSON.stringify(tx));
-  // }, 5000);
+  const res = await decimal.sendCoins(data.send, options);
+  console.log(res);
 }());

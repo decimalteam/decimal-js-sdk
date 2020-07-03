@@ -16,9 +16,9 @@ import {
   makeSignature,
   postTx,
 } from './txUtils';
-// import { issueCheck, redeemCheck } from './check';
-import { estimateTxFee } from './fees';
-import { getTransaction, sendTransaction } from './tx';
+
+import { issueCheck } from './check';
+import { getTransaction, sendTransaction, estimateTxFee } from './tx';
 
 export default class Decimal {
   constructor(options) {
@@ -46,7 +46,7 @@ export default class Decimal {
     this.getTransaction = getTransaction(apiInstance, wallet, this);
 
     // get fee
-    this.estimateTxFee = estimateTxFee(apiInstance, wallet);
+    this.estimateTxFee = estimateTxFee(apiInstance, wallet, this);
 
     // tx methods
     this.sendCoins = sendTransaction(TX_TYPE.COIN_SEND, apiInstance, wallet, this);
@@ -54,26 +54,21 @@ export default class Decimal {
     this.sellCoins = sendTransaction(TX_TYPE.COIN_SELL, apiInstance, wallet, this);
     this.sellAllCoins = sendTransaction(TX_TYPE.COIN_SELL_ALL, apiInstance, wallet, this);
 
+    this.validatorDelegate = sendTransaction(TX_TYPE.VALIDATOR_DELEGATE, apiInstance, wallet, this);
+    this.validatorUnbond = sendTransaction(TX_TYPE.VALIDATOR_UNBOND, apiInstance, wallet, this);
 
-    // this.issueCheck = issueCheck(apiInstance); // deprecated
-    // this.redeemCheck = redeemCheck(apiInstance, TX_TYPE.COIN_REDEEM_CHECK); // deprecated
+    this.validatorDeclare = sendTransaction(TX_TYPE.VALIDATOR_CANDIDATE, apiInstance, wallet, this);
+    this.validatorEdit = sendTransaction(TX_TYPE.VALIDATOR_CANDIDATE_EDIT, apiInstance, wallet, this);
+    this.validatorOn = sendTransaction(TX_TYPE.VALIDATOR_SET_ONLINE, apiInstance, wallet, this);
+    this.validatorOff = sendTransaction(TX_TYPE.VALIDATOR_SET_OFFLINE, apiInstance, wallet, this);
 
-    // this.sendCoins = postTx(apiInstance, TX_TYPE.COIN_SEND); // deprecated
-    // this.buyCoins = postTx(apiInstance, TX_TYPE.COIN_BUY); // deprecated
-    // this.sellCoins = postTx(apiInstance, TX_TYPE.COIN_SELL); // deprecated
-    // this.sellAllCoins = postTx(apiInstance, TX_TYPE.COIN_SELL_ALL); // deprecated
-    // this.createCoin = postTx(apiInstance, TX_TYPE.COIN_CREATE); // deprecated
+    this.createCoin = sendTransaction(TX_TYPE.COIN_CREATE, apiInstance, wallet, this);
 
-    // this.delegate = postTx(apiInstance, TX_TYPE.VALIDATOR_DELEGATE); // deprecated
-    // this.validatorSetOnline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_ONLINE); // deprecated
-    // this.validatorSetOffline = postTx(apiInstance, TX_TYPE.VALIDATOR_SET_OFFLINE); // deprecated
-    // this.validatorUnbond = postTx(apiInstance, TX_TYPE.VALIDATOR_UNBOND); // deprecated
-    // this.editCandidate = postTx(apiInstance, TX_TYPE.VALIDATOR_CANDIDATE_EDIT); // deprecated
+    this.issueCheck = issueCheck(apiInstance, wallet, this);
+    this.redeemCheck = sendTransaction(TX_TYPE.COIN_REDEEM_CHECK, apiInstance, wallet, this);
 
-    // this.multisigCreateWallet = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_WALLET); // deprecated
-    // this.multisigSignTx = postTx(apiInstance, TX_TYPE.MULTISIG_SIGN_TX); // deprecated
-    // this.multisigCreateTx = postTx(apiInstance, TX_TYPE.MULTISIG_CREATE_TX); // deprecated
-    // this.estimateTxCommission = estimateTxCommission(apiInstance); // deprecated
-    // this.getTransaction = getTransaction(apiInstance); // deprecated
+    this.multisigCreateWallet = sendTransaction(TX_TYPE.MULTISIG_CREATE_WALLET, apiInstance, wallet, this);
+    this.multisigCreateTx = sendTransaction(TX_TYPE.MULTISIG_CREATE_TX, apiInstance, wallet, this);
+    this.multisigSignTx = sendTransaction(TX_TYPE.MULTISIG_SIGN_TX, apiInstance, wallet, this);
   }
 }

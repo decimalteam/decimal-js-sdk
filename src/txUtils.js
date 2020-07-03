@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { signTx, createBroadcastTx } from '@tendermint/sig';
 import getCommission from './fees';
 import TX_TYPE from './txTypes';
@@ -50,19 +49,19 @@ export function prepareTx(api) {
       memo: options.message || '',
     };
 
-    if (!options.feeCoin ||
-        type === TX_TYPE.COIN_REDEEM_CHECK) {
+    if (!options.feeCoin
+        || type === TX_TYPE.COIN_REDEEM_CHECK) {
       return tx;
     }
 
     tx.fee.amount = [{
       denom: options.feeCoin,
-      amount: ''
-    }]
+      amount: '',
+    }];
     const fee = await getCommission(api)(tx);
     tx.fee.amount[0].amount = fee;
-    return tx
-  }
+    return tx;
+  };
 }
 
 async function getSignMeta(api, wallet) {
@@ -78,7 +77,6 @@ async function getSignMeta(api, wallet) {
 
 export function makeSignature(api, wallet, decimal) {
   return async (tx) => {
-
     let { signMeta } = decimal;
 
     if (!signMeta) {
@@ -108,7 +106,7 @@ export function postTx(api, decimal) {
 export function formTx(api, wallet, decimal) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-    const signTx = await makeSignature(api, wallet, decimal)(unsignTx, wallet);
-    return createBroadcastTx(signTx);
-  }
+    const signedTx = await makeSignature(api, wallet, decimal)(unsignTx, wallet);
+    return createBroadcastTx(signedTx);
+  };
 }
