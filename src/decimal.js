@@ -8,13 +8,15 @@ import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
 import getStakesByAddress from './api/get-stakes';
 import getValidator from './api/get-validator';
+
 import TX_TYPE from './txTypes';
+
 import {
   prepareTx,
   makeSignature,
   postTx,
 } from './txUtils';
-import { issueCheck, redeemCheck } from './check';
+// import { issueCheck, redeemCheck } from './check';
 import { estimateTxFee } from './fees';
 import { getTransaction, sendTransaction } from './tx';
 
@@ -22,6 +24,9 @@ export default class Decimal {
   constructor(options) {
     const apiInstance = new DecimalApi(options.baseURL);
     const { wallet } = options;
+    const { signMeta } = options;
+
+    this.signMeta = signMeta;
 
     // api
     this.getCoinsList = getCoinslist(apiInstance);
@@ -36,14 +41,18 @@ export default class Decimal {
 
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
-    this.makeSignature = makeSignature(apiInstance, wallet);
-    this.postTx = postTx(apiInstance);
+    this.makeSignature = makeSignature(apiInstance, wallet, this);
+    this.postTx = postTx(apiInstance, this);
+    this.getTransaction = getTransaction(apiInstance, wallet, this);
 
     // get fee
     this.estimateTxFee = estimateTxFee(apiInstance, wallet);
 
-    this.getTransaction = getTransaction(apiInstance, wallet);
-    this.sendTransaction = sendTransaction(apiInstance, wallet);
+    // tx methods
+    this.sendCoins = sendTransaction(TX_TYPE.COIN_SEND, apiInstance, wallet, this);
+    this.buyCoins = sendTransaction(TX_TYPE.COIN_BUY, apiInstance, wallet, this);
+    this.sellCoins = sendTransaction(TX_TYPE.COIN_SELL, apiInstance, wallet, this);
+    this.sellAllCoins = sendTransaction(TX_TYPE.COIN_SELL_ALL, apiInstance, wallet, this);
 
 
     // this.issueCheck = issueCheck(apiInstance); // deprecated

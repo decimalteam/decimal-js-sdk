@@ -34,8 +34,6 @@ function transactionResult(json) {
 
   if (txResult.success) {
     console.log(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
-  } else {
-    console.log(`[FAIL]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
   }
 
   return txResult;
@@ -63,22 +61,30 @@ export function prepareTx(api) {
     }]
     const fee = await getCommission(api)(tx);
     tx.fee.amount[0].amount = fee;
-
     return tx
   }
 }
 
-export function makeSignature(api, wallet) {
-  return async (tx) => {
-    console.log(wallet);
-    const nodeInfoResp = await api.get('/rpc/node_info');
-    const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
+async function getSignMeta(api, wallet) {
+  const nodeInfoResp = await api.get('/rpc/node_info');
+  const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
 
-    const signMeta = {
-      account_number: `${accountResp.data.result.value.account_number}`,
-      sequence: `${accountResp.data.result.value.sequence}`,
-      chain_id: nodeInfoResp.data.node_info.network,
-    };
+  return {
+    account_number: `${accountResp.data.result.value.account_number}`,
+    sequence: `${accountResp.data.result.value.sequence}`,
+    chain_id: nodeInfoResp.data.node_info.network,
+  };
+}
+
+export function makeSignature(api, wallet, decimal) {
+  return async (tx) => {
+
+    let { signMeta } = decimal;
+
+    if (!signMeta) {
+      signMeta = await getSignMeta(api, wallet);
+      decimal.signMeta = signMeta;
+    }
 
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
@@ -86,17 +92,23 @@ export function makeSignature(api, wallet) {
 }
 
 // send signed prepared tx for broadcast
-export function postTx(api) {
+export function postTx(api, decimal) {
   return async (broadcastTx) => {
     const resp = await api.post('/rpc/txs', broadcastTx);
-    return transactionResult(resp.data);
+    const txResult = transactionResult(resp.data);
+
+    if (txResult.success) {
+      decimal.signMeta.sequence = (+decimal.signMeta.sequence + 1).toString();
+    }
+
+    return txResult;
   };
 }
 
-export function formTx(api, wallet) {
+export function formTx(api, wallet, decimal) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-    const signTx = await makeSignature(api, wallet)(unsignTx, wallet);
+    const signTx = await makeSignature(api, wallet, decimal)(unsignTx, wallet);
     return createBroadcastTx(signTx);
   }
 }

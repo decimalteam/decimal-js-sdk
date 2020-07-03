@@ -34,11 +34,11 @@ function buyCoinData(data, wallet) {
 }
 
 function sellCoinData(data, wallet) {
-  const minBuyLimit = minBuyLimit ? getAmountToUNI(data.minBuyLimit) : '1';
+  const minBuyLimit = data.minBuyLimit ? getAmountToUNI(data.minBuyLimit) : '1';
   return {
     sender: wallet.address,
     coin_to_sell: {
-      amount: data.amount,
+      amount: getAmountToUNI(data.amount),
       denom: data.sellCoin.toLowerCase(),
     },
     min_coin_to_buy: {
@@ -49,6 +49,7 @@ function sellCoinData(data, wallet) {
 }
 
 function sellAllCoinsData(data, wallet) {
+  const minBuyLimit = data.minBuyLimit ? getAmountToUNI(data.minBuyLimit) : '1';
   return {
     sender: wallet.address,
     coin_to_sell: {
@@ -56,15 +57,14 @@ function sellAllCoinsData(data, wallet) {
       denom: data.sellCoin.toLowerCase(),
     },
     min_coin_to_buy: {
-      amount: getAmountToUNI(data.minBuyLimit) || '1',
+      amount: minBuyLimit,
       denom: data.getCoin.toLowerCase(),
     },
   };
 }
 
-export function getTransaction(api, wallet) {
+export function getTransaction(api, wallet, decimal) {
   return async (type, data, options) => {
-    console.log(wallet);
     validateTxData(data, type);
 
     let value = {};
@@ -85,15 +85,15 @@ export function getTransaction(api, wallet) {
         throw new Error('Invalid type of transaction');
     }
 
-    const broadcastTx = await formTx(api, wallet)(type, value, options, wallet);
+    const broadcastTx = await formTx(api, wallet, decimal)(type, value, options, wallet);
     return broadcastTx;
   };
 }
 
-export function sendTransaction(api, wallet) {
-  return async (type, data, options) => {
-    const broadcastTx = await getTransaction(api, wallet)(type, data, options);
-    const txResult = await postTx(api)(broadcastTx);
+export function sendTransaction(type, api, wallet, decimal) {
+  return async (data, options) => {
+    const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+    const txResult = await postTx(api, decimal)(broadcastTx);
     return txResult;
   };
 }
