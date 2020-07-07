@@ -97,12 +97,13 @@ wallet.getPublicKeyString();
   - [multisigSignTx]()
 
 
-
-## Coins
 <a name="coins"></a> 
 
-### sendCoins()
+## Coins
+
 <a name="sendCoins"></a>
+
+### sendCoins()
 
 ```js
 const data = {
@@ -120,9 +121,9 @@ const options = {
 
 decimal.sendCoins(data, options);
 ```
+<a name="buyCoins"></a>
 
 ### buyCoins()
-<a name="buyCoins"></a>
 
 ```js
 const data = {
@@ -141,8 +142,9 @@ const options = {
 
 decimal.buyCoins(data, options);
 ```
-### sellCoins()
 <a name="sellCoins"></a>
+
+### sellCoins()
 
 ```js
 const data = {
@@ -161,9 +163,9 @@ const options = {
 
 decimal.sellCoins(data, options);
 ```
-### sellAllCoins()
 <a name="sellAllCoins"></a>
 
+### sellAllCoins()
 ```js
 const data = {
   sellCoin: 'BTC',
