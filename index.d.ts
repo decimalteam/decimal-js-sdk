@@ -1,6 +1,12 @@
 export declare class Wallet {
   constructor(mnemonic?: string);
 
+  mnemonic: string;
+  address: string;
+  privateKey: string;
+  publicKey: string;
+  validatorAddress: string;
+
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
 }
