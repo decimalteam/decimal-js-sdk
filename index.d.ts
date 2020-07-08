@@ -20,7 +20,7 @@ export interface DecimalMeta {
 export interface DecimalOptions {
   wallet: Wallet;
   meta?: DecimalMeta;
-  baseUrl: string;
+  baseURL: string;
 }
 
 export interface DecimalResponse {
