@@ -17,6 +17,54 @@ export interface DecimalMeta {
   sequence: string;
 }
 
+export interface Coin {
+  symbol: string;
+  title: string;
+  volume: string;
+  reserve: string;
+  crr: number;
+  limitVolume: string;
+  creator: string;
+  txHash: null | string;
+  blockId: null | number;
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Tx {
+  hash: string;
+  timestamp: string;
+  status: string;
+  type: string;
+  fee: object; //TODO: describe interface
+  data: object; //TODO: describe interface
+  nonce: number;
+  code: number;
+  message: string;
+  blockId: number;
+  from: string;
+  to: null | string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface Balance {
+  [x: string]: string;
+}
+export interface GetAddressResponseAddress {
+  address: string;
+  type: string;
+  balance: Balance;
+  nonce: number;
+  createdAt: string;
+  updatedAt: string;
+  totalStake: string | null;
+  txs: Tx[];
+}
+export interface GetAddressResponse {
+  address: GetAddressResponseAddress;
+  coins: Coin[];
+}
 export interface DecimalOptions {
   wallet: Wallet;
   meta?: DecimalMeta;
@@ -67,5 +115,7 @@ export declare class Decimal{
   sendCoins(data: SendCoinsData, options?: TxOptions): Promise<DecimalResponse>;
   buyCoins(data: BuyCoinsData, options?: TxOptions): Promise<DecimalResponse>;
   sellCoins(data: SellCoinsData, options?: TxOptions): Promise<DecimalResponse>;
-  sellAllCoins(data: SellAllCoinsData, options?: TxOptions): Promise<DecimalResponse>
+  sellAllCoins(data: SellAllCoinsData, options?: TxOptions): Promise<DecimalResponse>;
+
+  getAddress(address: string): Promise<GetAddressResponse>
 }
