@@ -44,12 +44,13 @@ export function prepareTx(api) {
       msg: [{ type, value }],
       fee: {
         amount: [],
-        gas: options.gas || '9000000000000000000',
+        gas: options && options.gas ? options.gas : '9000000000000000000',
       },
-      memo: options.message || '',
+      memo: options && options.message ? options.message : '',
     };
 
-    if (!options.feeCoin
+    if (!options
+      || !options.feeCoin
         || type === TX_TYPE.COIN_REDEEM_CHECK) {
       return tx;
     }

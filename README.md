@@ -108,8 +108,8 @@ wallet.getPublicKeyString();
 ```js
 const data = {
   to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-  coin: 'tdel',
-  amount: '100',
+  coin: 'tDEL',
+  amount: '100', // 100 tDEL
 }
 
 // Optionally.
