@@ -104,11 +104,11 @@ export function makeSignature(api, wallet, decimal) {
 
 // send signed prepared tx for broadcast
 export function postTx(api) {
-  return async (broadcastTx) => {
+  return async (broadcastTx, isOfflineTx) => {
     const resp = await api.post('/rpc/txs', broadcastTx);
     const txResult = transactionResult(resp.data);
 
-    if (txResult.success) {
+    if (txResult.success && !isOfflineTx) {
       signMeta.sequence = (+signMeta.sequence + 1).toString();
     }
 
