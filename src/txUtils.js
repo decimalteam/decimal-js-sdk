@@ -70,14 +70,16 @@ export function prepareTx(api) {
   };
 }
 
-async function getSignMeta(api, wallet) {
-  const nodeInfoResp = await api.get('/rpc/node_info');
-  const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
+export function getSignMeta(api, wallet) {
+  return async () => {
+    const nodeInfoResp = await api.get('/rpc/node_info');
+    const accountResp = await api.get(`/rpc/auth/accounts/${wallet.address}`);
 
-  return {
-    account_number: `${accountResp.data.result.value.account_number}`,
-    sequence: `${accountResp.data.result.value.sequence}`,
-    chain_id: nodeInfoResp.data.node_info.network,
+    return {
+      account_number: `${accountResp.data.result.value.account_number}`,
+      sequence: `${accountResp.data.result.value.sequence}`,
+      chain_id: nodeInfoResp.data.node_info.network,
+    };
   };
 }
 
@@ -90,7 +92,7 @@ export function makeSignature(api, wallet, decimal) {
     }
 
     if (!signMeta || signMeta.account_number === '0') {
-      signMeta = await getSignMeta(api, wallet);
+      signMeta = await getSignMeta(api, wallet)();
     }
 
     console.log('meta', signMeta);

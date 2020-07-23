@@ -15,6 +15,7 @@ import {
   prepareTx,
   makeSignature,
   postTx,
+  getSignMeta,
 } from './txUtils';
 
 import { issueCheck } from './check';
@@ -38,6 +39,7 @@ export default class Decimal {
     this.getMultisigTxs = getMultisigTxs(apiInstance);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
+    this.getMeta = getSignMeta(apiInstance, wallet);
 
     // tx utils
     this.prepareTx = prepareTx(apiInstance);

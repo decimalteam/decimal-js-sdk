@@ -1,3 +1,4 @@
+import DecimalNumber from 'decimal.js-light';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx } from './txUtils';
@@ -85,7 +86,7 @@ function unbond(data, wallet) {
 
 function declareCandidate(data, wallet) {
   return {
-    commission: `${data.commission / 100}00000000000000000`,
+    commission: new DecimalNumber(data.commission).div(100).toFixed(18),
     validator_addr: wallet.validatorAddress,
     reward_addr: data.rewardAddress,
     pub_key: {

@@ -17,7 +17,8 @@ const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api
 
 (async function test() {
   // setInterval(async () => {
-    const res = await decimal.sendCoins(data.send);
+    console.log(decimal);
+    const res = await decimal.getMeta();
     console.log(res);
   // }, 5000)
 }());
