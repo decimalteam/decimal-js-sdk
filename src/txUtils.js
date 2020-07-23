@@ -89,7 +89,7 @@ export function makeSignature(api, wallet, decimal) {
       signMeta = userSignMeta;
     }
 
-    if (!signMeta) {
+    if (!signMeta || signMeta.account_number === '0') {
       signMeta = await getSignMeta(api, wallet);
     }
 
