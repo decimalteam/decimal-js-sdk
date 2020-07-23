@@ -1,8 +1,8 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '111',
+    coin: 'del',
+    amount: '1',
   },
   buy: {
     buyCoin: 'coin2',
@@ -97,7 +97,8 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: '',
+  feeCoin: 'tdel',
+  feeAmount: '',
   message: 'sdk test',
-  gasLimit: '9000000000000000000',
+  gasLimit: '500',
 };

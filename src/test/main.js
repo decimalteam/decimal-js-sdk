@@ -2,18 +2,22 @@
 import { Wallet, Decimal, TX_TYPE } from '../index';
 import TYPE_TX from '../txTypes';
 import {data, options} from './data';
-
+import {makeSignature, prepareTx, postTx} from '../txUtils';
+import {createBroadcastTx} from '@tendermint/sig';
 
 const signMeta = {
-  account_number: "10",
-  chain_id: "decimal-testnet-06-30-15-30",
-  sequence: "198"
+  account_number: "4564",
+  chain_id: "decimal-devnet-07-22-19-00",
+  sequence: "219"
 }
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
+const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, signMeta });
+
 
 
 (async function test() {
-  const res = await decimal.sendCoins(data.send);
-  console.log(res);
+  // setInterval(async () => {
+    const res = await decimal.sendCoins(data.send);
+    console.log(res);
+  // }, 5000)
 }());

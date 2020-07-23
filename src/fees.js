@@ -1,8 +1,6 @@
 
 import DecimalNumber from 'decimal.js-light';
-import { toCanonicalJSONBytes } from '@tendermint/belt';
 import TX_TYPE from './txTypes';
-import getCoin from './api/get-coin';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 
 // 1 unit = 0.001 DEL
@@ -29,6 +27,7 @@ FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
 
+// eslint-disable-next-line no-unused-vars
 function getCoinPrice(coin) {
   const reserve = getAmountFromUNI(coin.reserve);
   const supply = getAmountFromUNI(coin.volume);
@@ -48,27 +47,58 @@ function getCoinPrice(coin) {
   return result;
 }
 
-export default function getCommission(api) {
-  return async (tx) => {
-    const { type } = tx.msg[0];
-    const ticker = tx.fee.amount[0].denom || 'tdel';
-    const textSize = toCanonicalJSONBytes(tx).length;
-    const feeForText = new DecimalNumber(textSize).times(2).times(unit);
-    const feeInBase = new DecimalNumber(unit).times(FEES[type]).plus(feeForText);
+async function getTxSize(api, tx) {
+  const preparedTx = {
+    type: 'cosmos-sdk/StdTx',
+    value: {
+      ...tx,
+    },
+  };
 
-    if (ticker !== 'tdel') {
-      const coin = await getCoin(api)(ticker);
-      if (!coin) throw new Error('Coin not found');
-      const coinPrice = getCoinPrice(coin);
-      const feeInCustom = coinPrice.times(feeInBase);
-      // console.log(`fee: ${feeInCustom} ${ticker}`);
-      return getAmountToUNI(feeInCustom);
-    }
-    // console.log(`fee: ${feeInBase} ${ticker}`);
+  console.log(JSON.stringify(preparedTx));
+
+  const encodeTxResp = await api.post('/rpc/txs/encode', preparedTx);
+  const encodedTxBase64 = encodeTxResp.data.tx;
+  const encodedTx = Buffer.from(encodedTxBase64, 'base64');
+  const size = encodedTx.length;
+
+  console.log(encodedTxBase64);
+
+  // console.log('size', size);
+
+  return size;
+}
+
+export default function getCommission(api) {
+  return async (tx, feeCoin) => {
+    const { type } = tx.msg[0];
+    const ticker = feeCoin;
+    const textSize = await getTxSize(api, tx);
+
+    console.log('textSize', textSize);
+
+
+    const feeForText = new DecimalNumber(textSize).times(2);
+
+    console.log('feeFoxText', feeForText.toFixed());
+
+    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).times(unit);
+
+    // if (ticker !== 'tdel') {
+    //   const coin = await getCoin(api)(ticker);
+    //   if (!coin) throw new Error('Coin not found');
+    //   const coinPrice = getCoinPrice(coin);
+    //   const feeInCustom = coinPrice.times(feeInBase);
+    //   // console.log(`fee: ${feeInCustom} ${ticker}`);
+    //   return getAmountToUNI(feeInCustom);
+    // }
+    console.log(`fee: ${feeInBase} ${ticker}`);
     return getAmountToUNI(feeInBase);
+
+    // return '0';
   };
 }
 
-export function getTxBytes(value) {
-  return toCanonicalJSONBytes(value);
-}
+// export function getTxBytes(value) {
+//   return toCanonicalJSONBytes(value);
+// }

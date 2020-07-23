@@ -42,7 +42,7 @@ export default class Decimal {
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance, wallet, this);
-    this.postTx = postTx(apiInstance, this);
+    this.postTx = postTx(apiInstance);
     this.getTransaction = getTransaction(apiInstance, wallet, this);
 
     // get fee

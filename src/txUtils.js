@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { signTx, createBroadcastTx } from '@tendermint/sig';
-import getCommission from './fees';
+// import getCommission from './fees';
 import TX_TYPE from './txTypes';
 
+let signMeta = null;
 
 function transactionResult(json) {
   if (json.code) {
@@ -44,23 +46,26 @@ export function prepareTx(api) {
       msg: [{ type, value }],
       fee: {
         amount: [],
-        gas: options && options.gas ? options.gas : '9000000000000000000',
+        gas: options && options.gasLimit ? options.gasLimit : '9000000000000000000',
       },
       memo: options && options.message ? options.message : '',
     };
 
     if (!options
       || !options.feeCoin
-        || type === TX_TYPE.COIN_REDEEM_CHECK) {
+      || type === TX_TYPE.COIN_REDEEM_CHECK) {
       return tx;
     }
 
-    tx.fee.amount = [{
-      denom: options.feeCoin,
-      amount: '',
-    }];
-    const fee = await getCommission(api)(tx);
-    tx.fee.amount[0].amount = fee;
+
+    // await getCommission(api)(tx, options.feeCoin);
+
+    // tx.fee.amount = [{
+    //   denom: options.feeCoin,
+    //   amount: '',
+    // }];
+    // const fee = await getCommission(api)(tx);
+    // tx.fee.amount[0].amount = fee;
     return tx;
   };
 }
@@ -78,12 +83,17 @@ async function getSignMeta(api, wallet) {
 
 export function makeSignature(api, wallet, decimal) {
   return async (tx) => {
-    let { signMeta } = decimal;
+    const userSignMeta = decimal.signMeta;
+
+    if (userSignMeta) {
+      signMeta = userSignMeta;
+    }
 
     if (!signMeta) {
       signMeta = await getSignMeta(api, wallet);
-      decimal.signMeta = signMeta;
     }
+
+    console.log('meta', signMeta);
 
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
@@ -91,13 +101,13 @@ export function makeSignature(api, wallet, decimal) {
 }
 
 // send signed prepared tx for broadcast
-export function postTx(api, decimal) {
+export function postTx(api) {
   return async (broadcastTx) => {
     const resp = await api.post('/rpc/txs', broadcastTx);
     const txResult = transactionResult(resp.data);
 
     if (txResult.success) {
-      decimal.signMeta.sequence = (+decimal.signMeta.sequence + 1).toString();
+      signMeta.sequence = (+signMeta.sequence + 1).toString();
     }
 
     return txResult;
