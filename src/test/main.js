@@ -8,18 +8,21 @@ import {createBroadcastTx} from '@tendermint/sig';
 const signMeta = {
   account_number: "4564",
   chain_id: "decimal-devnet-07-22-19-00",
-  sequence: "235"
+  sequence: "236"
 }
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, signMeta });
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
 
 
 
 (async function test() {
   // setInterval(async () => {
-    console.log(decimal);
-    const res = await decimal.getTransaction(TX_TYPE.COIN_SEND, data.send);
+    // const estimatedFee = await decimal.estimateTxFee(TX_TYPE.COIN_BUY, data.buy, options);
+
+    // console.log('estimatedFee', estimatedFee);
+
+    // const res = await decimal.buyCoins(data.buy, options);
     // const res2 = await decimal.postTx(res);
-    console.log(JSON.stringify(res));
+    // console.log(JSON.stringify(res));
   // }, 5000)
 }());

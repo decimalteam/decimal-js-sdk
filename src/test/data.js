@@ -1,11 +1,11 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'del',
+    coin: 'tdel',
     amount: '1',
   },
   buy: {
-    buyCoin: 'coin2',
+    buyCoin: 'btc',
     amount: '10',
     spendCoin: 'tdel',
     // maxSpendLimit: 0,
@@ -97,8 +97,8 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: 'tdel',
+  feeCoin: 'btc',
   feeAmount: '',
   message: 'sdk test',
-  gasLimit: '500',
+  gasLimit: '',
 };

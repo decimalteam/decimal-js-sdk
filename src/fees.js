@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 
 import DecimalNumber from 'decimal.js-light';
 import TX_TYPE from './txTypes';
 import { getAmountFromUNI, getAmountToUNI } from './math';
+import getCoin from './api/get-coin';
+// import { prepareTx } from './txUtils';
 
 // 1 unit = 0.001 DEL
 // SendCoin fee is 10 unit.
@@ -27,8 +30,11 @@ FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
 
-// eslint-disable-next-line no-unused-vars
-function getCoinPrice(coin) {
+async function getCoinPrice(api, ticker) {
+  const coin = await getCoin(api)(ticker);
+  if (!coin) throw new Error('Coin not found');
+
+
   const reserve = getAmountFromUNI(coin.reserve);
   const supply = getAmountFromUNI(coin.volume);
   const crr = coin.crr / 100;
@@ -54,17 +60,11 @@ async function getTxSize(api, tx) {
       ...tx,
     },
   };
-
-  console.log(JSON.stringify(preparedTx));
-
+  const signatureSize = 109;
   const encodeTxResp = await api.post('/rpc/txs/encode', preparedTx);
   const encodedTxBase64 = encodeTxResp.data.tx;
   const encodedTx = Buffer.from(encodedTxBase64, 'base64');
-  const size = encodedTx.length;
-
-  console.log(encodedTxBase64);
-
-  // console.log('size', size);
+  const size = encodedTx.length + signatureSize;
 
   return size;
 }
@@ -74,31 +74,41 @@ export default function getCommission(api) {
     const { type } = tx.msg[0];
     const ticker = feeCoin;
     const textSize = await getTxSize(api, tx);
-
-    console.log('textSize', textSize);
-
-
     const feeForText = new DecimalNumber(textSize).times(2);
+    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
 
-    console.log('feeFoxText', feeForText.toFixed());
+    if (feeCoin === 'tdel' || feeCoin === 'del') {
+      return { coinPrice: '1', value: feeInBase }; // -> base {units}
+    }
 
-    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).times(unit);
-
-    // if (ticker !== 'tdel') {
-    //   const coin = await getCoin(api)(ticker);
-    //   if (!coin) throw new Error('Coin not found');
-    //   const coinPrice = getCoinPrice(coin);
-    //   const feeInCustom = coinPrice.times(feeInBase);
-    //   // console.log(`fee: ${feeInCustom} ${ticker}`);
-    //   return getAmountToUNI(feeInCustom);
-    // }
-    console.log(`fee: ${feeInBase} ${ticker}`);
-    return getAmountToUNI(feeInBase);
-
-    // return '0';
+    const coinPrice = await getCoinPrice(api, ticker);
+    const feeInCustom = coinPrice.times(feeInBase);
+    return { coinPrice, value: feeInCustom }; // -> custom {units}
   };
 }
+export function setCommission(api) {
+  return async (tx, feeCoin) => {
+    tx.fee.amount = [{
+      denom: feeCoin,
+      amount: '0',
+    }];
 
-// export function getTxBytes(value) {
-//   return toCanonicalJSONBytes(value);
-// }
+    const fee = await getCommission(api)(tx, feeCoin);
+
+    const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
+    const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2).minus(2); // base {units}
+
+    let totalFee = '';
+
+    if (feeCoin !== 'tdel' && feeCoin !== 'del') {
+      const feeForFeeAmountToCustom = feeForFeeAmount.times(fee.coinPrice);
+      totalFee = fee.value.plus(feeForFeeAmountToCustom).times(unit);
+    } else {
+      totalFee = fee.value.plus(feeForFeeAmount).times(unit);
+    }
+
+    tx.fee.amount[0].amount = getAmountToUNI(totalFee);
+
+    return tx;
+  };
+}

@@ -1,9 +1,10 @@
 import DecimalNumber from 'decimal.js-light';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
-import { formTx, postTx } from './txUtils';
+import { formTx, postTx, prepareTx } from './txUtils';
 import { getAmountToUNI, getAmountFromUNI } from './math';
 import { redeemCheck } from './check';
+import getCommission from './fees';
 
 
 function sendCoinData(data, wallet) {
@@ -168,61 +169,67 @@ function multisigSignTx(data, wallet) {
   };
 }
 
+function getValue(type, data, options, wallet) {
+  validateTxData(data, type);
+
+  let value = {};
+  switch (type) {
+    case TX_TYPE.COIN_SEND:
+      value = sendCoinData(data, wallet);
+      break;
+    case TX_TYPE.COIN_BUY:
+      value = buyCoinData(data, wallet);
+      break;
+    case TX_TYPE.COIN_SELL:
+      value = sellCoinData(data, wallet);
+      break;
+    case TX_TYPE.COIN_SELL_ALL:
+      value = sellAllCoinsData(data, wallet);
+      break;
+    case TX_TYPE.VALIDATOR_DELEGATE:
+      value = delegate(data, wallet);
+      break;
+    case TX_TYPE.VALIDATOR_UNBOND:
+      value = unbond(data, wallet);
+      break;
+    case TX_TYPE.VALIDATOR_CANDIDATE:
+      value = declareCandidate(data, wallet);
+      break;
+    case TX_TYPE.VALIDATOR_CANDIDATE_EDIT:
+      value = editCandidate(data, wallet);
+      break;
+    case TX_TYPE.VALIDATOR_SET_ONLINE:
+    case TX_TYPE.VALIDATOR_SET_OFFLINE:
+      value = disableEnableValidator(wallet);
+      options = data;
+      break;
+    case TX_TYPE.COIN_CREATE:
+      value = createCoin(data, wallet);
+      break;
+    case TX_TYPE.COIN_REDEEM_CHECK:
+      value = redeemCheck(data, wallet);
+      break;
+    case TX_TYPE.MULTISIG_CREATE_WALLET:
+      value = multisigCreate(data, wallet);
+      break;
+    case TX_TYPE.MULTISIG_CREATE_TX:
+      value = multisigCreateTx(data, wallet);
+      break;
+    case TX_TYPE.MULTISIG_SIGN_TX:
+      value = multisigSignTx(data, wallet);
+      break;
+    default:
+      throw new Error('Invalid type of transaction');
+  }
+
+  return { value, options };
+}
+
 export function getTransaction(api, wallet, decimal) {
   return async (type, data, options) => {
-    validateTxData(data, type);
+    const formatted = getValue(type, data, options, wallet);
+    const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options, wallet);
 
-    let value = {};
-    switch (type) {
-      case TX_TYPE.COIN_SEND:
-        value = sendCoinData(data, wallet);
-        break;
-      case TX_TYPE.COIN_BUY:
-        value = buyCoinData(data, wallet);
-        break;
-      case TX_TYPE.COIN_SELL:
-        value = sellCoinData(data, wallet);
-        break;
-      case TX_TYPE.COIN_SELL_ALL:
-        value = sellAllCoinsData(data, wallet);
-        break;
-      case TX_TYPE.VALIDATOR_DELEGATE:
-        value = delegate(data, wallet);
-        break;
-      case TX_TYPE.VALIDATOR_UNBOND:
-        value = unbond(data, wallet);
-        break;
-      case TX_TYPE.VALIDATOR_CANDIDATE:
-        value = declareCandidate(data, wallet);
-        break;
-      case TX_TYPE.VALIDATOR_CANDIDATE_EDIT:
-        value = editCandidate(data, wallet);
-        break;
-      case TX_TYPE.VALIDATOR_SET_ONLINE:
-      case TX_TYPE.VALIDATOR_SET_OFFLINE:
-        value = disableEnableValidator(wallet);
-        options = data;
-        break;
-      case TX_TYPE.COIN_CREATE:
-        value = createCoin(data, wallet);
-        break;
-      case TX_TYPE.COIN_REDEEM_CHECK:
-        value = redeemCheck(data, wallet);
-        break;
-      case TX_TYPE.MULTISIG_CREATE_WALLET:
-        value = multisigCreate(data, wallet);
-        break;
-      case TX_TYPE.MULTISIG_CREATE_TX:
-        value = multisigCreateTx(data, wallet);
-        break;
-      case TX_TYPE.MULTISIG_SIGN_TX:
-        value = multisigSignTx(data, wallet);
-        break;
-      default:
-        throw new Error('Invalid type of transaction');
-    }
-
-    const broadcastTx = await formTx(api, wallet, decimal)(type, value, options, wallet);
     return broadcastTx;
   };
 }
@@ -237,9 +244,18 @@ export function sendTransaction(type, api, wallet, decimal) {
 
 export function estimateTxFee(api, wallet, decimal) {
   return async (type, data, options) => {
-    const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-    const feeAmounts = broadcastTx.tx.fee.amount;
-    const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
-    return getAmountFromUNI(fee);
+    const { feeCoin } = options;
+
+    if (feeCoin) {
+      const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+      const feeAmounts = broadcastTx.tx.fee.amount;
+      const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+      return getAmountFromUNI(fee);
+    }
+
+    const formatted = getValue(type, data, options, wallet);
+    const tx = await prepareTx(api)(type, formatted.value, formatted.options);
+    const fee = await getCommission(api)(tx, 'del');
+    return fee.value.times(0.001).toFixed();
   };
 }
