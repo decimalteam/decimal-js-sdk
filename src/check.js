@@ -11,7 +11,6 @@ import validateTxData from './validator';
 import TX_TYPE from './txTypes';
 import { getAmountToUNI } from './math';
 
-
 function rlpHash(input) {
   const hash = new Keccak(256);
   hash.update(rlpEncode(input));

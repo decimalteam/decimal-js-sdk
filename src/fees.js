@@ -29,11 +29,9 @@ FEES[TX_TYPE.MULTISIG_CREATE_WALLET] = 100;
 FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 
-
 async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);
   if (!coin) throw new Error('Coin not found');
-
 
   const reserve = getAmountFromUNI(coin.reserve);
   const supply = getAmountFromUNI(coin.volume);

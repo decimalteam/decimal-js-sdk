@@ -6,7 +6,6 @@ import { getAmountToUNI, getAmountFromUNI } from './math';
 import { redeemCheck } from './check';
 import getCommission from './fees';
 
-
 function sendCoinData(data, wallet) {
   return {
     sender: wallet.address,

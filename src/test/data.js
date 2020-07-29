@@ -93,11 +93,11 @@ export const data = {
     amount: '10',
   },
   msSignTx: {
-    txId: '22',
+    txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft',
   },
 };
 export const options = {
-  feeCoin: 'btc',
+  feeCoin: '',
   feeAmount: '',
   message: 'sdk test',
   gasLimit: '',

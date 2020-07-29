@@ -1,4 +1,3 @@
-
 export default function getCoinsList(api) {
   return async (limit, offset, query) => {
     const url = '/coin';
