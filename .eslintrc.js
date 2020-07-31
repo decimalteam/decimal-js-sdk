@@ -14,5 +14,6 @@ module.exports = {
     'max-len': 0,
     'no-underscore-dangle': 'off',
     'no-param-reassign': 'off',
+    'linebreak-style': 'off'
   },
 };

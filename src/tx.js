@@ -4,7 +4,7 @@ import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
 import { getAmountToUNI, getAmountFromUNI } from './math';
 import { redeemCheck } from './check';
-import getCommission from './fees';
+import {getCommission} from './fees';
 
 function sendCoinData(data, wallet) {
   return {

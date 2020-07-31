@@ -5,7 +5,7 @@ export const data = {
     amount: '1',
   },
   buy: {
-    buyCoin: 'btc',
+    buyCoin: 'feecoin',
     amount: '10',
     spendCoin: 'tdel',
     // maxSpendLimit: 0,
@@ -99,6 +99,6 @@ export const data = {
 export const options = {
   feeCoin: '',
   feeAmount: '',
-  message: 'sdk test',
+  message: 'sdk test 111111111111111',
   gasLimit: '',
 };

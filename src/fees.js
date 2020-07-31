@@ -67,7 +67,7 @@ async function getTxSize(api, tx) {
   return size;
 }
 
-export default function getCommission(api) {
+export function getCommission(api) {
   return async (tx, feeCoin) => {
     const { type } = tx.msg[0];
     const ticker = feeCoin;
@@ -76,12 +76,12 @@ export default function getCommission(api) {
     const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
 
     if (feeCoin === 'tdel' || feeCoin === 'del') {
-      return { coinPrice: '1', value: feeInBase }; // -> base {units}
+      return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }
 
     const coinPrice = await getCoinPrice(api, ticker);
     const feeInCustom = coinPrice.times(feeInBase);
-    return { coinPrice, value: feeInCustom }; // -> custom {units}
+    return { coinPrice, value: new DecimalNumber(feeInCustom.toFixed(0)), base: feeInBase }; // -> custom {units}
   };
 }
 export function setCommission(api) {
@@ -94,7 +94,8 @@ export function setCommission(api) {
     const fee = await getCommission(api)(tx, feeCoin);
 
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
-    const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2).minus(2); // base {units}
+    const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
+    const feeForFeeAmount = new DecimalNumber(feeAmountSize).plus(gasAmountSize).times(2); // base {units}
 
     let totalFee = '';
 
@@ -106,6 +107,7 @@ export function setCommission(api) {
     }
 
     tx.fee.amount[0].amount = getAmountToUNI(totalFee);
+    tx.fee.gas = fee.base.plus(feeForFeeAmount).toFixed();
 
     return tx;
   };
