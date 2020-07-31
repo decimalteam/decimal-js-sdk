@@ -46,7 +46,7 @@ export function prepareTx(api) {
       msg: [{ type, value }],
       fee: {
         amount: [],
-        gas: options && options.gasLimit ? options.gasLimit : '9000000000000000000',
+        gas: options && options.gasLimit ? options.gasLimit : '100000',
       },
       memo: options && options.message ? options.message : '',
     };
