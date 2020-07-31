@@ -18,7 +18,7 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 
 (async function test() {
 
-  const test = await decimal.getValidator('dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0');
+  const test = await decimal.getMyTransactions();
   document.write(JSON.stringify(test));
 
   /*

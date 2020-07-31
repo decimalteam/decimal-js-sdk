@@ -8,6 +8,7 @@ import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
 import getStakesByAddress from './api/get-stakes';
 import getValidator from './api/get-validator';
+import getMyTransactions from './api/get-my-transactions';
 
 import TX_TYPE from './txTypes';
 
@@ -40,6 +41,7 @@ export default class Decimal {
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
     this.getMeta = getSignMeta(apiInstance, wallet);
+    this.getMyTransactions = getMyTransactions(apiInstance, wallet);
 
     // tx utils
     this.prepareTx = prepareTx(apiInstance);

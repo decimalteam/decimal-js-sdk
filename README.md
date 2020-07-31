@@ -502,6 +502,96 @@ await decimal.getValidator(validatorAddress);
 */
 ```
 
+## getMyTransactions()
+```js
+const limit = 10;
+const offset = 0;
+const types = '';
+
+await decimal.getMyTransactions(limit, offset ,types);
+
+/*
+{
+  "count": 27,
+  "txs": [
+    {
+      "id": 101,
+      "hash": "E248CD76554521D0FB021E9AC666CC4B3511F974992771CD2AB7904F8ABE608C",
+      "timestamp": "2020-07-29T13:26:35.194Z",
+      "status": "Success",
+      "type": "set_offline",
+      "fee": {
+        "gas_coin": null,
+        "gas_used": "408000000000000000",
+        "gas_amount": null,
+        "gas_used_number": 408000000000000000
+      },
+      "data": {
+        "log": "",
+        "coin": "",
+        "check": "",
+        "coins": "",
+        "proof": "",
+        "title": "",
+        "amount": "",
+        "issuer": "",
+        "owners": "",
+        "sender": "",
+        "symbol": "",
+        "wallet": "",
+        "weights": "",
+        "coin_base": "",
+        "confirmed": null,
+        "due_block": "",
+        "recipient": "",
+        "threshold": "",
+        "coin_check": "",
+        "commission": "",
+        "amount_base": "",
+        "coin_to_buy": "",
+        "nonce_check": null,
+        "transaction": "",
+        "amount_check": "",
+        "coin_to_sell": "",
+        "limit_volume": "",
+        "amount_to_buy": "",
+        "confirmations": null,
+        "signer_weight": null,
+        "amount_to_sell": "",
+        "initial_volume": "",
+        "reward_address": "",
+        "validator_desc": {
+          "details": "",
+          "moniker": "",
+          "website": "",
+          "identity": "",
+          "security_contact": ""
+        },
+        "completion_time": "",
+        "initial_reserve": "",
+        "delegator_address": "",
+        "min_amount_to_buy": "",
+        "validator_address": "dxvaloper13ykakvugqwzqqmqdj2j2hgqauxmftdn32jrhsr",
+        "max_amount_to_sell": "",
+        "multisend_receivers": "",
+        "constant_reserve_ratio": null
+      },
+      "nonce": 23,
+      "code": 0,
+      "message": "",
+      "blockId": 16607,
+      "from": "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g",
+      "to": null,
+      "createdAt": "2020-07-29T13:26:41.244Z",
+      "updatedAt": "2020-07-29T13:26:41.244Z"
+    }
+    // ....
+  ]
+}
+*/
+
+```
+
 ## Coins
 
 ### sendCoins()
