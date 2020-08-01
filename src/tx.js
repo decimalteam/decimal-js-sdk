@@ -4,7 +4,7 @@ import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
 import { getAmountToUNI, getAmountFromUNI } from './math';
 import { redeemCheck } from './check';
-import {getCommission} from './fees';
+import { getCommission } from './fees';
 
 function sendCoinData(data, wallet) {
   return {
@@ -248,13 +248,23 @@ export function estimateTxFee(api, wallet, decimal) {
     if (feeCoin) {
       const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
       const feeAmounts = broadcastTx.tx.fee.amount;
-      const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+      let fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+
+      if (type === TX_TYPE.VALIDATOR_DELEGATE) {
+        fee *= 10;
+      }
+
       return getAmountFromUNI(fee);
     }
 
     const formatted = getValue(type, data, options, wallet);
     const tx = await prepareTx(api)(type, formatted.value, formatted.options);
     const fee = await getCommission(api)(tx, 'del');
+
+    if (type === TX_TYPE.VALIDATOR_DELEGATE) {
+      fee.value = new DecimalNumber(fee.value).times(10);
+    }
+
     return fee.value.times(0.001).toFixed();
   };
 }

@@ -17,6 +17,8 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 
 
 (async function test() {
+  const fee = await decimal.estimateTxFee(TX_TYPE.VALIDATOR_DELEGATE, data.delegate, options);
+  console.log('fee', fee);
 
   const test = await decimal.validatorDelegate(data.delegate, options);
   console.log(test);
