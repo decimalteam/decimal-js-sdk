@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { signTx, createBroadcastTx } from '@tendermint/sig';
-import { setCommission, getCommission } from './fees';
 import DecimalNumber from 'decimal.js-light';
+import { setCommission, getCommission } from './fees';
 import TX_TYPE from './txTypes';
 
 let signMeta = null;
@@ -47,7 +47,7 @@ export function prepareTx(api) {
       msg: [{ type, value }],
       fee: {
         amount: [],
-        gas: '1' //options && options.gasLimit ? options.gasLimit : '100000',
+        gas: '1', // options && options.gasLimit ? options.gasLimit : '100000',
       },
       memo: options && options.message ? options.message : '',
     };
@@ -55,7 +55,6 @@ export function prepareTx(api) {
     if (!options
       || !options.feeCoin
       || type === TX_TYPE.COIN_REDEEM_CHECK) {
-
       const fee = await getCommission(api)(tx, 'del');
       console.log(fee.base.toFixed());
       const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
@@ -96,7 +95,7 @@ export function makeSignature(api, wallet, decimal) {
       signMeta = userSignMeta;
     }
 
-    if (!signMeta || signMeta.account_number === '0') {
+    if (true || !signMeta || signMeta.account_number === '0') { // TODO
       signMeta = await getSignMeta(api, wallet)();
     }
 
