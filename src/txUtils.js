@@ -57,10 +57,15 @@ export function prepareTx(api) {
       || type === TX_TYPE.COIN_REDEEM_CHECK) {
 
       const fee = await getCommission(api)(tx, 'del');
+      console.log(fee.base.toFixed());
       const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
       const feeForGasAmount = new DecimalNumber(gasAmountSize).minus(2).times(2).toFixed(); // base {units}
-            
-      tx.fee.gas = fee.base.plus(feeForGasAmount).toFixed();
+
+      if (TX_TYPE.VALIDATOR_DELEGATE) {
+        tx.fee.gas = fee.base.plus(feeForGasAmount).times(10).toFixed();
+      } else {
+        tx.fee.gas = fee.base.plus(feeForGasAmount).toFixed();
+      }
 
       return tx;
     }

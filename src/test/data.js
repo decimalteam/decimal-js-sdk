@@ -23,7 +23,7 @@ export const data = {
   },
 
   delegate: {
-    address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
+    address: 'dxvaloper16rr3cvdgj8jsywhx8lfteunn9uz0xg2czw6gx5',
     coin: 'tdel',
     stake: '10',
   },
@@ -97,7 +97,7 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: '',
+  feeCoin: 'feecoin',
   feeAmount: '',
   message: 'sdk test 111111111111111',
   gasLimit: '',

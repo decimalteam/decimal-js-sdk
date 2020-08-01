@@ -72,9 +72,14 @@ export function getCommission(api) {
     const { type } = tx.msg[0];
     const ticker = feeCoin;
     const textSize = await getTxSize(api, tx);
+    // console.log('txSize: ', textSize);
     const feeForText = new DecimalNumber(textSize).times(2);
-    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
+    // console.log("feeForText", feeForText.toFixed());
+    // console.log('fixedFee', FEES[type])
+    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
 
+
+    // console.log("feeInBase", feeInBase.toFixed());
     if (feeCoin === 'tdel' || feeCoin === 'del') {
       return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }
