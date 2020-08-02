@@ -71,10 +71,15 @@ export interface DecimalOptions {
   baseURL: string;
 }
 
+export interface DecimalError {
+  errorCode: number;
+  errorMessage: string;
+}
+
 export interface DecimalResponse {
   hash: string;
   success: boolean;
-  error: string | null;
+  error: DecimalError | null;
 }
 
 export interface TxOptions {
