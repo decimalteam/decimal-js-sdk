@@ -53,10 +53,10 @@ export function prepareTx(api) {
     };
 
     if (!options
-      || !options.feeCoin
-      || type === TX_TYPE.COIN_REDEEM_CHECK) {
+      || !options.feeCoin) {
+      // || type === TX_TYPE.COIN_REDEEM_CHECK) {
       const fee = await getCommission(api)(tx, 'del');
-      console.log(fee.base.toFixed());
+      // console.log(fee.base.toFixed());
       const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
       const feeForGasAmount = new DecimalNumber(gasAmountSize).minus(2).times(2).toFixed(); // base {units}
 
