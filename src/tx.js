@@ -172,6 +172,10 @@ function multisigSignTx(data, wallet) {
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
+  if (options && options.feeCoin) {
+    options.feeCoin = options.feeCoin.toLowerCase();
+  }
+
   let value = {};
   switch (type) {
     case TX_TYPE.COIN_SEND:
