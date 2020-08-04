@@ -1,4 +1,4 @@
-import DecimalNumber from 'decimal.js-light';
+import DecimalNumber from 'decimal.js';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
@@ -6,6 +6,7 @@ import { getAmountToUNI, getAmountFromUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
 
+DecimalNumber.set({ precision: 40 });
 function sendCoinData(data, wallet) {
   return {
     sender: wallet.address,

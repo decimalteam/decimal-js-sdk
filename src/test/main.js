@@ -15,32 +15,12 @@ const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut sessi
 const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
 
 
-
 (async function test() {
-  const fee = await decimal.estimateTxFee(TX_TYPE.VALIDATOR_DELEGATE, data.delegate, options);
-  console.log('fee', fee);
-
-  const test = await decimal.validatorDelegate(data.delegate, options);
-  console.log(test);
-  /*
-  {
-    mode: "sync"
-    tx: {
-      fee: {amount: Array(0), gas: "9000000000000000000"},
-      memo: "sdk test",
-      msg: [{…}],
-      signatures: [{…}]
-    }
+  const check = {
+    check: 'ERp9FR24Vz19XGXddnESNVBhTKxh8Q3G2c3VkW8Y6Dj4CFEEb1BhA33718EHKvm3ZcqsubDtHC8ZDWV2AYu9KQ4S1WFbVuQ2XNQCxK9njU4pzHWqtsZHTG3pQZx3u2SrkgYmiprZj7gyYSFv3ow7Z5dXpcyzZsiz5oF9xF73XHqML5MZMmwPiXTp7T1viQkzFfuxdacrkjzgkPoBysHKJJgYH5V9kVcjjEcmk57bgGAfNwmMvhodMcwRwGAme',
+    password: '123123',
   }
-  */
 
-  // setInterval(async () => {
-    // const estimatedFee = await decimal.estimateTxFee(TX_TYPE.COIN_BUY, data.buy, options);
-
-    // console.log('estimatedFee', estimatedFee);
-
-    // const res = await decimal.buyCoins(data.buy, options);
-    // const res2 = await decimal.postTx(res);
-    // console.log(JSON.stringify(res));
-  // }, 5000)
+  const test = await decimal.redeemCheck(check, options);
+  console.log(test);
 }());

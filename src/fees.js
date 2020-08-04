@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-import DecimalNumber from 'decimal.js-light';
+import DecimalNumber from 'decimal.js';
+
 import TX_TYPE from './txTypes';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 import getCoin from './api/get-coin';
+
+DecimalNumber.set({ precision: 40 });
 // import { prepareTx } from './txUtils';
 
 // 1 unit = 0.001 DEL
@@ -70,17 +73,16 @@ async function getTxSize(api, tx) {
 export function getCommission(api) {
   return async (tx, feeCoin) => {
     const { type } = tx.msg[0];
-    const ticker = feeCoin;
+    const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
     // console.log('txSize: ', textSize);
     const feeForText = new DecimalNumber(textSize).times(2);
     // console.log("feeForText", feeForText.toFixed());
     // console.log('fixedFee', FEES[type])
-    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
-
+    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
 
     // console.log("feeInBase", feeInBase.toFixed());
-    if (feeCoin === 'tdel' || feeCoin === 'del') {
+    if (ticker === 'tdel' || ticker === 'del') {
       return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }
 

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { signTx, createBroadcastTx } from '@tendermint/sig';
-import DecimalNumber from 'decimal.js-light';
+import DecimalNumber from 'decimal.js';
 import { setCommission, getCommission } from './fees';
 import TX_TYPE from './txTypes';
 
+DecimalNumber.set({ precision: 40 });
 let signMeta = null;
 
 function transactionResult(json) {

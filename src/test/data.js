@@ -97,7 +97,7 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: 'feecoin',
+  feeCoin: 'tDEL',
   feeAmount: '',
   message: 'sdk test 111111111111111',
   gasLimit: '',
