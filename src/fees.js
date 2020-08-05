@@ -75,13 +75,8 @@ export function getCommission(api) {
     const { type } = tx.msg[0];
     const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
-    // console.log('txSize: ', textSize);
     const feeForText = new DecimalNumber(textSize).times(2);
-    // console.log("feeForText", feeForText.toFixed());
-    // console.log('fixedFee', FEES[type])
     const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
-
-    // console.log("feeInBase", feeInBase.toFixed());
     if (ticker === 'tdel' || ticker === 'del') {
       return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }
@@ -101,8 +96,7 @@ export function setCommission(api) {
     const fee = await getCommission(api)(tx, feeCoin);
 
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
-    const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
-    const feeForFeeAmount = new DecimalNumber(feeAmountSize).plus(gasAmountSize).times(2); // base {units}
+    const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
 
     let totalFee = '';
 
@@ -114,7 +108,6 @@ export function setCommission(api) {
     }
 
     tx.fee.amount[0].amount = getAmountToUNI(totalFee);
-    tx.fee.gas = fee.base.plus(feeForFeeAmount).toFixed();
 
     return tx;
   };
