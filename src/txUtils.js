@@ -61,7 +61,7 @@ export function prepareTx(api) {
       const gasAmountSize = Buffer.from(fee.base.toFixed()).length;
       const feeForGasAmount = new DecimalNumber(gasAmountSize).minus(2).times(2).toFixed(); // base {units}
 
-      if (TX_TYPE.VALIDATOR_DELEGATE) {
+      if (type === TX_TYPE.VALIDATOR_DELEGATE) {
         tx.fee.gas = fee.base.plus(feeForGasAmount).times(10).toFixed();
       } else {
         tx.fee.gas = fee.base.plus(feeForGasAmount).toFixed();

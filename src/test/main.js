@@ -11,7 +11,7 @@ import { getTransaction } from '../tx';
 //   chain_id: "decimal-devnet-07-22-19-00",
 //   sequence: "236"
 // }
-const wallet = new Wallet('number merry paper balance asthma tool flush spatial drama blade noble hen salon divorce pear drill offer salad explain knife right claw theme little');
+const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
 const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
 
 
@@ -21,6 +21,6 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
   //   password: '123123',
   // }
 
-  const test = await decimal.sendCoins(data.send, options);
+  const test = await decimal.validatorDeclare(data.declare, options);
   console.log(test);
 }());
