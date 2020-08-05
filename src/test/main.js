@@ -21,6 +21,6 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
   //   password: '123123',
   // }
 
-  const test = await decimal.validatorDeclare(data.declare, options);
+  const test = await decimal.sendCoins(data.send, options);
   console.log(test);
 }());
