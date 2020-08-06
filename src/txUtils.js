@@ -111,6 +111,9 @@ export function formTx(api, wallet, decimal) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
     const signedTx = await makeSignature(api, wallet, decimal)(unsignTx, wallet);
-    return createBroadcastTx(signedTx);
+
+    const mode = options && options.mode ? options.mode : 'sync';
+
+    return createBroadcastTx(signedTx, mode);
   };
 }

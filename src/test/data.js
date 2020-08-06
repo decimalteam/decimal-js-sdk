@@ -1,7 +1,7 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'del',
+    coin: 'tdel',
     amount: '1',
   },
   buy: {
@@ -101,4 +101,5 @@ export const options = {
   feeAmount: '',
   message: 'sdk test 111111111111111',
   gasLimit: '',
+  mode: 'block', // sync / async / block
 };
