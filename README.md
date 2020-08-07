@@ -76,6 +76,7 @@ wallet.getPublicKeyString();
   - [estimateTxFee](#estimatetxfee)
 - [Coins](#coins)
   - [sendCoin](#sendcoins)
+  - [multisendCoins](#multisendcoins)
   - [buyCoins](#buycoins)
   - [sellCoins](#sellcoins)
   - [sellAllCoins](#sellallcoins)
@@ -127,6 +128,7 @@ const options = {
   feeCoin: 'BTC', // The coin that pays commission
   message: 'my message', // Any additional information about the transaction
   gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
+  mode: 'sync', // broadcast mode {sync | async | block}
 };
 ```
 
@@ -604,6 +606,25 @@ const data = {
 }
 
 await decimal.sendCoins(data, options);
+```
+
+### multisendCoins()
+
+```js
+const data = [
+  {
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tDEL',
+    amount: '100'
+  },
+  {
+    to: 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
+    coin: 'tDEL',
+    amount: '50'
+  },
+]
+
+await decimal.multisendCoins(data, options);
 ```
 
 ### buyCoins()

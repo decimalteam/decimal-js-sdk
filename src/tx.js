@@ -169,6 +169,25 @@ function multisigSignTx(data, wallet) {
   };
 }
 
+function multisend(data, wallet) {
+  const obj = {
+    sender: wallet.address,
+    sends: [],
+  };
+
+  data.forEach((item) => {
+    obj.sends.push({
+      receiver: item.to,
+      coin: {
+        amount: getAmountToUNI(item.amount),
+        denom: item.coin.toLowerCase(),
+      },
+    });
+  });
+
+  return obj;
+}
+
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
@@ -221,6 +240,9 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.MULTISIG_SIGN_TX:
       value = multisigSignTx(data, wallet);
+      break;
+    case TX_TYPE.COIN_MULTISEND:
+      value = multisend(data, wallet);
       break;
     default:
       throw new Error('Invalid type of transaction');

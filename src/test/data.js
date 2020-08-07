@@ -4,6 +4,18 @@ export const data = {
     coin: 'tdel',
     amount: '1',
   },
+  multisend: [
+    {
+      to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+      coin: 'tdel',
+      amount: '211',
+    },
+    {
+      to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+      coin: 'tdel',
+      amount: '3',
+    },
+  ],
   buy: {
     buyCoin: 'feecoin',
     amount: '10',
@@ -99,7 +111,7 @@ export const data = {
 export const options = {
   feeCoin: '',
   feeAmount: '',
-  message: 'sdk test 111111111111111',
+  message: 'sdk test1111111111167867867811',
   gasLimit: '',
-  mode: 'block', // sync / async / block
+  mode: '', // sync / async / block
 };

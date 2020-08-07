@@ -19,7 +19,7 @@ FEES[TX_TYPE.COIN_SEND] = 10;
 FEES[TX_TYPE.COIN_BUY] = 100;
 FEES[TX_TYPE.COIN_CREATE] = 100;
 FEES[TX_TYPE.COIN_SELL] = 100;
-FEES[TX_TYPE.COIN_MULTISEND] = 0; // TODO
+FEES[TX_TYPE.COIN_MULTISEND] = 8;
 FEES[TX_TYPE.COIN_SELL_ALL] = 100;
 FEES[TX_TYPE.COIN_REDEEM_CHECK] = 30;
 FEES[TX_TYPE.VALIDATOR_CANDIDATE] = 10000;
@@ -76,7 +76,14 @@ export function getCommission(api) {
     const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
     const feeForText = new DecimalNumber(textSize).times(2);
-    const feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
+    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
+
+    if (type === TX_TYPE.COIN_MULTISEND) {
+      const numberOfParticipants = tx.msg[0].value.sends.length;
+      const feeForParticipants = 5 * (numberOfParticipants - 1);
+      feeInBase = feeInBase.plus(feeForParticipants);
+    }
+
     if (ticker === 'tdel' || ticker === 'del') {
       return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }

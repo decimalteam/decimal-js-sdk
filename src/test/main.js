@@ -16,8 +16,8 @@ const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/ap
 
 
 (async function test() {
-  const fee = await decimal.estimateTxFee(TX_TYPE.COIN_SEND, data.send, options);
+  const fee = await decimal.estimateTxFee(TX_TYPE.COIN_MULTISEND, data.multisend, options);
   console.log(fee);
-  const test = await decimal.sendCoins(data.send, options);
+  const test = await decimal.multisendCoins(data.multisend, options);
   console.log(test);
 }());

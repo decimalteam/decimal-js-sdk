@@ -58,6 +58,8 @@ export default class Decimal {
     this.sellCoins = sendTransaction(TX_TYPE.COIN_SELL, apiInstance, wallet, this);
     this.sellAllCoins = sendTransaction(TX_TYPE.COIN_SELL_ALL, apiInstance, wallet, this);
 
+    this.multisendCoins = sendTransaction(TX_TYPE.COIN_MULTISEND, apiInstance, wallet, this);
+
     this.validatorDelegate = sendTransaction(TX_TYPE.VALIDATOR_DELEGATE, apiInstance, wallet, this);
     this.validatorUnbond = sendTransaction(TX_TYPE.VALIDATOR_UNBOND, apiInstance, wallet, this);
 
