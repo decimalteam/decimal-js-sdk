@@ -275,11 +275,7 @@ export function estimateTxFee(api, wallet, decimal) {
     if (feeCoin) {
       const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
       const feeAmounts = broadcastTx.tx.fee.amount;
-      let fee = feeAmounts.length ? feeAmounts[0].amount : '0';
-
-      if (type === TX_TYPE.VALIDATOR_DELEGATE) {
-        fee *= 10;
-      }
+      const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 
       return getAmountFromUNI(fee);
     }
@@ -287,10 +283,6 @@ export function estimateTxFee(api, wallet, decimal) {
     const formatted = getValue(type, data, options, wallet);
     const tx = await prepareTx(api)(type, formatted.value, formatted.options);
     const fee = await getCommission(api)(tx, 'del');
-
-    if (type === TX_TYPE.VALIDATOR_DELEGATE) {
-      fee.value = new DecimalNumber(fee.value).times(10);
-    }
 
     return fee.value.times(0.001).toFixed();
   };

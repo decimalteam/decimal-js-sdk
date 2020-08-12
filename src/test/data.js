@@ -35,7 +35,7 @@ export const data = {
   },
 
   delegate: {
-    address: 'dxvaloper16rr3cvdgj8jsywhx8lfteunn9uz0xg2czw6gx5',
+    address: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
     coin: 'tdel',
     stake: '10',
   },
