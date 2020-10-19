@@ -16,4 +16,7 @@ export default {
   MULTISIG_CREATE_WALLET: 'multisig/create_wallet',
   MULTISIG_CREATE_TX: 'multisig/create_transaction',
   MULTISIG_SIGN_TX: 'multisig/sign_transaction',
+
+  PROPOSAL_SUBMIT: 'cosmos-sdk/MsgSubmitProposal',
+  PROPOSAL_VOTE: 'cosmos-sdk/MsgVote'
 };

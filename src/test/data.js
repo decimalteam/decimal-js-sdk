@@ -107,6 +107,17 @@ export const data = {
   msSignTx: {
     txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft',
   },
+
+  submitProposal: {
+    content: 'test content',
+    startBlock: '90000',
+    endBlock: '2000000'
+  },
+
+  voteProposal: {
+    id: '123',
+    decision: 'huj'
+  }
 };
 export const options = {
   feeCoin: '',

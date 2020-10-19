@@ -188,6 +188,40 @@ function multisend(data, wallet) {
   return obj;
 }
 
+function submitProposal(data, wallet) {
+  return {
+    content: data.content,
+    proposer: wallet.address,
+    voting_start_block: +data.startBlock,
+    voting_end_block: +data.endBlock
+  };
+}
+
+function voteProposal(data, wallet) {
+
+  let option = 0;
+
+  switch(data.decision) {
+    case 'yes':
+      option = 1
+      break;
+    case 'abstain':
+      option = 2
+      break;
+    case 'no':
+      option = 3
+      break;
+    default:
+      throw new Error('Invalid decision. Valid - yes, no, abstain')
+  }
+
+  return {
+    proposal_id: +data.id,
+    voter: wallet.validatorAddress,
+    option
+  }
+}
+
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
@@ -243,6 +277,14 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.COIN_MULTISEND:
       value = multisend(data, wallet);
+      break;
+    case TX_TYPE.PROPOSAL_SUBMIT:
+      value = submitProposal(data, wallet);
+      console.log(data.endBlock);
+      break;
+    case TX_TYPE.PROPOSAL_VOTE:
+      value = voteProposal(data, wallet);
+      console.log(value);
       break;
     default:
       throw new Error('Invalid type of transaction');

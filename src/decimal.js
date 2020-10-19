@@ -9,6 +9,7 @@ import getMultisigTxs from './api/get-txs-multisig';
 import getStakesByAddress from './api/get-stakes';
 import getValidator from './api/get-validator';
 import getMyTransactions from './api/get-my-transactions';
+import getVotesInfo from './api/votes';
 
 import TX_TYPE from './txTypes';
 
@@ -42,6 +43,7 @@ export default class Decimal {
     this.getValidator = getValidator(apiInstance);
     this.getMeta = getSignMeta(apiInstance, wallet);
     this.getMyTransactions = getMyTransactions(apiInstance, wallet);
+    this.getVotesInfo = getVotesInfo(apiInstance);
 
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
@@ -76,5 +78,8 @@ export default class Decimal {
     this.multisigCreateWallet = sendTransaction(TX_TYPE.MULTISIG_CREATE_WALLET, apiInstance, wallet, this);
     this.multisigCreateTx = sendTransaction(TX_TYPE.MULTISIG_CREATE_TX, apiInstance, wallet, this);
     this.multisigSignTx = sendTransaction(TX_TYPE.MULTISIG_SIGN_TX, apiInstance, wallet, this);
+
+    this.proposalSubmit = sendTransaction(TX_TYPE.PROPOSAL_SUBMIT, apiInstance, wallet, this);
+    this.proposalVote = sendTransaction(TX_TYPE.PROPOSAL_VOTE, apiInstance, wallet, this);
   }
 }

@@ -12,12 +12,11 @@ import { getTransaction } from '../tx';
 //   sequence: "236"
 // }
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
+const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet });
 
 
 (async function test() {
-//   const fee = await decimal.estimateTxFee(TX_TYPE.VALIDATOR_DELEGATE, data.delegate, options);
-//   console.log(fee);
-//   const test = await decimal.validatorDelegate(data.delegate, options);
-//   console.log(test);  
+//   const test = await decimal.proposalSubmit(data.submitProposal);
+  const test = await decimal.proposalVote(data.voteProposal);
+  console.log(test);
 }());

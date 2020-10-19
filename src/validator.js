@@ -317,6 +317,38 @@ SCHEMA[TX_TYPE.MULTISIG_SIGN_TX] = {
   ],
 };
 
+SCHEMA[TX_TYPE.PROPOSAL_SUBMIT] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    content: fields.string,
+    startBlcok: fields.int,
+    endBlock: fields.int
+  },
+  minProperties: 3,
+  maxProperties: 3,
+  required: [
+    'content',
+    'startBlock',
+    'endBlock'
+  ],
+};
+
+SCHEMA[TX_TYPE.PROPOSAL_VOTE] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    id: fields.int,
+    decision: fields.string
+  },
+  minProperties: 2,
+  maxProperties: 2,
+  required: [
+    'id',
+    'decision',
+  ],
+};
+
 export default function validateTxData(data, type) {
   if (!SCHEMA[type]) return true;
 
