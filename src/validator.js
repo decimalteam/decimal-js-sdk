@@ -321,7 +321,19 @@ SCHEMA[TX_TYPE.PROPOSAL_SUBMIT] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    content: fields.string,
+    content: {
+      type: 'object',
+      properties: {
+        title: fields.string,
+        description: fields.string
+      },
+      minProperties: 2,
+      maxProperties: 2,
+      required: [
+        'title',
+        'description'
+      ]
+    },
     startBlcok: fields.int,
     endBlock: fields.int
   },

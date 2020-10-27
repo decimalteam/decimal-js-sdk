@@ -192,33 +192,16 @@ function submitProposal(data, wallet) {
   return {
     content: data.content,
     proposer: wallet.address,
-    voting_start_block: +data.startBlock,
-    voting_end_block: +data.endBlock
+    voting_start_block: data.startBlock,
+    voting_end_block: data.endBlock
   };
 }
 
 function voteProposal(data, wallet) {
-
-  let option = 0;
-
-  switch(data.decision) {
-    case 'yes':
-      option = 1
-      break;
-    case 'abstain':
-      option = 2
-      break;
-    case 'no':
-      option = 3
-      break;
-    default:
-      throw new Error('Invalid decision. Valid - yes, no, abstain')
-  }
-
   return {
-    proposal_id: +data.id,
+    proposal_id: data.id,
     voter: wallet.validatorAddress,
-    option
+    option: data.decision
   }
 }
 

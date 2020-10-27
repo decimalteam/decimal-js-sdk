@@ -1,7 +1,7 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
+    coin: 'del',
     amount: '1',
   },
   multisend: [
@@ -109,14 +109,17 @@ export const data = {
   },
 
   submitProposal: {
-    content: 'test content',
-    startBlock: '90000',
+    content: {
+      title: 'test title',
+      description: 'test description'
+    },
+    startBlock: '200000',
     endBlock: '2000000'
   },
 
   voteProposal: {
-    id: '123',
-    decision: 'huj'
+    id: '1',
+    decision: 'Yes'
   }
 };
 export const options = {
