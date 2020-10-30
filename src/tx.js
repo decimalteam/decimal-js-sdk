@@ -263,11 +263,9 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.PROPOSAL_SUBMIT:
       value = submitProposal(data, wallet);
-      console.log(data.endBlock);
       break;
     case TX_TYPE.PROPOSAL_VOTE:
       value = voteProposal(data, wallet);
-      console.log(value);
       break;
     default:
       throw new Error('Invalid type of transaction');
@@ -295,6 +293,7 @@ export function sendTransaction(type, api, wallet, decimal) {
 
 export function estimateTxFee(api, wallet, decimal) {
   return async (type, data, options) => {
+    try {
     const { feeCoin } = options;
 
     if (feeCoin) {
@@ -310,5 +309,8 @@ export function estimateTxFee(api, wallet, decimal) {
     const fee = await getCommission(api)(tx, 'del');
 
     return fee.value.times(0.001).toFixed();
+  } catch(e) {
+    console.log(e);
+  }
   };
 }
