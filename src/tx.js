@@ -216,6 +216,7 @@ function _getSecret(secret) {
       zeros[i] = 0;
     }
     _secret = Buffer.concat([_secret, Buffer.from(zeros)]);
+    // console.log(_secret);
   }
   return _secret;
 }
