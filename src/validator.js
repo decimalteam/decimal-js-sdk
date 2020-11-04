@@ -325,24 +325,24 @@ SCHEMA[TX_TYPE.PROPOSAL_SUBMIT] = {
       type: 'object',
       properties: {
         title: fields.string,
-        description: fields.string
+        description: fields.string,
       },
       minProperties: 2,
       maxProperties: 2,
       required: [
         'title',
-        'description'
-      ]
+        'description',
+      ],
     },
     startBlcok: fields.int,
-    endBlock: fields.int
+    endBlock: fields.int,
   },
   minProperties: 3,
   maxProperties: 3,
   required: [
     'content',
     'startBlock',
-    'endBlock'
+    'endBlock',
   ],
 };
 
@@ -351,13 +351,66 @@ SCHEMA[TX_TYPE.PROPOSAL_VOTE] = {
   type: 'object',
   properties: {
     id: fields.int,
-    decision: fields.string
+    decision: fields.string,
   },
   minProperties: 2,
   maxProperties: 2,
   required: [
     'id',
     'decision',
+  ],
+};
+
+SCHEMA[TX_TYPE.SWAP_HTLT] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    type: fields.string,
+    from: fields.string,
+    recipient: fields.string,
+    secret: fields.string,
+    amount: fields.amount,
+    coin: fields.string,
+  },
+  minProperties: 6,
+  maxProperties: 6,
+  required: [
+    'type',
+    'from',
+    'recipient',
+    'secret',
+    'amount',
+    'coin',
+  ],
+};
+
+SCHEMA[TX_TYPE.SWAP_REDEEM] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    from: fields.string,
+    secret: fields.string,
+  },
+  minProperties: 2,
+  maxProperties: 2,
+  required: [
+    'from',
+    'from',
+  ],
+};
+
+SCHEMA[TX_TYPE.SWAP_REFUND] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    from: fields.string,
+    secret: fields.string,
+  },
+  minProperties: 2,
+  maxProperties: 2,
+  required: [
+    'from',
+    'from',
   ],
 };
 

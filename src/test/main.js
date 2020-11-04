@@ -16,9 +16,6 @@ const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api
 
 
 (async function test() {
-  const test1 = await decimal.proposalSubmit(data.submitProposal, options);
-  // const test = await decimal.proposalVote(data.voteProposal);
-  const test = await decimal.estimateTxFee(TYPE_TX.PROPOSAL_SUBMIT, data.submitProposal, options);
-  // const test = await decimal.sendCoins(data.send);
+  const test = await decimal.swapRefund(data.swapRefund, options);
   console.log(test);
 }());

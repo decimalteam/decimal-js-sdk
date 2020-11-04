@@ -1,4 +1,5 @@
 import DecimalNumber from 'decimal.js';
+import shajs from 'sha.js';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
@@ -193,7 +194,7 @@ function submitProposal(data, wallet) {
     content: data.content,
     proposer: wallet.address,
     voting_start_block: data.startBlock,
-    voting_end_block: data.endBlock
+    voting_end_block: data.endBlock,
   };
 }
 
@@ -201,8 +202,55 @@ function voteProposal(data, wallet) {
   return {
     proposal_id: data.id,
     voter: wallet.validatorAddress,
-    option: data.decision
+    option: data.decision,
+  };
+}
+
+function _getSecret(secret) {
+  let _secret = Buffer.from(secret);
+
+  if (_secret.length < 32) {
+    const zeros = new Array(32 - _secret.length);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0, j = 32 - _secret.length; i < j; i++) {
+      zeros[i] = 0;
+    }
+    _secret = Buffer.concat([_secret, Buffer.from(zeros)]);
   }
+  return _secret;
+}
+
+function swapHtlt(data) {
+  const secretHash = shajs('sha256').update(_getSecret(data.secret)).digest('hex');
+  const type = data.type === 'in' ? '2' : '1';
+
+  return {
+    transfer_type: type,
+    from: data.from,
+    recipient: data.recipient,
+    hashed_secret: secretHash,
+    coin: {
+      amount: getAmountToUNI(data.amount),
+      denom: data.coin.toLowerCase(),
+    },
+  };
+}
+
+function swapRedeem(data) {
+  const secret = _getSecret(data.secret).toString('hex');
+
+  return {
+    from: data.from,
+    secret,
+  };
+}
+function swapRefund(data) {
+  const secret = _getSecret(data.secret).toString('hex');
+
+  return {
+    from: data.from,
+    secret,
+  };
 }
 
 function getValue(type, data, options, wallet) {
@@ -267,6 +315,15 @@ function getValue(type, data, options, wallet) {
     case TX_TYPE.PROPOSAL_VOTE:
       value = voteProposal(data, wallet);
       break;
+    case TX_TYPE.SWAP_HTLT:
+      value = swapHtlt(data, wallet);
+      break;
+    case TX_TYPE.SWAP_REDEEM:
+      value = swapRedeem(data, wallet);
+      break;
+    case TX_TYPE.SWAP_REFUND:
+      value = swapRefund(data, wallet);
+      break;
     default:
       throw new Error('Invalid type of transaction');
   }
@@ -294,23 +351,24 @@ export function sendTransaction(type, api, wallet, decimal) {
 export function estimateTxFee(api, wallet, decimal) {
   return async (type, data, options) => {
     try {
-    const { feeCoin } = options;
+      const { feeCoin } = options;
 
-    if (feeCoin) {
-      const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-      const feeAmounts = broadcastTx.tx.fee.amount;
-      const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+      if (feeCoin) {
+        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+        const feeAmounts = broadcastTx.tx.fee.amount;
+        const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 
-      return getAmountFromUNI(fee);
+        return getAmountFromUNI(fee);
+      }
+
+      const formatted = getValue(type, data, options, wallet);
+      const tx = await prepareTx(api)(type, formatted.value, formatted.options);
+      const fee = await getCommission(api)(tx, 'del');
+
+      return fee.value.times(0.001).toFixed();
+    } catch (e) {
+      console.log(e);
+      return new Error('error');
     }
-
-    const formatted = getValue(type, data, options, wallet);
-    const tx = await prepareTx(api)(type, formatted.value, formatted.options);
-    const fee = await getCommission(api)(tx, 'del');
-
-    return fee.value.times(0.001).toFixed();
-  } catch(e) {
-    console.log(e);
-  }
   };
 }

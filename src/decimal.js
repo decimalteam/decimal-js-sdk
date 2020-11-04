@@ -81,5 +81,9 @@ export default class Decimal {
 
     this.proposalSubmit = sendTransaction(TX_TYPE.PROPOSAL_SUBMIT, apiInstance, wallet, this);
     this.proposalVote = sendTransaction(TX_TYPE.PROPOSAL_VOTE, apiInstance, wallet, this);
+
+    this.swapHtlt = sendTransaction(TX_TYPE.SWAP_HTLT, apiInstance, wallet, this);
+    this.swapRedeem = sendTransaction(TX_TYPE.SWAP_REDEEM, apiInstance, wallet, this);
+    this.swapRefund = sendTransaction(TX_TYPE.SWAP_REFUND, apiInstance, wallet, this);
   }
 }

@@ -33,6 +33,9 @@ FEES[TX_TYPE.MULTISIG_CREATE_TX] = 100;
 FEES[TX_TYPE.MULTISIG_SIGN_TX] = 100;
 FEES[TX_TYPE.PROPOSAL_SUBMIT] = 0;
 FEES[TX_TYPE.PROPOSAL_VOTE] = 0;
+FEES[TX_TYPE.SWAP_HTLT] = 0;
+FEES[TX_TYPE.SWAP_REDEEM] = 0;
+FEES[TX_TYPE.SWAP_REFUND] = 0;
 
 async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);

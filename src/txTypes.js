@@ -18,5 +18,9 @@ export default {
   MULTISIG_SIGN_TX: 'multisig/sign_transaction',
 
   PROPOSAL_SUBMIT: 'cosmos-sdk/MsgSubmitProposal',
-  PROPOSAL_VOTE: 'cosmos-sdk/MsgVote'
+  PROPOSAL_VOTE: 'cosmos-sdk/MsgVote',
+
+  SWAP_HTLT: 'swap/msg_htlt',
+  SWAP_REDEEM: 'swap/msg_redeem',
+  SWAP_REFUND: 'swap/msg_refund',
 };

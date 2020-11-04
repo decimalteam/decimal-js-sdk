@@ -111,21 +111,38 @@ export const data = {
   submitProposal: {
     content: {
       title: 'test title',
-      description: 'test description'
+      description: 'test description',
     },
     startBlock: '200000',
-    endBlock: '2000000'
+    endBlock: '2000000',
   },
 
   voteProposal: {
     id: '1',
-    decision: 'Yes'
-  }
+    decision: 'Yes',
+  },
+
+  swapHtlt: {
+    type: 'in', // in / out
+    from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    recipient: '0xbc97b9ad892B52d399397d3F98486461b00893BA',
+    secret: 'hello',
+    amount: '10',
+    coin: 'del',
+  },
+  swapRedeem: {
+    from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    secret: 'hello',
+  },
+  swapRefund: {
+    from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    secret: 'hello',
+  },
 };
 export const options = {
   feeCoin: '',
   feeAmount: '',
-  message: 'sdk test1111111111167867867811',
+  message: 'sdk test',
   gasLimit: '',
   mode: '', // sync / async / block
 };
