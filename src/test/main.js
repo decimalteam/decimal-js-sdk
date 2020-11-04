@@ -16,6 +16,6 @@ const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api
 
 
 (async function test() {
-  const test = await decimal.swapRedeem(data.swapRedeem, options);
+  const test = await decimal.swapHtlt(data.swapHtlt, options);
   console.log(test);
 }());

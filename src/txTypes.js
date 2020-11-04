@@ -21,6 +21,6 @@ export default {
   PROPOSAL_VOTE: 'cosmos-sdk/MsgVote',
 
   SWAP_HTLT: 'swap/msg_htlt',
-  SWAP_REDEEM: 'swap/claim',
-  SWAP_REFUND: 'swap/refund',
+  SWAP_REDEEM: 'swap/msg_redeem',
+  SWAP_REFUND: 'swap/msg_refund',
 };
