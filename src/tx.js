@@ -1,5 +1,6 @@
 import DecimalNumber from 'decimal.js';
 import shajs from 'sha.js';
+import hex from 'string-hex';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
@@ -206,23 +207,8 @@ function voteProposal(data, wallet) {
   };
 }
 
-function _getSecret(secret) {
-  let _secret = Buffer.from(secret);
-
-  if (_secret.length < 32) {
-    const zeros = new Array(32 - _secret.length);
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0, j = 32 - _secret.length; i < j; i++) {
-      zeros[i] = 0;
-    }
-    _secret = Buffer.concat([_secret, Buffer.from(zeros)]);
-    // console.log(_secret);
-  }
-  return _secret;
-}
-
 function swapHtlt(data) {
-  const secretHash = shajs('sha256').update(_getSecret(data.secret)).digest('hex');
+  const secretHash = shajs('sha256').update(data.secret).digest('hex');
   const type = data.type === 'in' ? '2' : '1';
 
   return {
@@ -230,27 +216,26 @@ function swapHtlt(data) {
     from: data.from,
     recipient: data.recipient,
     hashed_secret: secretHash,
-    coin: {
+    amount: [{
       amount: getAmountToUNI(data.amount),
       denom: data.coin.toLowerCase(),
-    },
+    }],
   };
 }
 
 function swapRedeem(data) {
-  const secret = _getSecret(data.secret).toString('hex');
-
+  const secret = hex(data.secret);
   return {
     from: data.from,
     secret,
   };
 }
 function swapRefund(data) {
-  const secret = _getSecret(data.secret).toString('hex');
+  const secretHash = shajs('sha256').update(data.secret).digest('hex');
 
   return {
     from: data.from,
-    secret,
+    hashed_secret: secretHash,
   };
 }
 

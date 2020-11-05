@@ -123,10 +123,10 @@ export const data = {
   },
 
   swapHtlt: {
-    type: 'in', // in / out
+    type: 'out', // in / out
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     recipient: '0xbc97b9ad892B52d399397d3F98486461b00893BA',
-    secret: 'hello',
+    secret: 'hello1',
     amount: '10',
     coin: 'del',
   },
@@ -136,7 +136,7 @@ export const data = {
   },
   swapRefund: {
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    secret: 'hello',
+    secret: 'hello1',
   },
 };
 export const options = {
