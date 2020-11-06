@@ -136,7 +136,7 @@ export const data = {
   },
   swapRefund: {
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    secretHahs: 'hello1',
+    secretHash: 'hello1',
   },
 };
 export const options = {

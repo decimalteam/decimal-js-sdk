@@ -404,13 +404,13 @@ SCHEMA[TX_TYPE.SWAP_REFUND] = {
   type: 'object',
   properties: {
     from: fields.string,
-    secretHahs: fields.string,
+    secretHash: fields.string,
   },
   minProperties: 2,
   maxProperties: 2,
   required: [
     'from',
-    'secretHahs',
+    'secretHash',
   ],
 };
 
