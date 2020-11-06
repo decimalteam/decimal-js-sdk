@@ -395,7 +395,7 @@ SCHEMA[TX_TYPE.SWAP_REDEEM] = {
   maxProperties: 2,
   required: [
     'from',
-    'from',
+    'secret',
   ],
 };
 
@@ -404,13 +404,13 @@ SCHEMA[TX_TYPE.SWAP_REFUND] = {
   type: 'object',
   properties: {
     from: fields.string,
-    secret: fields.string,
+    secretHahs: fields.string,
   },
   minProperties: 2,
   maxProperties: 2,
   required: [
     'from',
-    'from',
+    'secretHahs',
   ],
 };
 

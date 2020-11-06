@@ -231,11 +231,11 @@ function swapRedeem(data) {
   };
 }
 function swapRefund(data) {
-  const secretHash = shajs('sha256').update(data.secret).digest('hex');
+  // const secretHash = shajs('sha256').update(data.secret).digest('hex');
 
   return {
     from: data.from,
-    hashed_secret: secretHash,
+    hashed_secret: data.secretHash,
   };
 }
 
