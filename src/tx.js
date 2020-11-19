@@ -208,14 +208,14 @@ function voteProposal(data, wallet) {
 }
 
 function swapHtlt(data) {
-  const secretHash = shajs('sha256').update(data.secret).digest('hex');
+  // const secretHash = shajs('sha256').update(data.secret).digest('hex');
   const type = data.type === 'in' ? '2' : '1';
 
   return {
     transfer_type: type,
     from: data.from,
     recipient: data.recipient,
-    hashed_secret: secretHash,
+    hashed_secret: data.secretHash,
     amount: [{
       amount: getAmountToUNI(data.amount),
       denom: data.coin.toLowerCase(),

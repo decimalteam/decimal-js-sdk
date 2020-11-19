@@ -126,7 +126,7 @@ export const data = {
     type: 'out', // in / out
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     recipient: '0xbc97b9ad892B52d399397d3F98486461b00893BA',
-    secret: 'hello1',
+    secretHash: 'hello1',
     amount: '10',
     coin: 'del',
   },
