@@ -1,5 +1,4 @@
 import DecimalNumber from 'decimal.js';
-import shajs from 'sha.js';
 import hex from 'string-hex';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
@@ -191,6 +190,10 @@ function multisend(data, wallet) {
 }
 
 function submitProposal(data, wallet) {
+  if (!wallet.availableProposalSubmit) {
+    throw new Error('This address is not available for this transaction');
+  }
+
   return {
     content: data.content,
     proposer: wallet.address,

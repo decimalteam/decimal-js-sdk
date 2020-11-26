@@ -1,5 +1,6 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
+import proposalAdresses from './proposalAddresses.json';
 
 const prefix = 'dx';
 const validatorPrefix = 'dxvaloper';
@@ -37,6 +38,7 @@ export default class Wallet {
     this.publicKey = wallet.publicKey;
     this.address = wallet.address;
     this.validatorAddress = validatorAddress;
+    this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
   }
 
   getPrivateKeyString() {
