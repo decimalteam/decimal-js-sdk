@@ -140,7 +140,7 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: '',
+  feeCoin: 'DANIELCOIN',
   feeAmount: '',
   message: 'sdk test',
   gasLimit: '',
