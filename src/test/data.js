@@ -1,7 +1,7 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'del',
+    coin: 'tdel',
     amount: '1',
   },
   multisend: [
@@ -17,7 +17,7 @@ export const data = {
     },
   ],
   buy: {
-    buyCoin: 'feecoin',
+    buyCoin: 'FINALTEST',
     amount: '10',
     spendCoin: 'tdel',
     // maxSpendLimit: 0,
@@ -25,7 +25,7 @@ export const data = {
   sell: {
     sellCoin: 'tdel',
     amount: '10',
-    getCoin: 'coin2',
+    getCoin: 'FINALTEST',
     // minBuyLimit: 0,
   },
   sellAll: {
@@ -140,7 +140,7 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: 'DANIELCOIN',
+  feeCoin: 'FINALTEST',
   feeAmount: '',
   message: 'sdk test',
   gasLimit: '',

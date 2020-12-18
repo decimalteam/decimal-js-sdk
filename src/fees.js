@@ -83,8 +83,6 @@ export function getCommission(api) {
     const feeForText = new DecimalNumber(textSize).times(2);
     let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText);
 
-    console.log(feeInBase.toFixed());
-
     if (type === TX_TYPE.COIN_MULTISEND) {
       const numberOfParticipants = tx.msg[0].value.sends.length;
       const feeForParticipants = 5 * (numberOfParticipants - 1);
@@ -96,16 +94,7 @@ export function getCommission(api) {
     }
 
     const coinPrice = await getCoinPrice(api, ticker);
-
-    console.log(coinPrice.toFixed());
-
-    // console.log('test', new DecimalNumber('81330000222304757705').times(coinPrice).toFixed());
-
     const feeInCustom = feeInBase.div(coinPrice.div(unit));
-
-    console.log('----', feeInCustom.times(coinPrice.div(unit)).toFixed());
-
-    console.log('test', new DecimalNumber('81.330000222304757705').times(coinPrice).div(unit).toFixed());
 
     return { coinPrice, value: new DecimalNumber(feeInCustom.div(unit).toFixed(0)), base: feeInBase }; // -> custom {units}
   };
@@ -125,14 +114,13 @@ export function setCommission(api) {
     let totalFee = '';
 
     if (feeCoin !== 'tdel' && feeCoin !== 'del') {
-      const feeForFeeAmountToCustom = feeForFeeAmount.times(fee.coinPrice);
+      const feeForFeeAmountToCustom = feeForFeeAmount.div(fee.coinPrice);
       totalFee = fee.value.plus(feeForFeeAmountToCustom).times(unit);
     } else {
       totalFee = fee.value.plus(feeForFeeAmount).times(unit);
     }
 
     tx.fee.amount[0].amount = getAmountToUNI(totalFee);
-
     return tx;
   };
 }

@@ -11,12 +11,13 @@ import { getTransaction } from '../tx';
 //   chain_id: "decimal-devnet-07-22-19-00",
 //   sequence: "236"
 // }
-const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet });
 
-console.log(wallet);
+const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
 
 (async function test() {
-  const test = await decimal.sendCoins(data.send, options);
+  const fee = await decimal.estimateTxFee(TYPE_TX.COIN_BUY, data.buy, options);
+  console.log('[fee]: ', fee);
+  const test = await decimal.buyCoins(data.buy, options);
   console.log(test);
 }());
