@@ -1,6 +1,7 @@
 export default {
   COIN_BUY: 'coin/buy_coin',
   COIN_CREATE: 'coin/create_coin',
+  COIN_UPDATE: 'coin/update_coin',
   COIN_SELL: 'coin/sell_coin',
   COIN_SEND: 'coin/send_coin',
   COIN_MULTISEND: 'coin/multi_send_coin',

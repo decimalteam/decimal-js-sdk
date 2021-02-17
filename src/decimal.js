@@ -71,6 +71,7 @@ export default class Decimal {
     this.validatorOff = sendTransaction(TX_TYPE.VALIDATOR_SET_OFFLINE, apiInstance, wallet, this);
 
     this.createCoin = sendTransaction(TX_TYPE.COIN_CREATE, apiInstance, wallet, this);
+    this.updateCoin = sendTransaction(TX_TYPE.COIN_UPDATE, apiInstance, wallet, this);
 
     this.issueCheck = issueCheck(apiInstance, wallet, this);
     this.redeemCheck = sendTransaction(TX_TYPE.COIN_REDEEM_CHECK, apiInstance, wallet, this);

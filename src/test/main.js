@@ -13,11 +13,7 @@ import { getTransaction } from '../tx';
 // }
 
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
+const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet });
 
 (async function test() {
-  const fee = await decimal.estimateTxFee(TYPE_TX.COIN_SEND, data.send, options);
-  console.log('[fee]: ', fee);
-  const test = await decimal.sendCoins(data.send, options);
-  console.log(test);
 }());

@@ -80,6 +80,12 @@ export const data = {
     crr: '45',
   },
 
+  updateCoin: {
+    ticker: 'COIN',
+    maxSupply: '100000',
+    icon: 'e353b89e0de0a78974f9ecaf033721ac',
+  },
+
   issueCheck: {
     nonce: '34',
     coin: 'tdel',
@@ -140,7 +146,7 @@ export const data = {
   },
 };
 export const options = {
-  feeCoin: 'FINALTEST',
+  feeCoin: '',
   feeAmount: '',
   message: 'sdk test',
   gasLimit: '',

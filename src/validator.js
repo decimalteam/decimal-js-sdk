@@ -243,6 +243,23 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
   ],
 };
 
+SCHEMA[TX_TYPE.COIN_UPDATE] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    ticker: fields.string,
+    maxSupply: fields.amount,
+    icon: fields.string,
+  },
+  minProperties: 3,
+  maxProperties: 3,
+  required: [
+    'ticker',
+    'maxSupply',
+    'icon',
+  ],
+};
+
 SCHEMA[TX_TYPE.COIN_ISSUE_CHECK] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',

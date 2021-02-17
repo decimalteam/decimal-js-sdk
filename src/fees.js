@@ -36,6 +36,7 @@ FEES[TX_TYPE.PROPOSAL_VOTE] = 0;
 FEES[TX_TYPE.SWAP_HTLT] = 33000;
 FEES[TX_TYPE.SWAP_REDEEM] = 0;
 FEES[TX_TYPE.SWAP_REFUND] = 0;
+FEES[TX_TYPE.COIN_UPDATE] = 0;
 
 async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);

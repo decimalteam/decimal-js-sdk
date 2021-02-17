@@ -141,6 +141,15 @@ function createCoin(data, wallet) {
   };
 }
 
+function updateCoin(data, wallet) {
+  return {
+    sender: wallet.address,
+    symbol: data.ticker,
+    icon: data.icon,
+    limit_volume: getAmountToUNI(data.maxSupply),
+  };
+}
+
 function multisigCreate(data, wallet) {
   return {
     sender: wallet.address,
@@ -282,6 +291,9 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.COIN_CREATE:
       value = createCoin(data, wallet);
+      break;
+    case TX_TYPE.COIN_UPDATE:
+      value = updateCoin(data, wallet);
       break;
     case TX_TYPE.COIN_REDEEM_CHECK:
       value = redeemCheck(data, wallet);
