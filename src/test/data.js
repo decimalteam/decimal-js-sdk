@@ -78,6 +78,7 @@ export const data = {
     maxSupply: '100000',
     reserve: '12000',
     crr: '45',
+    icon: 'e353b89e0de0a78974f9ecaf033721ac',
   },
 
   updateCoin: {

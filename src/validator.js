@@ -230,9 +230,10 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
     maxSupply: fields.amount,
     reserve: fields.amount,
     crr: fields.int,
+    icon: fields.string,
   },
-  minProperties: 6,
-  maxProperties: 6,
+  minProperties: 7,
+  maxProperties: 7,
   required: [
     'title',
     'ticker',
@@ -240,6 +241,7 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
     'maxSupply',
     'reserve',
     'crr',
+    'icon',
   ],
 };
 
