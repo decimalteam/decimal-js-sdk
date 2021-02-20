@@ -76,15 +76,15 @@ export const data = {
     ticker: 'TESTTT',
     initSupply: '50000',
     maxSupply: '100000',
-    reserve: '12000',
+    reserve: '2000',
     crr: '45',
-    icon: 'e353b89e0de0a78974f9ecaf033721ac',
+    identity: 'e353b89e0de0a78974f9ecaf033721ac',
   },
 
   updateCoin: {
-    ticker: 'COIN',
-    maxSupply: '100000',
-    icon: 'e353b89e0de0a78974f9ecaf033721ac',
+    ticker: 'TESTTT',
+    maxSupply: '1000000',
+    identity: 'e353b89e0de0a78974f9ecaf033721ac',
   },
 
   issueCheck: {

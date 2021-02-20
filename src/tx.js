@@ -137,7 +137,7 @@ function createCoin(data, wallet) {
     constant_reserve_ratio: data.crr,
     initial_volume: getAmountToUNI(data.initSupply),
     initial_reserve: getAmountToUNI(data.reserve),
-    icon: data.icon,
+    identity: data.identity,
     limit_volume: getAmountToUNI(data.maxSupply),
   };
 }
@@ -146,7 +146,7 @@ function updateCoin(data, wallet) {
   return {
     sender: wallet.address,
     symbol: data.ticker,
-    icon: data.icon,
+    identity: data.identity,
     limit_volume: getAmountToUNI(data.maxSupply),
   };
 }
