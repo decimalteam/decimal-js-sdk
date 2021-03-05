@@ -10,6 +10,7 @@ import getStakesByAddress from './api/get-stakes';
 import getValidator from './api/get-validator';
 import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
+import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
 
@@ -43,6 +44,7 @@ export default class Decimal {
     this.getValidator = getValidator(apiInstance);
     this.getMeta = getSignMeta(apiInstance, wallet);
     this.getMyTransactions = getMyTransactions(apiInstance, wallet);
+    this.getMyCoins = getMyCoins(apiInstance, wallet);
     this.getVotesInfo = getVotesInfo(apiInstance);
 
     // tx utils
