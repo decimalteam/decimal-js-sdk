@@ -232,7 +232,7 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
     crr: fields.int,
     identity: fields.string,
   },
-  minProperties: 7,
+  minProperties: 6,
   maxProperties: 7,
   required: [
     'title',
@@ -241,7 +241,6 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
     'maxSupply',
     'reserve',
     'crr',
-    'identity',
   ],
 };
 

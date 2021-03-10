@@ -130,16 +130,19 @@ function disableEnableValidator(wallet) {
 }
 
 function createCoin(data, wallet) {
-  return {
+  const _data = {
     sender: wallet.address,
     title: data.title,
     symbol: data.ticker,
     constant_reserve_ratio: data.crr,
     initial_volume: getAmountToUNI(data.initSupply),
     initial_reserve: getAmountToUNI(data.reserve),
-    identity: data.identity,
     limit_volume: getAmountToUNI(data.maxSupply),
   };
+  if (data.identity) {
+    _data.identity = data.identity;
+  }
+  return _data;
 }
 
 function updateCoin(data, wallet) {
