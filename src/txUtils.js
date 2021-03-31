@@ -5,7 +5,6 @@ import TX_TYPE from './txTypes';
 
 DecimalNumber.set({ precision: 40 });
 let signMeta = null;
-let currentSeq = null;
 
 function transactionResult(json) {
   if (json.code) {

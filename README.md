@@ -12,23 +12,53 @@ $ npm install decimal-js-sdk
 ```
 
 # Usage
+## Available endpoints
+MAINNET -
+https://mainnet-gate.decimalchain.com/api/
 
-Send coins
+TESTNET -
+https://testnet-gate.decimalchain.com/api/
+
+
+The following code can be used to generate **mnemonic** or use your mnemonic
+```js
+const bip39 = require("bip39");
+const mnemonic = bip39.generateMnemonic();
+```
+
+## Send coins
+### CommonJS
+```js
+const { Wallet, Decimal } = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
+
+const wallet = new Wallet( /*your mnemonic*/);
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
+
+const data = {
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tdel',
+    amount: '1',
+  };
+
+const txResult = await decimal.sendCoins(data, [options]); // see options for details
+// => {hash: '4C0A408B6EBC33AD...', success: true, error: null}
+```
+
+### ES6
 ```js
 
 import { Wallet, Decimal } from 'decimal-js-sdk';
 
-// Optionally. Used for generating offline transactions
-const meta = {
-  account_number: "10",
-  chain_id: "decimal-testnet-06-30-15-30",
-  sequence: "198"
-}
-
 const wallet = new Wallet(/*your mnemonic*/);
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet, meta })
+const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
-const txResult = await decimal.sendCoins(data, options); // see sendCoins for details
+const data = {
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tdel',
+    amount: '1',
+  };
+
+const txResult = await decimal.sendCoins(data); // see sendCoins for details
 // => {hash: '4C0A408B6EBC33AD...', success: true, error: null}
 ```
 
@@ -120,9 +150,19 @@ wallet.getPublicKeyString();
 * TX_TYPE.MULTISIG_SIGN_TX
 
 
+## Meta
+Used for generating offline transactions.
+**This is an optional parameter!**
+```js
+const meta = {
+  account_number: "10",
+  chain_id: "decimal-testnet-06-30-15-30",
+  sequence: "198"
+}
+```
 ## Options
 Each transaction method consists of input data (data) and options.
-This is an optional parameter!
+**This is an optional parameter!**
 ```js
 const options = {
   feeCoin: 'BTC', // The coin that pays commission
