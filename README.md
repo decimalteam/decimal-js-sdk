@@ -126,7 +126,18 @@ wallet.getPublicKeyString();
   - [multisigCreateTx](multisigcreatetx)
   - [multisigSignTx](multisigsigntx)
 
-
+## Network
+Additionally, you can pass network parameter to enable network specific features:
+```js
+const decimal = new Decimal({
+  baseUrl: 'https://testnet-gate.decimalchain.com/api/',
+  network: 'testnet', // Enable testnet only txs types
+  wallet,
+  meta
+})
+```
+Available networks: ['mainnet', 'testnet', 'devnet']
+If omitted defaults to 'mainnet', which is fine in most cases.
 ## Types
 ``` js
   import {TX_TYPE} from 'decimal-js-sdk'

@@ -13,7 +13,7 @@ import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
-
+import { validateNetwork } from './network';
 import {
   prepareTx,
   makeSignature,
@@ -29,8 +29,8 @@ export default class Decimal {
     const apiInstance = new DecimalApi(options.baseURL);
     const { wallet } = options;
     const { signMeta } = options;
-
     this.signMeta = signMeta;
+    this.network = validateNetwork(options.network);
 
     // api
     this.getCoinsList = getCoinslist(apiInstance);
