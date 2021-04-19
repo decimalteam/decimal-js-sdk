@@ -28,6 +28,7 @@ const meta = {
 const wallet = new Wallet(/*your mnemonic*/);
 const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet, meta })
 
+
 const txResult = await decimal.sendCoins(data, options); // see sendCoins for details
 // => {hash: '4C0A408B6EBC33AD...', success: true, error: null}
 ```
@@ -96,7 +97,18 @@ wallet.getPublicKeyString();
   - [multisigCreateTx](multisigcreatetx)
   - [multisigSignTx](multisigsigntx)
 
-
+## Network
+Additionally, you can pass network parameter to enable network specific features:
+```js
+const decimal = new Decimal({
+  baseUrl: 'https://testnet-gate.decimalchain.com/api/',
+  network: 'testnet', // Enable testnet only txs types
+  wallet,
+  meta
+})
+```
+Available networks: ['mainnet', 'testnet', 'devnet']
+If omitted defaults to 'mainnet', which is fine in most cases.
 ## Types
 ``` js
   import {TX_TYPE} from 'decimal-js-sdk'
