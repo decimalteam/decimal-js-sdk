@@ -24,4 +24,9 @@ export default {
   SWAP_HTLT: 'swap/msg_htlt',
   SWAP_REDEEM: 'swap/msg_redeem',
   SWAP_REFUND: 'swap/msg_refund',
+
+  NFT_MINT: 'nft/mint',
+  NFT_BURN: 'nft/burn',
+  NFT_EDIT_METADATA: 'nft/edit_metadata',
+  NFT_TRANSFER: 'nft/transfer',
 };

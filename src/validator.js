@@ -433,6 +433,80 @@ SCHEMA[TX_TYPE.SWAP_REFUND] = {
   ],
 };
 
+SCHEMA[TX_TYPE.NFT_MINT] = {
+
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    denom: fields.string,
+    tokenId: fields.string,
+    recipient: fields.string,
+    quantity: fields.amount,
+    reserve: fields.amount,
+
+  },
+  minProperties: 4,
+  maxProperties: 5,
+  required: [
+    'denom',
+    'tokenId',
+    'recipient',
+    'quantity',
+  ],
+};
+SCHEMA[TX_TYPE.NFT_BURN] = {
+
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    denom: fields.string,
+    tokenId: fields.string,
+    quantity: fields.amount,
+
+  },
+  minProperties: 3,
+  maxProperties: 3,
+  required: [
+    'denom',
+    'tokenId',
+    'quantity',
+  ],
+};
+SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
+
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    denom: fields.string,
+    tokenId: fields.string,
+  },
+  minProperties: 2,
+  maxProperties: 2,
+  required: [
+    'denom',
+    'tokenId',
+  ],
+};
+SCHEMA[TX_TYPE.NFT_TRANSFER] = {
+
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    denom: fields.string,
+    tokenId: fields.string,
+    recipient: fields.string,
+    quantity: fields.amount,
+
+  },
+  minProperties: 4,
+  maxProperties: 4,
+  required: [
+    'denom',
+    'tokenId',
+    'recipient',
+    'quantity',
+  ],
+};
 export default function validateTxData(data, type) {
   if (!SCHEMA[type]) return true;
 

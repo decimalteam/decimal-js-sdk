@@ -2,10 +2,10 @@ import DecimalNumber from 'decimal.js';
 import hex from 'string-hex';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
-import {formTx, postTx, prepareTx} from './txUtils';
-import {getAmountFromUNI, getAmountToUNI} from './math';
-import {redeemCheck} from './check';
-import {getCommission} from './fees';
+import { formTx, postTx, prepareTx } from './txUtils';
+import { getAmountFromUNI, getAmountToUNI } from './math';
+import { redeemCheck } from './check';
+import { getCommission } from './fees';
 
 DecimalNumber.set({ precision: 40 });
 function sendCoinData(data, wallet) {
