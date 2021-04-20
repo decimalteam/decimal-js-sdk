@@ -28,6 +28,16 @@ function transactionResult(json) {
     };
   }
 
+  if (json.pending) {
+      const txResult = {
+        hash: json.txhash,
+        success: true,
+        pending: true,
+        error: null,
+      };
+      console.log(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+  }
+
   const txResult = {
     hash: json.txhash,
     success: true,
