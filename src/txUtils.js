@@ -36,6 +36,7 @@ function transactionResult(json) {
         error: null,
       };
       console.log(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+      return txResult;
   }
 
   const txResult = {
