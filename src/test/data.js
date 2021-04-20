@@ -145,6 +145,30 @@ export const data = {
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     secretHash: 'hello1',
   },
+  nftMint: {
+    denom: 'TEST',
+    tokenId: 'test420',
+    recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    quantity: '10',
+    reserve: '10',
+  },
+  nftBurn: {
+    denom: 'TEST',
+    tokenId: 'test420',
+    quantity: '10',
+  },
+  nftEditMetadata: {
+    denom: 'TEST',
+    tokenId: 'test420',
+  },
+  nftTransfer: {
+    denom: 'TEST',
+    tokenId: 'test420',
+    recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    quantity: '10',
+    reserve: '10',
+  },
 };
 export const options = {
   feeCoin: '',

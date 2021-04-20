@@ -251,6 +251,37 @@ function swapRefund(data) {
     hashed_secret: data.secretHash,
   };
 }
+function nftMint(data) {
+  return {
+    denom: data.denom,
+    tokenId: data.tokenId,
+    recipient: data.recipient,
+    quantity: getAmountToUNI(data.quantity),
+    reserve: getAmountToUNI(data.reserve),
+  };
+}
+function nftBurn(data) {
+  return {
+    denom: data.denom,
+    tokenId: data.tokenId,
+    quantity: getAmountToUNI(data.quantity),
+  };
+}
+function nftEditMetadata(data) {
+  return {
+    denom: data.denom,
+    tokenId: data.tokenId,
+  };
+}
+function nftTransfer(data) {
+  return {
+    denom: data.denom,
+    tokenId: data.tokenId,
+    sender: data.sender,
+    recipient: data.recipient,
+    quantity: getAmountToUNI(data.quantity),
+  };
+}
 
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
@@ -325,6 +356,18 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.SWAP_REFUND:
       value = swapRefund(data, wallet);
+      break;
+    case TX_TYPE.NFT_MINT:
+      value = nftMint(data, wallet);
+      break;
+    case TX_TYPE.NFT_BURN:
+      value = nftBurn(data, wallet);
+      break;
+    case TX_TYPE.NFT_EDIT_METADATA:
+      value = nftEditMetadata(data, wallet);
+      break;
+    case TX_TYPE.NFT_TRANSFER:
+      value = nftTransfer(data, wallet);
       break;
     default:
       throw new Error('Invalid type of transaction');

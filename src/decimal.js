@@ -13,7 +13,7 @@ import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
-import { validateNetwork } from './network';
+import { DEVNET, validateNetwork } from './network';
 import {
   prepareTx,
   makeSignature,
@@ -88,5 +88,11 @@ export default class Decimal {
     this.msgSwapHTLT = sendTransaction(TX_TYPE.SWAP_HTLT, apiInstance, wallet, this);
     this.msgSwapRedeem = sendTransaction(TX_TYPE.SWAP_REDEEM, apiInstance, wallet, this);
     this.msgSwapRefund = sendTransaction(TX_TYPE.SWAP_REFUND, apiInstance, wallet, this);
+    if (this.network === DEVNET) {
+      this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
+      this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
+      this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
+      this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
+    }
   }
 }
