@@ -240,6 +240,7 @@ SCHEMA[TX_TYPE.COIN_CREATE] = {
     'initSupply',
     'maxSupply',
     'reserve',
+    'identity',
     'crr',
   ],
 };

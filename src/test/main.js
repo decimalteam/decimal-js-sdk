@@ -7,8 +7,7 @@ import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
 const wallet = new Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle');
-const decimal = new Decimal({ baseURL: 'https:/testnet-gate.decimalchain.com/api/', wallet });
+const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet });
 
 (async function test() {
-
 }());
