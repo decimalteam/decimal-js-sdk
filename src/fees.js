@@ -42,22 +42,7 @@ async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);
   if (!coin) throw new Error('Coin not found');
 
-  const reserve = getAmountFromUNI(coin.reserve);
-  const supply = getAmountFromUNI(coin.volume);
-  const crr = coin.crr / 100;
-
-  const amount = Math.min(supply, 1);
-
-  if (supply === 0) {
-    return 0;
-  }
-
-  let result = new DecimalNumber(amount).div(supply);
-  result = new DecimalNumber(1).minus(result);
-  result = result.pow(new DecimalNumber(1).div(crr));
-  result = new DecimalNumber(1).minus(result).times(reserve);
-
-  return result;
+  return coin.price;
 }
 
 async function getTxSize(api, tx) {
@@ -94,12 +79,14 @@ export function getCommission(api) {
       return { coinPrice: '1', value: feeInBase, base: feeInBase }; // -> base {units}
     }
 
-    const coinPrice = await getCoinPrice(api, ticker);
+    const coinPriceRaw = await getCoinPrice(api, ticker);
+    const coinPrice = new DecimalNumber(coinPriceRaw);
     const feeInCustom = feeInBase.div(coinPrice.div(unit));
 
     return { coinPrice, value: new DecimalNumber(feeInCustom.div(unit).toFixed(0)), base: feeInBase }; // -> custom {units}
   };
 }
+
 export function setCommission(api) {
   return async (tx, feeCoin) => {
     tx.fee.amount = [{
