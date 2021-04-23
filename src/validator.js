@@ -434,24 +434,25 @@ SCHEMA[TX_TYPE.SWAP_REFUND] = {
 };
 
 SCHEMA[TX_TYPE.NFT_MINT] = {
-
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
     denom: fields.string,
-    tokenId: fields.string,
+    id: fields.string,
+    sender: fields.string,
     recipient: fields.string,
     quantity: fields.amount,
     reserve: fields.amount,
-
   },
-  minProperties: 4,
-  maxProperties: 5,
+  minProperties: 6,
+  maxProperties: 6,
   required: [
     'denom',
-    'tokenId',
+    'id',
+    'sender',
     'recipient',
     'quantity',
+    'reserve'
   ],
 };
 SCHEMA[TX_TYPE.NFT_BURN] = {
@@ -460,15 +461,14 @@ SCHEMA[TX_TYPE.NFT_BURN] = {
   type: 'object',
   properties: {
     denom: fields.string,
-    tokenId: fields.string,
+    id: fields.string,
     quantity: fields.amount,
-
   },
   minProperties: 3,
   maxProperties: 3,
   required: [
     'denom',
-    'tokenId',
+    'id',
     'quantity',
   ],
 };
@@ -478,13 +478,13 @@ SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
   type: 'object',
   properties: {
     denom: fields.string,
-    tokenId: fields.string,
+    id: fields.string,
   },
   minProperties: 2,
   maxProperties: 2,
   required: [
     'denom',
-    'tokenId',
+    'id',
   ],
 };
 SCHEMA[TX_TYPE.NFT_TRANSFER] = {
@@ -492,18 +492,19 @@ SCHEMA[TX_TYPE.NFT_TRANSFER] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    denom: fields.string,
-    tokenId: fields.string,
+    sender: fields.string,
     recipient: fields.string,
+    denom: fields.string,
+    id: fields.string,
     quantity: fields.amount,
-
   },
-  minProperties: 4,
-  maxProperties: 4,
+  minProperties: 5,
+  maxProperties: 5,
   required: [
-    'denom',
-    'tokenId',
+    'sender',
     'recipient',
+    'denom',
+    'id',  
     'quantity',
   ],
 };

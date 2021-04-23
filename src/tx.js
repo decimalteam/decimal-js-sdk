@@ -254,7 +254,8 @@ function swapRefund(data) {
 function nftMint(data) {
   return {
     denom: data.denom,
-    tokenId: data.tokenId,
+    id: data.id,
+    sender: data.sender,
     recipient: data.recipient,
     quantity: getAmountToUNI(data.quantity),
     reserve: getAmountToUNI(data.reserve),
@@ -263,20 +264,20 @@ function nftMint(data) {
 function nftBurn(data) {
   return {
     denom: data.denom,
-    tokenId: data.tokenId,
+    id: data.id,
     quantity: getAmountToUNI(data.quantity),
   };
 }
 function nftEditMetadata(data) {
   return {
     denom: data.denom,
-    tokenId: data.tokenId,
+    id: data.id,
   };
 }
 function nftTransfer(data) {
   return {
     denom: data.denom,
-    tokenId: data.tokenId,
+    id: data.id,
     sender: data.sender,
     recipient: data.recipient,
     quantity: getAmountToUNI(data.quantity),
