@@ -259,10 +259,13 @@ function nftMint(data) {
     recipient: data.recipient,
     quantity: getAmountToUNI(data.quantity),
     reserve: getAmountToUNI(data.reserve),
+    token_uri: data.token_uri,
+    allow_mint: data.allow_mint,
   };
 }
 function nftBurn(data) {
   return {
+    sender: data.sender,
     denom: data.denom,
     id: data.id,
     quantity: getAmountToUNI(data.quantity),
@@ -270,8 +273,10 @@ function nftBurn(data) {
 }
 function nftEditMetadata(data) {
   return {
+    sender: data.sender,
     denom: data.denom,
     id: data.id,
+    token_uri: data.token_uri,
   };
 }
 function nftTransfer(data) {
@@ -389,6 +394,7 @@ export function getTransaction(api, wallet, decimal) {
 export function sendTransaction(type, api, wallet, decimal) {
   return async (data, options) => {
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+    console.log(broadcastTx);
     const txResult = await postTx(api, decimal)(broadcastTx);
     return txResult;
   };

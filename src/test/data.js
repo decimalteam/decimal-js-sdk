@@ -146,28 +146,33 @@ export const data = {
     secretHash: 'hello1',
   },
   nftMint: {
-    denom: 'TEST1112',
-    id: 'test421112',
-    sender: 'dx1jqx7chw0faswfmw78cdejzzery5akzmk5zc5x5',
-    recipient: 'dx1jqx7chw0faswfmw78cdejzzery5akzmk5zc5x5',
+    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    denom: 'denom',
+    token_uri: 'uri',
+    id: 'token1',
     quantity: '2',
     reserve: '1',
+    allow_mint: true,
   },
   nftBurn: {
+    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
     denom: 'TEST',
     id: 'test420',
     quantity: '10',
   },
   nftEditMetadata: {
+    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
     denom: 'TEST',
     id: 'test420',
+    token_uri: 'uri',
   },
   nftTransfer: {
     denom: 'TEST1',
     id: 'test4201',
     recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    sender: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    quantity: '100'
+    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    quantity: '100',
   },
 };
 export const options = {

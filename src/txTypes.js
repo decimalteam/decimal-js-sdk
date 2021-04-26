@@ -27,6 +27,6 @@ export default {
 
   NFT_MINT: 'nft/msg_mint',
   NFT_BURN: 'nft/msg_burn',
-  NFT_EDIT_METADATA: 'nft/msg_transfer',
-  NFT_TRANSFER: 'nft/msg_edit_metadata',
+  NFT_EDIT_METADATA: 'nft/msg_edit_metadata',
+  NFT_TRANSFER: 'nft/msg_transfer',
 };
