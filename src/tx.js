@@ -251,6 +251,43 @@ function swapRefund(data) {
     hashed_secret: data.secretHash,
   };
 }
+function nftMint(data) {
+  return {
+    denom: data.denom,
+    id: data.id,
+    sender: data.sender,
+    recipient: data.recipient,
+    quantity: getAmountToUNI(data.quantity),
+    reserve: getAmountToUNI(data.reserve),
+    token_uri: data.token_uri,
+    allow_mint: data.allow_mint,
+  };
+}
+function nftBurn(data) {
+  return {
+    sender: data.sender,
+    denom: data.denom,
+    id: data.id,
+    quantity: getAmountToUNI(data.quantity),
+  };
+}
+function nftEditMetadata(data) {
+  return {
+    sender: data.sender,
+    denom: data.denom,
+    id: data.id,
+    token_uri: data.token_uri,
+  };
+}
+function nftTransfer(data) {
+  return {
+    denom: data.denom,
+    id: data.id,
+    sender: data.sender,
+    recipient: data.recipient,
+    quantity: getAmountToUNI(data.quantity),
+  };
+}
 
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
@@ -326,6 +363,18 @@ function getValue(type, data, options, wallet) {
     case TX_TYPE.SWAP_REFUND:
       value = swapRefund(data, wallet);
       break;
+    case TX_TYPE.NFT_MINT:
+      value = nftMint(data, wallet);
+      break;
+    case TX_TYPE.NFT_BURN:
+      value = nftBurn(data, wallet);
+      break;
+    case TX_TYPE.NFT_EDIT_METADATA:
+      value = nftEditMetadata(data, wallet);
+      break;
+    case TX_TYPE.NFT_TRANSFER:
+      value = nftTransfer(data, wallet);
+      break;
     default:
       throw new Error('Invalid type of transaction');
   }
@@ -345,6 +394,7 @@ export function getTransaction(api, wallet, decimal) {
 export function sendTransaction(type, api, wallet, decimal) {
   return async (data, options) => {
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+    console.log(broadcastTx);
     const txResult = await postTx(api, decimal)(broadcastTx);
     return txResult;
   };
