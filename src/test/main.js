@@ -10,8 +10,8 @@ const wallet = new Wallet('doctor transfer mystery electric any satisfy crop pil
 const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, network: 'devnet' });
 
 (async function test() {
-  //await decimal.nftMint(data.nftMint);
+  await decimal.nftMint(data.nftMint);
   //await decimal.nftBurn(data.nftBurn);
   //await decimal.nftEditMetadata(data.nftEditMetadata);
-  await decimal.nftTransfer(data.nftTransfer);
+  //await decimal.nftTransfer(data.nftTransfer);
 }());

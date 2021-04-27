@@ -148,10 +148,10 @@ export const data = {
   nftMint: {
     sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
     recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    denom: 'denom',
+    denom: 'denom13',
     token_uri: 'uri',
-    id: 'token1',
-    quantity: '2',
+    id: 'token11',
+    quantity: '20',
     reserve: '1',
     allow_mint: true,
   },
