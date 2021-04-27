@@ -258,7 +258,7 @@ function nftMint(data, wallet) {
     id: data.id ? data.id : uuidv4(),
     sender: wallet.address,
     recipient: data.recipient ? data.recipient : wallet.address,
-    quantity: getAmountToUNI(data.quantity),
+    quantity: data.quantity,
     reserve: getAmountToUNI(data.reserve),
     token_uri: data.token_uri,
     allow_mint: data.allow_mint,
@@ -269,7 +269,7 @@ function nftBurn(data, wallet) {
     sender: wallet.address,
     denom: data.denom,
     id: data.id,
-    quantity: getAmountToUNI(data.quantity),
+    quantity: data.quantity,
   };
 }
 function nftEditMetadata(data, wallet) {
@@ -286,7 +286,7 @@ function nftTransfer(data, wallet) {
     id: data.id,
     sender: wallet.address,
     recipient: data.recipient,
-    quantity: getAmountToUNI(data.quantity),
+    quantity: data.quantity,
   };
 }
 
