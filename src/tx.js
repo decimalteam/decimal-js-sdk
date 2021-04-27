@@ -1,5 +1,6 @@
 import DecimalNumber from 'decimal.js';
 import hex from 'string-hex';
+import { v4 as uuidv4 } from 'uuid';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
@@ -251,39 +252,39 @@ function swapRefund(data) {
     hashed_secret: data.secretHash,
   };
 }
-function nftMint(data) {
+function nftMint(data, wallet) {
   return {
     denom: data.denom,
-    id: data.id,
-    sender: data.sender,
-    recipient: data.recipient,
+    id: data.id ? data.id : uuidv4(),
+    sender: wallet.address,
+    recipient: data.recipient ? data.recipient : wallet.address,
     quantity: getAmountToUNI(data.quantity),
     reserve: getAmountToUNI(data.reserve),
     token_uri: data.token_uri,
     allow_mint: data.allow_mint,
   };
 }
-function nftBurn(data) {
+function nftBurn(data, wallet) {
   return {
-    sender: data.sender,
+    sender: wallet.address,
     denom: data.denom,
     id: data.id,
     quantity: getAmountToUNI(data.quantity),
   };
 }
-function nftEditMetadata(data) {
+function nftEditMetadata(data, wallet) {
   return {
-    sender: data.sender,
+    sender: wallet.address,
     denom: data.denom,
     id: data.id,
     token_uri: data.token_uri,
   };
 }
-function nftTransfer(data) {
+function nftTransfer(data, wallet) {
   return {
     denom: data.denom,
     id: data.id,
-    sender: data.sender,
+    sender: wallet.address,
     recipient: data.recipient,
     quantity: getAmountToUNI(data.quantity),
   };
