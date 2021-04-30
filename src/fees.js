@@ -71,7 +71,7 @@ export function getCommission(api) {
     const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
     const feeForText = new DecimalNumber(textSize).times(2);
-    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(10); // 10 - additional commission for the guarantee
+    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(20); // 10 - additional commission for the guarantee
 
     if (type === TX_TYPE.COIN_MULTISEND) {
       const numberOfParticipants = tx.msg[0].value.sends.length;
