@@ -99,14 +99,11 @@ export function setCommission(api) {
     }];
 
     const fee = await getCommission(api)(tx, feeCoin);
-    // console.log(1111, fee.base.toString())
-    // console.log(222, fee.coinPrice.toString())
-    // console.log(333, fee.value.toString())
 
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
 
     const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
-    // console.log(feeAmountSize.toString())
+
     let totalFee = '';
 
     if (feeCoin !== 'tdel' && feeCoin !== 'del') {
@@ -117,7 +114,6 @@ export function setCommission(api) {
     }
 
     tx.fee.amount[0].amount = getAmountToUNI(totalFee);
-    // console.log(tx.fee.amount[0].amount)
     return tx;
   };
 }

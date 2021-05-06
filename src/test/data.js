@@ -1,8 +1,8 @@
 export const data = {
   send: {
-    to: 'dx1p844kydt9eljvuef4nk52dm6lcgj5c42q4zmvd',
-    coin: 'muhcoin2',
-    amount: '2',
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tdel',
+    amount: '1',
   },
   multisend: [
     {
