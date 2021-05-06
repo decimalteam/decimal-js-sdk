@@ -37,6 +37,10 @@ FEES[TX_TYPE.SWAP_HTLT] = 33000;
 FEES[TX_TYPE.SWAP_REDEEM] = 0;
 FEES[TX_TYPE.SWAP_REFUND] = 0;
 FEES[TX_TYPE.COIN_UPDATE] = 0;
+FEES[TX_TYPE.NFT_MINT] = 0;
+FEES[TX_TYPE.NFT_BURN] = 0;
+FEES[TX_TYPE.NFT_EDIT_METADATA] = 0;
+FEES[TX_TYPE.NFT_TRANSFER] = 0;
 
 async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);
@@ -67,7 +71,7 @@ export function getCommission(api) {
     const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
     const feeForText = new DecimalNumber(textSize).times(2);
-    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(20); // 10 - additional commission for the guarantee
+    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(20); // 20 - additional commission for the guarantee
 
     if (type === TX_TYPE.COIN_MULTISEND) {
       const numberOfParticipants = tx.msg[0].value.sends.length;
