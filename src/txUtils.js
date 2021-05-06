@@ -79,7 +79,6 @@ export function getSignMeta(api, wallet, createNonce = true) {
     const nodeInfoResp = await api.get('/rpc/node_info');
 
     const accountResp = createNonce ? await api.get(`/rpc/auth/accounts/${wallet.address}`) : await api.get(`/rpc/accounts/${wallet.address}`);
-
     return {
       account_number: `${accountResp.data.result.value.account_number}`,
       sequence: `${accountResp.data.result.value.sequence}`,
@@ -97,7 +96,7 @@ export function makeSignature(api, wallet, decimal, createNonce) {
     }
 
     if (true || !signMeta || signMeta.account_number === '0') { // TODO
-      signMeta = await getSignMeta(api, wallet)(createNonce);
+      signMeta = await getSignMeta(api, wallet, createNonce)();
     }
 
     const stdTx = signTx(tx, signMeta, wallet);
@@ -122,7 +121,7 @@ export function postTx(api) {
 export function formTx(api, wallet, decimal, createNonce) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-    const signedTx = await makeSignature(api, wallet, decimal)(unsignTx, wallet, createNonce);
+    const signedTx = await makeSignature(api, wallet, decimal, createNonce)(unsignTx, wallet, createNonce);
 
     const mode = options && options.mode ? options.mode : 'sync';
 
