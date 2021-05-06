@@ -1,8 +1,8 @@
 export const data = {
   send: {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '1',
+    to: 'dx1p844kydt9eljvuef4nk52dm6lcgj5c42q4zmvd',
+    coin: 'muhcoin2',
+    amount: '2',
   },
   multisend: [
     {
@@ -146,33 +146,31 @@ export const data = {
     secretHash: 'hello1',
   },
   nftMint: {
-    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
     recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    denom: 'denom13',
-    token_uri: 'uri',
-    id: 'token11',
-    quantity: '20',
+    denom: 'phone',
+    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+    quantity: '1',
     reserve: '1',
     allow_mint: true,
   },
   nftBurn: {
-    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    denom: 'TEST',
-    id: 'test420',
-    quantity: '10',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    quantity: '12',
   },
   nftEditMetadata: {
-    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    denom: 'TEST',
-    id: 'test420',
-    token_uri: 'uri',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    token_uri: 'uhttp://devnet.nft.decimalchain.com/api/nfts/CvavSYvudYqiGeOY67dzLmdl6NjqTdEb',
   },
   nftTransfer: {
-    denom: 'TEST1',
-    id: 'test4201',
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
     recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '100',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    quantity: '2',
   },
 };
 export const options = {

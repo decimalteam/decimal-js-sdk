@@ -1,5 +1,6 @@
 import DecimalNumber from 'decimal.js';
 import hex from 'string-hex';
+import { v4 as uuidv4 } from 'uuid';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
 import { formTx, postTx, prepareTx } from './txUtils';
@@ -251,41 +252,41 @@ function swapRefund(data) {
     hashed_secret: data.secretHash,
   };
 }
-function nftMint(data) {
+function nftMint(data, wallet) {
   return {
     denom: data.denom,
-    id: data.id,
-    sender: data.sender,
-    recipient: data.recipient,
-    quantity: getAmountToUNI(data.quantity),
+    id: data.id ? data.id : uuidv4(),
+    sender: wallet.address,
+    recipient: data.recipient ? data.recipient : wallet.address,
+    quantity: data.quantity,
     reserve: getAmountToUNI(data.reserve),
     token_uri: data.token_uri,
     allow_mint: data.allow_mint,
   };
 }
-function nftBurn(data) {
+function nftBurn(data, wallet) {
   return {
-    sender: data.sender,
+    sender: wallet.address,
     denom: data.denom,
     id: data.id,
-    quantity: getAmountToUNI(data.quantity),
+    quantity: data.quantity,
   };
 }
-function nftEditMetadata(data) {
+function nftEditMetadata(data, wallet) {
   return {
-    sender: data.sender,
+    sender: wallet.address,
     denom: data.denom,
     id: data.id,
     token_uri: data.token_uri,
   };
 }
-function nftTransfer(data) {
+function nftTransfer(data, wallet) {
   return {
     denom: data.denom,
     id: data.id,
-    sender: data.sender,
+    sender: wallet.address,
     recipient: data.recipient,
-    quantity: getAmountToUNI(data.quantity),
+    quantity: data.quantity,
   };
 }
 
@@ -382,10 +383,10 @@ function getValue(type, data, options, wallet) {
   return { value, options };
 }
 
-export function getTransaction(api, wallet, decimal) {
+export function getTransaction(api, wallet, decimal, createNonce) {
   return async (type, data, options) => {
     const formatted = getValue(type, data, options, wallet);
-    const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options, wallet);
+    const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options, wallet, createNonce);
 
     return broadcastTx;
   };
@@ -406,7 +407,7 @@ export function estimateTxFee(api, wallet, decimal) {
       const { feeCoin } = options;
 
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options, false); //TODO
         const feeAmounts = broadcastTx.tx.fee.amount;
         const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 

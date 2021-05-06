@@ -67,7 +67,7 @@ export function getCommission(api) {
     const ticker = feeCoin.toLowerCase();
     const textSize = await getTxSize(api, tx);
     const feeForText = new DecimalNumber(textSize).times(2);
-    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(10); // 10 - additional commission for the guarantee
+    let feeInBase = new DecimalNumber(FEES[type]).plus(feeForText).plus(20); // 10 - additional commission for the guarantee
 
     if (type === TX_TYPE.COIN_MULTISEND) {
       const numberOfParticipants = tx.msg[0].value.sends.length;
@@ -95,10 +95,14 @@ export function setCommission(api) {
     }];
 
     const fee = await getCommission(api)(tx, feeCoin);
+    // console.log(1111, fee.base.toString())
+    // console.log(222, fee.coinPrice.toString())
+    // console.log(333, fee.value.toString())
 
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
-    const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
 
+    const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
+    // console.log(feeAmountSize.toString())
     let totalFee = '';
 
     if (feeCoin !== 'tdel' && feeCoin !== 'del') {
@@ -109,6 +113,7 @@ export function setCommission(api) {
     }
 
     tx.fee.amount[0].amount = getAmountToUNI(totalFee);
+    // console.log(tx.fee.amount[0].amount)
     return tx;
   };
 }
