@@ -386,7 +386,7 @@ function getValue(type, data, options, wallet) {
 export function getTransaction(api, wallet, decimal, createNonce) {
   return async (type, data, options) => {
     const formatted = getValue(type, data, options, wallet);
-    const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options, wallet, createNonce);
+    const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options, wallet);
 
     return broadcastTx;
   };
@@ -407,7 +407,7 @@ export function estimateTxFee(api, wallet, decimal) {
       const { feeCoin } = options;
 
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options, false);
+        const broadcastTx = await getTransaction(api, wallet, decimal, false)(type, data, options);
         const feeAmounts = broadcastTx.tx.fee.amount;
         const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 
