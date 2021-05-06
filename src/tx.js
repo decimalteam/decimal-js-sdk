@@ -407,7 +407,7 @@ export function estimateTxFee(api, wallet, decimal) {
       const { feeCoin } = options;
 
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options, false); //TODO
+        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options, false);
         const feeAmounts = broadcastTx.tx.fee.amount;
         const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 
