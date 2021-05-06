@@ -455,7 +455,7 @@ SCHEMA[TX_TYPE.NFT_MINT] = {
     'denom',
     // 'id',
     // 'sender',
-    'recipient',
+    //'recipient',
     'token_uri',
     'quantity',
     'reserve',
