@@ -121,7 +121,7 @@ export function postTx(api) {
 export function formTx(api, wallet, decimal, createNonce) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-    const signedTx = await makeSignature(api, wallet, decimal, createNonce)(unsignTx, wallet, createNonce);
+    const signedTx = await makeSignature(api, wallet, decimal, createNonce)(unsignTx, wallet);
 
     const mode = options && options.mode ? options.mode : 'sync';
 
