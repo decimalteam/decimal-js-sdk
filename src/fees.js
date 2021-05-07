@@ -41,6 +41,8 @@ FEES[TX_TYPE.NFT_MINT] = 0;
 FEES[TX_TYPE.NFT_BURN] = 0;
 FEES[TX_TYPE.NFT_EDIT_METADATA] = 0;
 FEES[TX_TYPE.NFT_TRANSFER] = 0;
+FEES[TX_TYPE.NFT_DELEGATE] = 0;
+FEES[TX_TYPE.NFT_UNBOND] = 0;
 
 async function getCoinPrice(api, ticker) {
   const coin = await getCoin(api)(ticker);

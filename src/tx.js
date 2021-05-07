@@ -290,6 +290,24 @@ function nftTransfer(data, wallet) {
   };
 }
 
+function nftDelegate(data, wallet) {
+  return {
+    denom: data.denom,
+    id: data.id,
+    sender: wallet.address,
+    recipient: data.recipient,
+    quantity: data.quantity,
+  };
+}
+function nftUnbond(data, wallet) {
+  return {
+    denom: data.denom,
+    id: data.id,
+    sender: wallet.address,
+    recipient: data.recipient,
+    quantity: data.quantity,
+  };
+}
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
@@ -375,6 +393,12 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.NFT_TRANSFER:
       value = nftTransfer(data, wallet);
+      break;
+    case TX_TYPE.NFT_DELEGATE:
+      value = nftDelegate(data, wallet);
+      break;
+    case TX_TYPE.NFT_UNBOND:
+      value = nftUnbond(data, wallet);
       break;
     default:
       throw new Error('Invalid type of transaction');
