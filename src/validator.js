@@ -462,12 +462,11 @@ SCHEMA[TX_TYPE.NFT_MINT] = {
     'allow_mint',
   ],
 };
-SCHEMA[TX_TYPE.NFT_BURN] = {
 
+SCHEMA[TX_TYPE.NFT_BURN] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    // sender: fields.string,
     denom: fields.string,
     id: fields.string,
     quantity: fields.int,
@@ -475,18 +474,16 @@ SCHEMA[TX_TYPE.NFT_BURN] = {
   minProperties: 3,
   maxProperties: 3,
   required: [
-    // 'sender',
     'denom',
     'id',
     'quantity',
   ],
 };
-SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
 
+SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    // sender: fields.string,
     denom: fields.string,
     id: fields.string,
     token_uri: fields.string,
@@ -494,18 +491,16 @@ SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
   minProperties: 3,
   maxProperties: 3,
   required: [
-    // 'sender',
     'denom',
     'id',
     'token_uri',
   ],
 };
-SCHEMA[TX_TYPE.NFT_TRANSFER] = {
 
+SCHEMA[TX_TYPE.NFT_TRANSFER] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    // sender: fields.string,
     recipient: fields.string,
     denom: fields.string,
     id: fields.string,
@@ -514,10 +509,47 @@ SCHEMA[TX_TYPE.NFT_TRANSFER] = {
   minProperties: 4,
   maxProperties: 4,
   required: [
-    // 'sender',
     'recipient',
     'denom',
     'id',
+    'quantity',
+  ],
+};
+
+SCHEMA[TX_TYPE.NFT_DELEGATE] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    validator_address: fields.string,
+    id: fields.string,
+    denom: fields.string,
+    quantity: fields.int,
+  },
+  minProperties: 4,
+  maxProperties: 4,
+  required: [
+    'validator_address',
+    'id',
+    'denom',
+    'quantity',
+  ],
+};
+
+SCHEMA[TX_TYPE.NFT_UNBOND] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    validator_address: fields.string,
+    id: fields.string,
+    denom: fields.string,
+    quantity: fields.int,
+  },
+  minProperties: 4,
+  maxProperties: 4,
+  required: [
+    'validator_address',
+    'id',
+    'denom',
     'quantity',
   ],
 };
