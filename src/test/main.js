@@ -44,6 +44,7 @@ const decimal = new Decimal({baseURL: 'https://devnet-gate.decimalchain.com/api/
     //await decimal.nftMint(data.nftMint);
     const fee = await decimal.estimateTxFee('nft/msg_mint', data.nftMint, options);
     console.log(fee)
-
+     await decimal.nftDelegate(data.nftDelegate, options)
+     await decimal.nftUnbond(data.nftUnbond, options)
     console.log(222222)
 }());
