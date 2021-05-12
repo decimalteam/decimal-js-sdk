@@ -172,6 +172,20 @@ export const data = {
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
     quantity: '2',
   },
+  nftDelegate: {
+    denom: 'TEST1',
+    id: 'test4201',
+    recipient: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    quantity: '100',
+  },
+  nftUnbond: {
+    denom: 'TEST1',
+    id: 'test4201',
+    recipient: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    quantity: '100',
+  },
 };
 export const options = {
   feeCoin: '',

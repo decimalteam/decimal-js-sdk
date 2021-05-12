@@ -40,10 +40,11 @@ const decimal = new Decimal({baseURL: 'https://devnet-gate.decimalchain.com/api/
     };
     //await decimal.sendCoins(data.send);
 
-    console.log(111111)
+    // console.log(111111)
     //await decimal.nftMint(data.nftMint);
-    const fee = await decimal.estimateTxFee('nft/msg_mint', data.nftMint, options);
-    console.log(fee)
-
-    console.log(222222)
+    // const fee = await decimal.estimateTxFee('nft/msg_mint', data.nftMint, options);
+    // console.log(fee)
+    //  await decimal.nftDelegate(data.nftDelegate, options)
+    //  await decimal.nftUnbond(data.nftUnbond, options)
+    // console.log(222222)
 }());
