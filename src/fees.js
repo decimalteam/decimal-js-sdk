@@ -103,6 +103,7 @@ export function setCommission(api) {
     const fee = await getCommission(api)(tx, feeCoin);
 
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
+
     const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
 
     let totalFee = '';
