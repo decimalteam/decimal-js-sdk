@@ -12,7 +12,7 @@
   "dependencies": {
     "@tendermint/belt": "^0.3.0",
     "@tendermint/sig": "^0.4.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bech32": "^1.1.4",
     "bip39": "^3.0.2",
     "bs58": "^4.0.1",
@@ -43,7 +43,7 @@
     "eslint-plugin-import": "^2.20.1",
     "fs": "0.0.1-security",
     "html-webpack-plugin": "^3.2.0",
-    "terser-webpack-plugin": "^2.3.5",
+    "terser-webpack-plugin": "^5.1.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

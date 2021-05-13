@@ -146,11 +146,11 @@ export const data = {
     secretHash: 'hello1',
   },
   nftMint: {
-    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     denom: 'phone',
-    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+    token_uri: 'https://testnet-nft.decimalchain.com/api/nfts/pepe112',
     quantity: '1',
-    reserve: '1',
+    reserve: '10000000',
     allow_mint: true,
   },
   nftBurn: {
@@ -173,11 +173,11 @@ export const data = {
     quantity: '2',
   },
   nftDelegate: {
-    denom: 'TEST1',
-    id: 'test4201',
+    denom: 'Bank',
+    id: 'd4eb301f9f5947aa31c98cf378e09680d4b07f4c',
     recipient: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '100',
+    quantity: '1',
   },
   nftUnbond: {
     denom: 'TEST1',
