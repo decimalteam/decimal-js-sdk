@@ -294,8 +294,8 @@ function nftDelegate(data, wallet) {
   return {
     denom: data.denom,
     id: data.id,
-    sender: wallet.address,
-    recipient: data.recipient,
+    delegator_address: wallet.address,
+    validator_address: data.validator_address,
     quantity: data.quantity,
   };
 }
@@ -303,8 +303,8 @@ function nftUnbond(data, wallet) {
   return {
     denom: data.denom,
     id: data.id,
-    sender: wallet.address,
-    recipient: data.recipient,
+    delegator_address: wallet.address,
+    validator_address: data.validator_address,
     quantity: data.quantity,
   };
 }
