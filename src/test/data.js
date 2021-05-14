@@ -175,16 +175,16 @@ export const data = {
   nftDelegate: {
     denom: 'Bank',
     id: 'd4eb301f9f5947aa31c98cf378e09680d4b07f4c',
-    recipient: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    validator_address: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '1',
+    quantity: '2',
   },
   nftUnbond: {
-    denom: 'TEST1',
-    id: 'test4201',
-    recipient: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    denom: 'Bank',
+    id: 'd4eb301f9f5947aa31c98cf378e09680d4b07f4c',
+    validator_address: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '100',
+    quantity: '2',
   },
 };
 export const options = {

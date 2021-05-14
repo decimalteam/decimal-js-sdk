@@ -29,6 +29,6 @@ export default {
   NFT_BURN: 'nft/msg_burn',
   NFT_EDIT_METADATA: 'nft/msg_edit_metadata',
   NFT_TRANSFER: 'nft/msg_transfer',
-  NFT_DELEGATE: 'nft/msg_delegate',
-  NFT_UNBOND: 'nft/msg_unbond',
+  NFT_DELEGATE: 'validator/delegate_nft',
+  NFT_UNBOND: 'validator/unbond_nft',
 };
