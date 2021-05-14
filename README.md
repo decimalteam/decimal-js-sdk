@@ -483,12 +483,12 @@ await decimal.getStakesByAddress(address);
   "validators": [
     {
       "validatorId": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
-      "stakes": [
+      "stakesNfts": [
         {
-          "coin": "tdel",
-          "amount": "500000000000000000000",
-          "baseAmount": "500000000000000000000",
-          "unbondAmount": null
+           "baseQuantity": "1000",
+           "nftCollection": "denom1",
+           "quantity": "10",
+           "unbondQuantity": "10"
         }
       ],
       "totalStake": "500000000000000000000",
@@ -517,7 +517,7 @@ await decimal.getStakesByAddress(address);
       }
     }
   ],
-  "total": "500000000000000000000"
+  "total": "1000"
 }
 */
 
