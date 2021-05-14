@@ -6,6 +6,8 @@ const SCHEMA = {};
 const patterns = {
   float: /^\d*\.?\d*$/,
   int: /^\d+$/,
+  denom: /^[A-Za-z\-_]+$/,
+  url: /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
 };
 
 const fields = {
@@ -23,6 +25,15 @@ const fields = {
   boolean: {
     type: 'boolean',
   },
+  url: {
+    type: 'string',
+    pattern: patterns.url,
+  },
+  denom: {
+    type: 'string',
+    pattern: patterns.denom,
+  },
+
 };
 
 SCHEMA[TX_TYPE.COIN_SEND] = {
@@ -440,13 +451,13 @@ SCHEMA[TX_TYPE.NFT_MINT] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    denom: fields.string,
+    denom: fields.denom,
     // id: fields.string,
     // sender: fields.string,
     recipient: fields.string,
     quantity: fields.int,
     reserve: fields.amount,
-    token_uri: fields.string,
+    token_uri: fields.url,
     allow_mint: fields.boolean,
   },
   minProperties: 4,
@@ -455,7 +466,7 @@ SCHEMA[TX_TYPE.NFT_MINT] = {
     'denom',
     // 'id',
     // 'sender',
-    //'recipient',
+    // 'recipient',
     'token_uri',
     'quantity',
     'reserve',
@@ -467,7 +478,7 @@ SCHEMA[TX_TYPE.NFT_BURN] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    denom: fields.string,
+    denom: fields.denom,
     id: fields.string,
     quantity: fields.int,
   },
@@ -484,7 +495,7 @@ SCHEMA[TX_TYPE.NFT_EDIT_METADATA] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    denom: fields.string,
+    denom: fields.denom,
     id: fields.string,
     token_uri: fields.string,
   },
@@ -502,7 +513,7 @@ SCHEMA[TX_TYPE.NFT_TRANSFER] = {
   type: 'object',
   properties: {
     recipient: fields.string,
-    denom: fields.string,
+    denom: fields.denom,
     id: fields.string,
     quantity: fields.int,
   },
@@ -522,7 +533,7 @@ SCHEMA[TX_TYPE.NFT_DELEGATE] = {
   properties: {
     validator_address: fields.string,
     id: fields.string,
-    denom: fields.string,
+    denom: fields.denom,
     quantity: fields.int,
   },
   minProperties: 4,
@@ -541,7 +552,7 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
   properties: {
     validator_address: fields.string,
     id: fields.string,
-    denom: fields.string,
+    denom: fields.denom,
     quantity: fields.int,
   },
   minProperties: 4,
