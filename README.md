@@ -522,6 +522,56 @@ await decimal.getStakesByAddress(address);
 */
 
 ```
+### getNftStakesByAddress()
+```js
+const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g';
+
+await decimal.getNftStakesByAddress(address);
+
+/*
+{
+  "validators": [
+    {
+      "validatorId": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
+      "stakes": [
+        {
+          "coin": "tdel",
+          "amount": "500000000000000000000",
+          "baseAmount": "500000000000000000000",
+          "unbondAmount": null
+        }
+      ],
+      "totalStake": "500000000000000000000",
+      "validator": {
+        "address": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
+        "consensusAddress": "dxvalcons17ntss5hyuutk5w4a4upptz3xc9f3f0tgwwmfw8",
+        "rewardAddress": "dx1ajytg8jg8ypx0rj9p792x32fuxyezga43jd3ry",
+        "moniker": "test-node-fra1-02",
+        "website": "decimalchain.com",
+        "details": "Declaring validator on test-node-fra1-02",
+        "identity": null,
+        "security_contact": null,
+        "blockId": 0,
+        "skippedBlocks": 0,
+        "delegators": 2,
+        "fee": "0.100000000000000000",
+        "slots": 2,
+        "mins": "0",
+        "stake": "40000500000000000000000000",
+        "power": "40000500",
+        "rating": null,
+        "status": "online",
+        "kind": "Validator",
+        "createdAt": "2020-07-28T11:48:06.658Z",
+        "updatedAt": "2020-07-29T12:51:33.002Z"
+      }
+    }
+  ],
+  "total": "500000000000000000000"
+}
+*/
+
+```
 ### getValidator()
 ```js
 const validatorAddress = 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0';
