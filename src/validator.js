@@ -15,6 +15,9 @@ const fields = {
     type: 'string',
     pattern: patterns.float,
   },
+  array: {
+    type: 'array',
+  },
   string: {
     type: 'string',
   },
@@ -480,14 +483,14 @@ SCHEMA[TX_TYPE.NFT_BURN] = {
   properties: {
     denom: fields.denom,
     id: fields.string,
-    quantity: fields.int,
+    sub_token_ids: fields.array,
   },
   minProperties: 3,
   maxProperties: 3,
   required: [
     'denom',
     'id',
-    'quantity',
+    'sub_token_ids',
   ],
 };
 
@@ -515,7 +518,7 @@ SCHEMA[TX_TYPE.NFT_TRANSFER] = {
     recipient: fields.string,
     denom: fields.denom,
     id: fields.string,
-    quantity: fields.int,
+    sub_token_ids: fields.array,
   },
   minProperties: 4,
   maxProperties: 4,
@@ -523,7 +526,7 @@ SCHEMA[TX_TYPE.NFT_TRANSFER] = {
     'recipient',
     'denom',
     'id',
-    'quantity',
+    'sub_token_ids',
   ],
 };
 
@@ -534,7 +537,7 @@ SCHEMA[TX_TYPE.NFT_DELEGATE] = {
     validator_address: fields.string,
     id: fields.string,
     denom: fields.denom,
-    quantity: fields.int,
+    sub_token_ids: fields.array,
   },
   minProperties: 4,
   maxProperties: 4,
@@ -542,7 +545,7 @@ SCHEMA[TX_TYPE.NFT_DELEGATE] = {
     'validator_address',
     'id',
     'denom',
-    'quantity',
+    'sub_token_ids',
   ],
 };
 
@@ -553,7 +556,7 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
     validator_address: fields.string,
     id: fields.string,
     denom: fields.denom,
-    quantity: fields.int,
+    sub_token_ids: fields.array,
   },
   minProperties: 4,
   maxProperties: 4,
@@ -561,7 +564,7 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
     'validator_address',
     'id',
     'denom',
-    'quantity',
+    'sub_token_ids',
   ],
 };
 export default function validateTxData(data, type) {
