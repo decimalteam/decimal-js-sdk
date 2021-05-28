@@ -869,7 +869,76 @@ const data = {
 
 await decimal.redeemCheck(data, options);
 ```
+## NFTs
 
+
+### nftMint()
+```js
+const data = {
+    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    // id: 'myId', If not present, UUID would be generated instead
+    denom: 'phone',
+    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+    quantity: '1',
+    reserve: '1',
+    allow_mint: true,
+  }
+
+await decimal.nftMint(data, options);
+```
+### nftBurn()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftBurn(data, options);
+```
+### nftEditMetadata()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+}
+
+await decimal.nftEditMetadata(data, options);
+```
+### nftTransfer()
+```js
+const data = {
+  recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftTransfer(data, options);
+```
+### nftDelegate()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftDelegate(data, options);
+```
+### nftUnbond()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftUnbond(data, options);
+```
 ## Multisig
 
 ### multisigCreateWallet()
