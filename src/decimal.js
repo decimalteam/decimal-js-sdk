@@ -14,7 +14,7 @@ import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
-import { MAINNET, validateNetwork } from './network';
+import { validateNetwork } from './network';
 import {
   prepareTx,
   makeSignature,
