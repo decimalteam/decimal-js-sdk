@@ -90,13 +90,11 @@ export default class Decimal {
     this.msgSwapHTLT = sendTransaction(TX_TYPE.SWAP_HTLT, apiInstance, wallet, this);
     this.msgSwapRedeem = sendTransaction(TX_TYPE.SWAP_REDEEM, apiInstance, wallet, this);
     this.msgSwapRefund = sendTransaction(TX_TYPE.SWAP_REFUND, apiInstance, wallet, this);
-    if (this.network !== MAINNET) {
-      this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
-      this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
-      this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
-      this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
-      this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
-      this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
-    }
+    this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
+    this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
+    this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
+    this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
+    this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
+    this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
   }
 }
