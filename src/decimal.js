@@ -24,6 +24,7 @@ import {
 
 import { issueCheck } from './check';
 import { getTransaction, sendTransaction, estimateTxFee } from './tx';
+import getNft from './api/get-nft';
 
 export default class Decimal {
   constructor(options) {
@@ -41,6 +42,7 @@ export default class Decimal {
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
+    this.getNft = getNft(apiInstance);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
