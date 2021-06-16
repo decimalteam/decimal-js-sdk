@@ -13,7 +13,7 @@ import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
-import { DEVNET, MAINNET, validateNetwork } from './network';
+import { MAINNET, validateNetwork } from './network';
 import {
   prepareTx,
   makeSignature,

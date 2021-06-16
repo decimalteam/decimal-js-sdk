@@ -1,8 +1,8 @@
 export const data = {
   send: {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '1',
+    coin: 'del',
+    amount: '16000',
   },
   multisend: [
     {
@@ -76,7 +76,7 @@ export const data = {
     ticker: 'TESTTT',
     initSupply: '50000',
     maxSupply: '100000',
-    reserve: '2000',
+    reserve: '100',
     crr: '45',
     identity: 'e353b89e0de0a78974f9ecaf033721ac',
   },
@@ -166,25 +166,25 @@ export const data = {
     token_uri: 'uhttp://devnet.nft.decimalchain.com/api/nfts/CvavSYvudYqiGeOY67dzLmdl6NjqTdEb',
   },
   nftTransfer: {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    denom: 'Cat',
+    id: 'a59913f01976735bee8411676015e2b578a49068',
+    recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '2',
+    subTokens: ["1"],
   },
   nftDelegate: {
-    denom: 'Bank',
-    id: 'd4eb301f9f5947aa31c98cf378e09680d4b07f4c',
-    validator_address: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    denom: 'Music',
+    id: '544c7ce1eb5fd342cfc5a94f517cccd85fec794a',
+    validator_address: 'dxvaloper1nrr6er27mmcufmaqm4dyu6c5r6489cfmdxucuq',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '2',
+    quantity: '1',
   },
   nftUnbond: {
-    denom: 'Bank',
-    id: 'd4eb301f9f5947aa31c98cf378e09680d4b07f4c',
-    validator_address: 'dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
+    denom: 'Music',
+    id: '544c7ce1eb5fd342cfc5a94f517cccd85fec794a',
+    validator_address: 'dxvaloper1nrr6er27mmcufmaqm4dyu6c5r6489cfmdxucuq',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    quantity: '2',
+    quantity: '1',
   },
 };
 export const options = {
