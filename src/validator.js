@@ -397,26 +397,24 @@ SCHEMA[TX_TYPE.PROPOSAL_VOTE] = {
   ],
 };
 
-SCHEMA[TX_TYPE.SWAP_HTLT] = {
+SCHEMA[TX_TYPE.SWAP_INIT] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    type: fields.string,
-    from: fields.string,
     recipient: fields.string,
-    secretHash: fields.string,
     amount: fields.amount,
-    coin: fields.string,
+    tokenName: fields.string,
+    tokenSymbol: fields.string,
+    destChain: fields.int,
   },
-  minProperties: 6,
-  maxProperties: 6,
+  minProperties: 5,
+  maxProperties: 5,
   required: [
-    'type',
-    'from',
     'recipient',
-    'secretHash',
     'amount',
-    'coin',
+    'tokenName',
+    'tokenSymbol',
+    'destChain',
   ],
 };
 
@@ -424,29 +422,29 @@ SCHEMA[TX_TYPE.SWAP_REDEEM] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    from: fields.string,
-    secret: fields.string,
+    recipient: fields.string,
+    amount: fields.amount,
+    tokenName: fields.string,
+    tokenSymbol: fields.string,
+    fromChain: fields.int,
+    v: fields.string,
+    r: fields.string,
+    s: fields.string,
   },
-  minProperties: 2,
-  maxProperties: 2,
+  minProperties: 10,
+  maxProperties: 10,
   required: [
     'from',
-    'secret',
-  ],
-};
-
-SCHEMA[TX_TYPE.SWAP_REFUND] = {
-  $schema: 'http://json-schema.org/schema#',
-  type: 'object',
-  properties: {
-    from: fields.string,
-    secretHash: fields.string,
-  },
-  minProperties: 2,
-  maxProperties: 2,
-  required: [
-    'from',
-    'secretHash',
+    'recepient',
+    'amount',
+    'tokenName',
+    'tokenSymbol',
+    'transactionNumber',
+    'fromChain',
+    'destChain',
+    'v',
+    'r',
+    's',
   ],
 };
 
@@ -569,7 +567,7 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
 };
 export default function validateTxData(data, type) {
   if (!SCHEMA[type]) return true;
-
+  console.log(data);
   const test = validate(data, SCHEMA[type]);
   if (!test.valid) {
     throw new Error(`[decimal-js-sdk]: ${test.errors[0].property} ${test.errors[0].message}`);

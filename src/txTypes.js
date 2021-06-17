@@ -21,9 +21,8 @@ export default {
   PROPOSAL_SUBMIT: 'cosmos-sdk/MsgSubmitProposal',
   PROPOSAL_VOTE: 'cosmos-sdk/MsgVote',
 
-  SWAP_HTLT: 'swap/msg_htlt',
-  SWAP_REDEEM: 'swap/msg_redeem',
-  SWAP_REFUND: 'swap/msg_refund',
+  SWAP_INIT: 'swap/msg_initialize',
+  SWAP_REDEEM: 'swap/msg_redeem_v2',
 
   NFT_MINT: 'nft/msg_mint',
   NFT_BURN: 'nft/msg_burn',
