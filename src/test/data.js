@@ -137,12 +137,16 @@ export const data = {
     destChain: '2',
   },
   swapRedeem: {
-    recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
+    from: '0x45376AD024c767577714C7B92882578aE8B7f98C',
     amount: '1',
+    recipient: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     tokenName: 'decimal',
     transactionNumber: 'lksdnd-asvkla-SDCds',
     tokenSymbol: 'del',
-    destChain: 2,
+    fromChain: '2',
+    v: '0x1c',
+    r: '0x0e0eb6089caa52794f7ad64a5ad7ab500b12cc7b640180e30b30b48a19c296e1',
+    s: '0x2005adafda24593f221aec030126d989609455b2ed66969b2bb64926137f3ce3',
   },
   swapRefund: {
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
