@@ -36,6 +36,9 @@ const fields = {
     type: 'string',
     pattern: patterns.denom,
   },
+  hex: {
+    type: 'int',
+  },
 
 };
 
@@ -429,7 +432,7 @@ SCHEMA[TX_TYPE.SWAP_REDEEM] = {
     tokenSymbol: fields.string,
     transactionNumber: fields.string,
     fromChain: fields.int,
-    v: fields.string,
+    v: fields.hex,
     r: fields.string,
     s: fields.string,
   },

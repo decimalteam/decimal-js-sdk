@@ -144,7 +144,7 @@ export const data = {
     transactionNumber: 'lksdnd-asvkla-SDCds',
     tokenSymbol: 'del',
     fromChain: '2',
-    v: '0x1c',
+    v: 0x1c,
     r: '0x0e0eb6089caa52794f7ad64a5ad7ab500b12cc7b640180e30b30b48a19c296e1',
     s: '0x2005adafda24593f221aec030126d989609455b2ed66969b2bb64926137f3ce3',
   },
