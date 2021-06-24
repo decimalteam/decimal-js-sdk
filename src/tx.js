@@ -18,13 +18,6 @@ function sendCoinData(data, wallet) {
     },
   };
 }
-function toByteArray(hexString) {
-  const result = [];
-  for (let i = 0; i < hexString.length; i += 2) {
-    result.push(parseInt(hexString.substr(i, 2), 16));
-  }
-  return result;
-}
 function buyCoinData(data, wallet) {
   const maxSpendLimit = data.maxSpendLimit ? getAmountToUNI(data.maxSpendLimit) : getAmountToUNI('100000000000');
   return {
