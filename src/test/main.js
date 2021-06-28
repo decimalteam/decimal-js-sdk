@@ -10,12 +10,15 @@ const wallet = new Wallet('wife volume desert main turkey symptom marble taxi fi
 const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, network: 'devnet' });
 
 (async function test() {
+  for (let i = 0; i < 5; i++){
+  await decimal.sendCoins(data.send);
   //await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
   // await decimal.nftEditMetadata(data.nftEditMetadata);
-  await decimal.nftTransfer(data.nftTransfer);
+  //await decimal.nftTransfer(data.nftTransfer);
   //await decimal.nftDelegate(data.nftDelegate);
   //await decimal.createCoin(data.createCoin);
+  }
 }());
 
 // const wallet = new Wallet('doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum');

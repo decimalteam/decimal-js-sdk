@@ -1,8 +1,8 @@
 export const data = {
   send: {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    to: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     coin: 'del',
-    amount: '16000',
+    amount: '160',
   },
   multisend: [
     {
@@ -170,7 +170,7 @@ export const data = {
     id: 'a59913f01976735bee8411676015e2b578a49068',
     recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    subTokens: ["1"],
+    sub_token_ids: ["2"],
   },
   nftDelegate: {
     denom: 'Music',

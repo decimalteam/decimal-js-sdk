@@ -269,7 +269,7 @@ function nftBurn(data, wallet) {
     sender: wallet.address,
     denom: data.denom,
     id: data.id,
-    quantity: data.quantity,
+    sub_token_ids: data.sub_token_ids,
   };
 }
 function nftEditMetadata(data, wallet) {
@@ -286,7 +286,7 @@ function nftTransfer(data, wallet) {
     id: data.id,
     sender: wallet.address,
     recipient: data.recipient,
-    quantity: data.quantity,
+    sub_token_ids: data.sub_token_ids,
   };
 }
 
@@ -296,7 +296,7 @@ function nftDelegate(data, wallet) {
     id: data.id,
     delegator_address: wallet.address,
     validator_address: data.validator_address,
-    quantity: data.quantity,
+    sub_token_ids: data.sub_token_ids,
   };
 }
 function nftUnbond(data, wallet) {
@@ -305,7 +305,7 @@ function nftUnbond(data, wallet) {
     id: data.id,
     delegator_address: wallet.address,
     validator_address: data.validator_address,
-    quantity: data.quantity,
+    sub_token_ids: data.sub_token_ids,
   };
 }
 function getValue(type, data, options, wallet) {

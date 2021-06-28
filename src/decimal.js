@@ -7,13 +7,14 @@ import getMultisigsByAddress from './api/get-multisigs';
 import getMultisig from './api/get-multisig';
 import getMultisigTxs from './api/get-txs-multisig';
 import getStakesByAddress from './api/get-stakes';
+import getNftStakesByAddress from './api/get-nft-stakes';
 import getValidator from './api/get-validator';
 import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
 import TX_TYPE from './txTypes';
-import { MAINNET, validateNetwork } from './network';
+import { validateNetwork } from './network';
 import {
   prepareTx,
   makeSignature,
@@ -23,6 +24,7 @@ import {
 
 import { issueCheck } from './check';
 import { getTransaction, sendTransaction, estimateTxFee } from './tx';
+import getNft from './api/get-nft';
 
 export default class Decimal {
   constructor(options) {
@@ -40,7 +42,9 @@ export default class Decimal {
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
+    this.getNft = getNft(apiInstance);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
+    this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
     this.getMeta = getSignMeta(apiInstance, wallet);
     this.getMyTransactions = getMyTransactions(apiInstance, wallet);
@@ -88,13 +92,11 @@ export default class Decimal {
     this.msgSwapHTLT = sendTransaction(TX_TYPE.SWAP_HTLT, apiInstance, wallet, this);
     this.msgSwapRedeem = sendTransaction(TX_TYPE.SWAP_REDEEM, apiInstance, wallet, this);
     this.msgSwapRefund = sendTransaction(TX_TYPE.SWAP_REFUND, apiInstance, wallet, this);
-    if (this.network !== MAINNET) {
-      this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
-      this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
-      this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
-      this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
-      this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
-      this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
-    }
+    this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
+    this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
+    this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
+    this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
+    this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
+    this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
   }
 }

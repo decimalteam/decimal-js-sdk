@@ -483,6 +483,56 @@ await decimal.getStakesByAddress(address);
   "validators": [
     {
       "validatorId": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
+      "stakesNfts": [
+        {
+           "baseQuantity": "1000",
+           "nftCollection": "denom1",
+           "quantity": "10",
+           "unbondQuantity": "10"
+        }
+      ],
+      "totalStake": "500000000000000000000",
+      "validator": {
+        "address": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
+        "consensusAddress": "dxvalcons17ntss5hyuutk5w4a4upptz3xc9f3f0tgwwmfw8",
+        "rewardAddress": "dx1ajytg8jg8ypx0rj9p792x32fuxyezga43jd3ry",
+        "moniker": "test-node-fra1-02",
+        "website": "decimalchain.com",
+        "details": "Declaring validator on test-node-fra1-02",
+        "identity": null,
+        "security_contact": null,
+        "blockId": 0,
+        "skippedBlocks": 0,
+        "delegators": 2,
+        "fee": "0.100000000000000000",
+        "slots": 2,
+        "mins": "0",
+        "stake": "40000500000000000000000000",
+        "power": "40000500",
+        "rating": null,
+        "status": "online",
+        "kind": "Validator",
+        "createdAt": "2020-07-28T11:48:06.658Z",
+        "updatedAt": "2020-07-29T12:51:33.002Z"
+      }
+    }
+  ],
+  "total": "1000"
+}
+*/
+
+```
+### getNftStakesByAddress()
+```js
+const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g';
+
+await decimal.getNftStakesByAddress(address);
+
+/*
+{
+  "validators": [
+    {
+      "validatorId": "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0",
       "stakes": [
         {
           "coin": "tdel",
@@ -819,7 +869,76 @@ const data = {
 
 await decimal.redeemCheck(data, options);
 ```
+## NFTs
 
+
+### nftMint()
+```js
+const data = {
+    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    // id: 'myId', If not present, UUID would be generated instead
+    denom: 'phone',
+    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+    quantity: '1',
+    reserve: '1',
+    allow_mint: true,
+  }
+
+await decimal.nftMint(data, options);
+```
+### nftBurn()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftBurn(data, options);
+```
+### nftEditMetadata()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+}
+
+await decimal.nftEditMetadata(data, options);
+```
+### nftTransfer()
+```js
+const data = {
+  recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftTransfer(data, options);
+```
+### nftDelegate()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftDelegate(data, options);
+```
+### nftUnbond()
+```js
+const data = {
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
+}
+
+await decimal.nftUnbond(data, options);
+```
 ## Multisig
 
 ### multisigCreateWallet()
