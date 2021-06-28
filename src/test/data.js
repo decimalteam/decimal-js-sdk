@@ -129,17 +129,23 @@ export const data = {
     decision: 'Yes',
   },
 
-  swapHtlt: {
-    type: 'out', // in / out
-    from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    recipient: '0xbc97b9ad892B52d399397d3F98486461b00893BA',
-    secretHash: 'hello1',
-    amount: '10',
-    coin: 'del',
+  swapInit: {
+    recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
+    amount: '1',
+    tokenName: 'decimal',
+    tokenSymbol: 'DEL',
+    destChain: '2',
   },
   swapRedeem: {
-    from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    secret: 'hello',
+    from: '0xeEE687174BC01e6F6866CBab962E5a7b3d2746Ef',
+    amount: '1',
+    recipient: 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9',
+    transactionNumber: '1624900728411',
+    tokenSymbol: 'del',
+    fromChain: '2',
+    v: 0x1b,
+    r: '0x608619549a48da96dc4dcefa00e0fab2ba25844a55317a25b22827d2abf0a8e8',
+    s: '0x55501613ea170645845b50b33f2db7dfbb23bec6b66508611be8e506fa6eb1cd',
   },
   swapRefund: {
     from: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',

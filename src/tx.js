@@ -1,5 +1,4 @@
 import DecimalNumber from 'decimal.js';
-import hex from 'string-hex';
 import { v4 as uuidv4 } from 'uuid';
 import TX_TYPE from './txTypes';
 import validateTxData from './validator';
@@ -19,7 +18,6 @@ function sendCoinData(data, wallet) {
     },
   };
 }
-
 function buyCoinData(data, wallet) {
   const maxSpendLimit = data.maxSpendLimit ? getAmountToUNI(data.maxSpendLimit) : getAmountToUNI('100000000000');
   return {
@@ -221,37 +219,34 @@ function voteProposal(data, wallet) {
   };
 }
 
-function swapHtlt(data) {
-  // const secretHash = shajs('sha256').update(data.secret).digest('hex');
-  const type = data.type === 'in' ? '2' : '1';
-
+function swapInit(data, wallet) {
   return {
-    transfer_type: type,
+    from: wallet.address,
+    recipient: data.recipient,
+    amount: getAmountToUNI(data.amount),
+    token_symbol: data.tokenSymbol,
+    transaction_number: Date.now().toString(),
+    from_chain: '1',
+    dest_chain: data.destChain,
+  };
+}
+function swapRedeem(data, wallet) {
+  return {
+    sender: wallet.address,
     from: data.from,
     recipient: data.recipient,
-    hashed_secret: data.secretHash,
-    amount: [{
-      amount: getAmountToUNI(data.amount),
-      denom: data.coin.toLowerCase(),
-    }],
+    amount: getAmountToUNI(data.amount),
+    token_name: data.tokenName,
+    token_symbol: data.tokenSymbol,
+    transaction_number: data.transactionNumber,
+    from_chain: data.fromChain,
+    dest_chain: '1',
+    v: data.v,
+    r: data.r.slice(2),
+    s: data.s.slice(2),
   };
 }
 
-function swapRedeem(data) {
-  const secret = hex(data.secret);
-  return {
-    from: data.from,
-    secret,
-  };
-}
-function swapRefund(data) {
-  // const secretHash = shajs('sha256').update(data.secret).digest('hex');
-
-  return {
-    from: data.from,
-    hashed_secret: data.secretHash,
-  };
-}
 function nftMint(data, wallet) {
   return {
     denom: data.denom,
@@ -373,14 +368,13 @@ function getValue(type, data, options, wallet) {
     case TX_TYPE.PROPOSAL_VOTE:
       value = voteProposal(data, wallet);
       break;
-    case TX_TYPE.SWAP_HTLT:
-      value = swapHtlt(data, wallet);
+    case TX_TYPE.SWAP_INIT:
+      console.log(data);
+      value = swapInit(data, wallet);
+      console.log(value);
       break;
     case TX_TYPE.SWAP_REDEEM:
       value = swapRedeem(data, wallet);
-      break;
-    case TX_TYPE.SWAP_REFUND:
-      value = swapRefund(data, wallet);
       break;
     case TX_TYPE.NFT_MINT:
       value = nftMint(data, wallet);

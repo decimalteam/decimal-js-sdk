@@ -89,9 +89,8 @@ export default class Decimal {
     this.proposalSubmit = sendTransaction(TX_TYPE.PROPOSAL_SUBMIT, apiInstance, wallet, this);
     this.proposalVote = sendTransaction(TX_TYPE.PROPOSAL_VOTE, apiInstance, wallet, this);
 
-    this.msgSwapHTLT = sendTransaction(TX_TYPE.SWAP_HTLT, apiInstance, wallet, this);
+    this.msgSwapInit = sendTransaction(TX_TYPE.SWAP_INIT, apiInstance, wallet, this);
     this.msgSwapRedeem = sendTransaction(TX_TYPE.SWAP_REDEEM, apiInstance, wallet, this);
-    this.msgSwapRefund = sendTransaction(TX_TYPE.SWAP_REFUND, apiInstance, wallet, this);
     this.nftMint = sendTransaction(TX_TYPE.NFT_MINT, apiInstance, wallet, this);
     this.nftBurn = sendTransaction(TX_TYPE.NFT_BURN, apiInstance, wallet, this);
     this.nftEditMetadata = sendTransaction(TX_TYPE.NFT_EDIT_METADATA, apiInstance, wallet, this);
