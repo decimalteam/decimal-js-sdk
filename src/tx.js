@@ -224,7 +224,6 @@ function swapInit(data, wallet) {
     from: wallet.address,
     recipient: data.recipient,
     amount: getAmountToUNI(data.amount),
-    token_name: data.tokenName,
     token_symbol: data.tokenSymbol,
     transaction_number: Date.now().toString(),
     from_chain: '1',

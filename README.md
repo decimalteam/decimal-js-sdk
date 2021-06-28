@@ -12,136 +12,168 @@ $ npm install decimal-js-sdk
 ```
 
 # Usage
+
 ## Available endpoints
+
 MAINNET -
 https://mainnet-gate.decimalchain.com/api/
 
 TESTNET -
 https://testnet-gate.decimalchain.com/api/
 
-
 The following code can be used to generate **mnemonic** or use your mnemonic
+
 ```js
 const bip39 = require("bip39");
 const mnemonic = bip39.generateMnemonic();
 ```
 
 ## Send coins
+
 ### CommonJS
+
 ```js
-const { Wallet, Decimal } = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
+const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
 
 const wallet = new Wallet( /*your mnemonic*/);
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet });
+const decimal = new Decimal({baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet});
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     coin: 'tdel',
     amount: '1',
-  };
+};
 
 const txResult = await decimal.sendCoins(data, [options]); // see options for details
 // => {hash: '4C0A408B6EBC33AD...', success: true, error: null}
 ```
 
 ### ES6
+
 ```js
 
-import { Wallet, Decimal } from 'decimal-js-sdk';
+import {Wallet, Decimal} from 'decimal-js-sdk';
 
 const wallet = new Wallet(/*your mnemonic*/);
-const decimal = new Decimal({ baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
+const decimal = new Decimal({baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     coin: 'tdel',
     amount: '1',
-  };
+};
 
 const txResult = await decimal.sendCoins(data); // see sendCoins for details
 // => {hash: '4C0A408B6EBC33AD...', success: true, error: null}
 ```
 
 ## Wallet API
+
 ### Generate wallet
+
 ```js
-import { Wallet } from 'decimal-js-sdk';
+import {Wallet} from 'decimal-js-sdk';
+
 const wallet = new Wallet();
 ```
+
 ### Generate wallet from mnemonic
+
 ```js
-import { Wallet } from 'decimal-js-sdk';
+import {Wallet} from 'decimal-js-sdk';
+
 const wallet = new Wallet('erase august mask elevator sand picture north there apple equal anchor target');
 ```
+
 ### Wallet methods
+
 `getPrivateKeyString`
 Return the private key string of 64 hex characters
+
 ```js
 wallet.getPrivateKeyString();
 // 8f7370936a728ff3d2306cbf2422382a4297f9059aecb5703fe83eef49d3e828
 ```
+
 `getPrivateKeyString`
 Return the public key string of 64 hex characters
+
 ```js
 wallet.getPublicKeyString();
 // 02f85bb9b5d87cda4197b09d0cd0ef5a1fb97f74f261f508f48a26d7dba2d0ed12
 ```
 
 # SDK instance
+
 - [Options](#options)
 - [Types](#types)
 - [API](#api)
-  - [getCoinsList](#getaddress)
-  - [getCoin](#getcoinslist)
-  - [getAddress](#getcoin)
-  - [getMeta](#getmeta)
-  - [getMultisigsByAddress](#getmultisigsbyaddress)
-  - [getMultisig](#getmultisig)
-  - [getMultisigTxs](#getmultisigtxs)
-  - [getStakesByAddress](#getstakesbyaddress)
-  - [getValidator](#getvalidator)
+    - [getCoinsList](#getaddress)
+    - [getCoin](#getcoinslist)
+    - [getAddress](#getcoin)
+    - [getMeta](#getmeta)
+    - [getMultisigsByAddress](#getmultisigsbyaddress)
+    - [getMultisig](#getmultisig)
+    - [getMultisigTxs](#getmultisigtxs)
+    - [getStakesByAddress](#getstakesbyaddress)
+    - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
-  - [getTransaction](#gettransaction)
-  - [postTx](#posttx)
-  - [estimateTxFee](#estimatetxfee)
+    - [getTransaction](#gettransaction)
+    - [postTx](#posttx)
+    - [estimateTxFee](#estimatetxfee)
 - [Coins](#coins)
-  - [sendCoin](#sendcoins)
-  - [multisendCoins](#multisendcoins)
-  - [buyCoins](#buycoins)
-  - [sellCoins](#sellcoins)
-  - [sellAllCoins](#sellallcoins)
-  - [createCoin](#createcoin)
+    - [sendCoin](#sendcoins)
+    - [multisendCoins](#multisendcoins)
+    - [buyCoins](#buycoins)
+    - [sellCoins](#sellcoins)
+    - [sellAllCoins](#sellallcoins)
+    - [createCoin](#createcoin)
 - [Validators](#validators)
-  - [validatorDelegate](#validatordelegate)
-  - [validatorUnbond](#validatorunbond)
-  - [validatorDeclare](#validatordeclare)
-  - [validatorEdit](#validatoredit)
-  - [validatorOn](#validatoron)
-  - [validatorOff](#validatoroff)
-- [Checks](#checks)
-  - [issueCheck](#issuechek)
-  - [redeemCheck](#redeemcheck)
+    - [validatorDelegate](#validatordelegate)
+    - [validatorUnbond](#validatorunbond)
+    - [validatorDeclare](#validatordeclare)
+    - [validatorEdit](#validatoredit)
+    - [validatorOn](#validatoron)
+    - [validatorOff](#validatoroff)
+- [Checks](#nfts)
+    - [nftMint](#nftmint)
+    - [nftBurn](#nftburn)
+    - [nftTransfer](#nfttransfer)
+    - [nftDelegate](#nftdelegate)
+    - [nftUnbond](#nftunbond)
+- [Swap](#swap)
+    - [swapInit](#swap-init)
+    - [swapRedeem](#swap-redeem)
+- [NFTs](#checks)
+    - [issueCheck](#issuechek)
+    - [redeemCheck](#redeemcheck)
 - [Multisig](#multisig)
-  - [multisigCreateWallet](multisigcreatewallet)
-  - [multisigCreateTx](multisigcreatetx)
-  - [multisigSignTx](multisigsigntx)
+    - [multisigCreateWallet](multisigcreatewallet)
+    - [multisigCreateTx](multisigcreatetx)
+    - [multisigSignTx](multisigsigntx)
 
 ## Network
+
 Additionally, you can pass network parameter to enable network specific features:
+
 ```js
 const decimal = new Decimal({
-  baseUrl: 'https://testnet-gate.decimalchain.com/api/',
-  network: 'testnet', // Enable testnet only txs types
-  wallet,
-  meta
+    baseUrl: 'https://testnet-gate.decimalchain.com/api/',
+    network: 'testnet', // Enable testnet only txs types
+    wallet,
+    meta
 })
 ```
+
 Available networks: ['mainnet', 'testnet', 'devnet']
 If omitted defaults to 'mainnet', which is fine in most cases.
+
 ## Types
+
 ``` js
   import {TX_TYPE} from 'decimal-js-sdk'
 ```
+
 * TX_TYPE.COIN_BUY
 * TX_TYPE.COIN_CREATE
 * TX_TYPE.COIN_SELL
@@ -160,26 +192,30 @@ If omitted defaults to 'mainnet', which is fine in most cases.
 * TX_TYPE.MULTISIG_CREATE_TX
 * TX_TYPE.MULTISIG_SIGN_TX
 
-
 ## Meta
+
 Used for generating offline transactions.
 **This is an optional parameter!**
+
 ```js
 const meta = {
-  account_number: "10",
-  chain_id: "decimal-testnet-06-30-15-30",
-  sequence: "198"
+    account_number: "10",
+    chain_id: "decimal-testnet-06-30-15-30",
+    sequence: "198"
 }
 ```
+
 ## Options
+
 Each transaction method consists of input data (data) and options.
 **This is an optional parameter!**
+
 ```js
 const options = {
-  feeCoin: 'BTC', // The coin that pays commission
-  message: 'my message', // Any additional information about the transaction
-  gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
-  mode: 'sync', // broadcast mode {sync | async | block}
+    feeCoin: 'BTC', // The coin that pays commission
+    message: 'my message', // Any additional information about the transaction
+    gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
+    mode: 'sync', // broadcast mode {sync | async | block}
 };
 ```
 
@@ -206,6 +242,7 @@ const broadcastTx = await decimal.getTransaction(TX_TYPE.COIN_SEND, data, option
 ```
 
 ### postTx()
+
 ```js
 import {TX_TYPE} from 'decimal-js-sdk';
 
@@ -222,6 +259,7 @@ const result = await decimal.postTx(broadcastTx);
 ```
 
 ### estimateTxFee()
+
 ```js
 const fee = await decimal.estimateTxFee(TX_TYPE.COIN_SEND, data, options);
 console.log(fee); // 0.44
@@ -230,6 +268,7 @@ console.log(fee); // 0.44
 ## API
 
 ### getCoinsList()
+
 ```js
 const limit = 10;
 const offset = 0;
@@ -259,7 +298,9 @@ await decimal.getCoinsList(limit, offset, query);
 }
 */
 ```
+
 ### getCoin()
+
 ```js
 const coinTicker = 'MYCOIN'
 await decimal.getCoin(coinTicker);
@@ -314,6 +355,7 @@ await decimal.getAddress(address);
 ```
 
 ### getMeta()
+
 ```js
 await decimal.getMeta();
 
@@ -325,7 +367,9 @@ await decimal.getMeta();
 }
 */
 ```
+
 ### getMultisigsByAddress()
+
 ```js
 const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g'
 await decimal.getMultisigsByAddress(address);
@@ -355,7 +399,9 @@ await decimal.getMultisigsByAddress(address);
 }
 */
 ```
+
 ### getMultisig()
+
 ```js
 const multisigAddress = 'dx1q8957kzw3dxvc2gndc0cwqq3v35xfrrl76tdsw';
 await decimal.getMultisig(multisigAddress);
@@ -429,7 +475,9 @@ await decimal.getMultisig(multisigAddress);
 }
 */
 ```
+
 ### getMultisigTxs()
+
 ```js
 const multisigAddress = 'dx1q8957kzw3dxvc2gndc0cwqq3v35xfrrl76tdsw';
 const limit = 10;
@@ -472,7 +520,9 @@ await decimal.getMultisigTxs(multisigAddress, limit, offset);
 }
 */
 ```
+
 ### getStakesByAddress()
+
 ```js
 const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g';
 
@@ -522,7 +572,9 @@ await decimal.getStakesByAddress(address);
 */
 
 ```
+
 ### getNftStakesByAddress()
+
 ```js
 const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g';
 
@@ -572,7 +624,9 @@ await decimal.getNftStakesByAddress(address);
 */
 
 ```
+
 ### getValidator()
+
 ```js
 const validatorAddress = 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0';
 
@@ -606,12 +660,13 @@ await decimal.getValidator(validatorAddress);
 ```
 
 ## getMyTransactions()
+
 ```js
 const limit = 10;
 const offset = 0;
 const types = '';
 
-await decimal.getMyTransactions(limit, offset ,types);
+await decimal.getMyTransactions(limit, offset, types);
 
 /*
 {
@@ -701,9 +756,9 @@ await decimal.getMyTransactions(limit, offset ,types);
 
 ```js
 const data = {
-  to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-  coin: 'tDEL',
-  amount: '100', // 100 tDEL
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tDEL',
+    amount: '100', // 100 tDEL
 }
 
 await decimal.sendCoins(data, options);
@@ -713,16 +768,16 @@ await decimal.sendCoins(data, options);
 
 ```js
 const data = [
-  {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tDEL',
-    amount: '100'
-  },
-  {
-    to: 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
-    coin: 'tDEL',
-    amount: '50'
-  },
+    {
+        to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+        coin: 'tDEL',
+        amount: '100'
+    },
+    {
+        to: 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
+        coin: 'tDEL',
+        amount: '50'
+    },
 ]
 
 await decimal.multisendCoins(data, options);
@@ -732,42 +787,46 @@ await decimal.multisendCoins(data, options);
 
 ```js
 const data = {
-  buyCoin: 'BTC',
-  amount: '10',
-  spendCoin: 'DEL',
-  maxSpendLimit: '20', // Optionally
+    buyCoin: 'BTC',
+    amount: '10',
+    spendCoin: 'DEL',
+    maxSpendLimit: '20', // Optionally
 }
 
 await decimal.buyCoins(data, options);
 ```
+
 <a name="sellCoins"></a>
 
 ### sellCoins()
 
 ```js
 const data = {
-  sellCoin: 'DEL',
-  amount: '10',
-  getCoin: 'ETH',
-  minBuyLimit: '2', // Optionally
+    sellCoin: 'DEL',
+    amount: '10',
+    getCoin: 'ETH',
+    minBuyLimit: '2', // Optionally
 }
 
 await decimal.sellCoins(data, options);
 ```
+
 <a name="sellAllCoins"></a>
 
 ### sellAllCoins()
+
 ```js
 const data = {
-  sellCoin: 'BTC',
-  getCoin: 'DEL',
-  minBuyLimit: '10', // Optionally
+    sellCoin: 'BTC',
+    getCoin: 'DEL',
+    minBuyLimit: '10', // Optionally
 }
 
 await decimal.sellAllCoins(data, options);
 ```
 
 ### createCoin()
+
 ```js
 const data = {
     title: 'Test coin',
@@ -784,6 +843,7 @@ await decimal.createCoin(data, options);
 ## Validators
 
 ### validatorDelegate()
+
 ```js
 const data = {
     address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
@@ -793,7 +853,9 @@ const data = {
 
 await decimal.validatorDelegate(data, options);
 ```
+
 ### validatorUnbond()
+
 ```js
 const data = {
     address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
@@ -803,7 +865,9 @@ const data = {
 
 await decimal.validatorUnbond(data, options);
 ```
+
 ### validatorDeclare()
+
 ```js
 const data = {
     rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
@@ -812,36 +876,42 @@ const data = {
     pubKey: 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y=',
     commission: '10',
     description: {
-      moniker: 'my-node-123',
-      identity: '',
-      website: 'hello.ru',
-      securityContact: 'test@test.com',
-      details: 'details node',
+        moniker: 'my-node-123',
+        identity: '',
+        website: 'hello.ru',
+        securityContact: 'test@test.com',
+        details: 'details node',
     },
 }
 
 await decimal.validatorDeclare(data, options);
 ```
+
 ### validatorEdit()
+
 ```js
 const data = {
     rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
     description: {
-      moniker: 'my-node-123-edit',
-      identity: '321',
-      website: 'hello.ru',
-      securityContact: 'test@test.com',
-      details: 'details node',
+        moniker: 'my-node-123-edit',
+        identity: '321',
+        website: 'hello.ru',
+        securityContact: 'test@test.com',
+        details: 'details node',
     },
 }
 
 await decimal.validatorEdit(data, options);
 ```
+
 ### validatorOn()
+
 ```js
 await decimal.validatorOn(options);
 ```
+
 ### validatorOff
+
 ```js
 await decimal.validatorOff(options);
 ```
@@ -849,6 +919,7 @@ await decimal.validatorOff(options);
 ## Checks
 
 ### issueCheck()
+
 ```js
 const data = {
     nonce: '34',
@@ -860,7 +931,9 @@ const data = {
 
 await decimal.issueCheck(data, options);
 ```
+
 ### redeemCheck()
+
 ```js
 const data = {
     check: 'ERp9FR24Vz19XG....',
@@ -869,10 +942,11 @@ const data = {
 
 await decimal.redeemCheck(data, options);
 ```
+
 ## NFTs
 
-
 ### nftMint()
+
 ```js
 const data = {
     recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
@@ -882,66 +956,112 @@ const data = {
     quantity: '1',
     reserve: '1',
     allow_mint: true,
-  }
+}
 
 await decimal.nftMint(data, options);
 ```
+
 ### nftBurn()
+
 ```js
 const data = {
-  denom: 'phone',
-  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-  sub_token_ids: ['1', '2']
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    sub_token_ids: ['1', '2']
 }
 
 await decimal.nftBurn(data, options);
 ```
+
 ### nftEditMetadata()
+
 ```js
 const data = {
-  denom: 'phone',
-  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
 }
 
 await decimal.nftEditMetadata(data, options);
 ```
+
 ### nftTransfer()
+
 ```js
 const data = {
-  recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-  denom: 'phone',
-  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-  sub_token_ids: ['1', '2']
+    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    sub_token_ids: ['1', '2']
 }
 
 await decimal.nftTransfer(data, options);
 ```
+
 ### nftDelegate()
+
 ```js
 const data = {
-  denom: 'phone',
-  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
-  sub_token_ids: ['1', '2']
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+    sub_token_ids: ['1', '2']
 }
 
 await decimal.nftDelegate(data, options);
 ```
+
 ### nftUnbond()
+
 ```js
 const data = {
-  denom: 'phone',
-  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
-  sub_token_ids: ['1', '2']
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+    sub_token_ids: ['1', '2']
 }
 
 await decimal.nftUnbond(data, options);
 ```
+
+## Swap
+
+### Swap init
+
+```js
+const data = {
+    recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
+    amount: '1',
+    tokenName: 'decimal',
+    tokenSymbol: 'DEL',
+    destChain: '2',
+}
+await decimal.msgSwapInit(data, options)
+```
+
+### Swap redeem
+
+```js
+
+const data = {
+    from: '0x856F08B12cB844fa05CDF1eBfFd303B091D34d09',
+    amount: '2',
+    recipient: 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9',
+    tokenName: 'muh coin',
+    transactionNumber: 'qqqqqqqq',
+    tokenSymbol: 'coin',
+    fromChain: '2',
+    v: 0x1c,
+    r: '0xb8b3eb4980e649a65b7e136fbcafda4d12e3b11a40d8aaa7d951e13fbe483579',
+    s: '0x74de77f4a9f4045992cf6f220cff9be67a2c0332124e60af0a6791c9b0a64c36',
+}
+await decimal.msgSwapInit(data, options)
+```
+
 ## Multisig
 
 ### multisigCreateWallet()
+
 ```js
 const data = {
     owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1v9macmluxh7rk3zsd69v7dwv9fsjhctn2jfhz9'],
@@ -951,7 +1071,9 @@ const data = {
 
 await decimal.multisigCreateWallet(data, options);
 ```
+
 ### multisigCreateTx()
+
 ```js
 const data = {
     from: 'dx1am6ke3l79kjzdqhwgx37em04mzg686ekf9p3pq',
@@ -962,10 +1084,12 @@ const data = {
 
 await decimal.multisigCreateTx(data, options);
 ```
+
 ### multisigSignTx()
+
 ```js
 const data = {
-  txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
+    txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
 }
 
 await decimal.multisigSignTx(data, options);

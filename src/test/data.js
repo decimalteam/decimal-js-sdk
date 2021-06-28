@@ -133,7 +133,7 @@ export const data = {
     recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
     amount: '1',
     tokenName: 'decimal',
-    tokenSymbol: 'del',
+    tokenSymbol: 'DEL',
     destChain: '2',
   },
   swapRedeem: {
