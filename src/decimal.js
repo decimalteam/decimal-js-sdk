@@ -28,7 +28,7 @@ import getNft from './api/get-nft';
 
 export default class Decimal {
   constructor(options) {
-    const apiInstance = new DecimalApi(options.baseURL);
+    const apiInstance = new DecimalApi(options);
     const { wallet } = options;
     const { signMeta } = options;
     this.signMeta = signMeta;
