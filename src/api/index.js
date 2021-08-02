@@ -47,6 +47,15 @@ export default class DecimalApi {
     return data.result;
   }
 
+  async getTransaction(hash) {
+    const { data } = await this.requester.get('/rpc/tx', {
+      params: {
+        hash: `0x${hash}`,
+      },
+    });
+    return data.result;
+  }
+
   async getMultisig(address) {
     const { data } = await this.requester.get(`/multisig/${address}`);
     return data.result;
@@ -57,6 +66,11 @@ export default class DecimalApi {
     return data.result;
   }
 
+  async getStakes(address) {
+    const { data } = await this.requester.get(`/address/${address}/stakes`);
+    return data.result;
+  }
+
   async getNftStakes(address) {
     const { data } = await this.requester.get(`/address/${address}/nfts/stakes`);
     return data.result;
@@ -64,6 +78,11 @@ export default class DecimalApi {
 
   async getNftById(id) {
     const { data } = await this.requester.get(`/nfts/${id}`);
+    return data.result;
+  }
+
+  async requestAccountSequence(address) {
+    const { data } = await this.requester.get(`/rpc/auth/accounts/${address}`);
     return data.result;
   }
 
