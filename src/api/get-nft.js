@@ -1,12 +1,10 @@
 export default function getNft(api) {
-  return async (id) => {
+  return (id) => {
     if (!id) {
       throw new Error('Id is required');
     }
-    const url = `/nfts/${id}`;
     try {
-      const { data } = await api.get(url);
-      return data.result;
+      return api.getNftById(id);
     } catch (e) {
       return null;
     }

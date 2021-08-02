@@ -4,6 +4,6 @@ export default function getAddress(api) {
       throw new Error('The address is required');
     }
 
-      return api.getAddress(address, txLimit)
+    return api.getAddress(address, txLimit);
   };
 }

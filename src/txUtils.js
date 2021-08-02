@@ -107,7 +107,7 @@ export function makeSignature(api, wallet, decimal, createNonce) {
 // send signed prepared tx for broadcast
 export function postTx(api) {
   return async (txData, isOfflineTx) => {
-      const data = await api.broadcastTx(txData)
+    const data = await api.broadcastTx(txData);
     const txResult = transactionResult(data);
 
     if (txResult.success && !isOfflineTx) {

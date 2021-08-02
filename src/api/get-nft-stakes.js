@@ -4,8 +4,6 @@ export default function getNftStakesByAddress(api) {
       throw new Error('The address is required');
     }
 
-    const url = `/address/${address}/nfts/stakes`;
-    const { data } = await api.get(url);
-    return data.result;
+    return api.getNftStakes(address);
   };
 }

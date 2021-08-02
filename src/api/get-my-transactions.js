@@ -1,5 +1,5 @@
 export default function getMyTransactions(api, wallet) {
-  return async (limit = 10, offset = 0, types, coins) => {
+  return (limit = 10, offset = 0, types, coins) => {
     const params = { limit, offset };
     if (types) {
       params.types = types;
@@ -8,6 +8,6 @@ export default function getMyTransactions(api, wallet) {
       params.coins = coins;
     }
 
-      return api.getTxsByAddress(wallet.address, params)
+    return api.getTxsByAddress(wallet.address, params);
   };
 }

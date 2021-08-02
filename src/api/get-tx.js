@@ -2,7 +2,6 @@ function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-
 export default function getTransaction(api) {
   return async (hash) => {
     if (!hash) {
@@ -10,7 +9,6 @@ export default function getTransaction(api) {
     }
 
     const url = 'rpc/tx';
-
 
     // const { data } = await api.get(url, { params: { hash: `0x${hash}` } });
 

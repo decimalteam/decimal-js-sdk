@@ -59,7 +59,7 @@ async function getTxSize(api, tx) {
     },
   };
   const signatureSize = 109;
-  const encodeTxResp = await api.encodeTx(tx)
+  const encodeTxResp = await api.encodeTx(tx);
   const encodedTxBase64 = encodeTxResp.tx;
   const encodedTx = Buffer.from(encodedTxBase64, 'base64');
   const size = encodedTx.length + signatureSize;

@@ -176,7 +176,7 @@ export const data = {
     id: 'a59913f01976735bee8411676015e2b578a49068',
     recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    sub_token_ids: ["2"],
+    sub_token_ids: ['2'],
   },
   nftDelegate: {
     denom: 'Music',
