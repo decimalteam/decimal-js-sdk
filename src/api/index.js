@@ -16,7 +16,7 @@ const REST = 'restURL';
 export default class DecimalApi {
   constructor(params) {
     this.gateURL = params.gateURL || params.baseURL;
-    if (!(this.gateURL || this.rpcURL)) {
+    if (!(this.gateURL || params.rpcURL)) {
       throw new Error('Either gateURL or rpcURL must be provided');
     }
     this.requester = axios.create();
@@ -24,7 +24,7 @@ export default class DecimalApi {
     this.restURL = params.restURL || params.rpcURL ? `${this.rpcURL}:1317` : this.gateURL;
   }
 
-  async request(path, params = null, method = 'get', destination = GATEWAY) {
+  request(path, params = null, method = 'get', destination = GATEWAY) {
     if (destination === GATEWAY && !this.gateURL) {
       throw new Error('This metohod requires gateway url to be provided');
     }
@@ -39,11 +39,11 @@ export default class DecimalApi {
       default:
         throw new Error('Unknown method');
     }
-    return handler(path, { params, baseURL: destination });
+    return handler(path, { params, baseURL: this[destination] });
   }
 
   getNodeInfo() {
-    return this.request('/rpc/node_info');
+    return this.request('/rpc/node_info', null, 'get', RPC);
   }
 
   async getAddress(address, txLimit) {
@@ -107,12 +107,12 @@ export default class DecimalApi {
   }
 
   async broadcastTx(txData) {
-    const resp = await this.request('/rpc/txs', txData, 'post');
+    const resp = await this.request('/rpc/txs', txData, 'post', REST);
     return resp.data;
   }
 
   async encodeTx(tx) {
-    const resp = await this.request('/rpc/txs/encode', tx, 'post');
+    const resp = await this.request('/rpc/txs/encode', tx, 'post', REST);
     return resp.data;
   }
 }

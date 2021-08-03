@@ -7,11 +7,11 @@ import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
 const wallet  = new Wallet('doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum');
-const decimal = new Decimal({ gateURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
+const decimal = new Decimal({ rpcURL: 'http://46.101.127.241', wallet, });
 
 (async function test() {
     console.log('I')
-   const result = await decimal.getCoin('del')
+   const result = await decimal.sendCoins(data.send)
     console.log(result)
   // await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
