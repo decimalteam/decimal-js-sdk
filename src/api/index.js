@@ -10,95 +10,109 @@ export default function DecimalApi(options) {
   return instance;
 }
 */
+const GATEWAY = 'gateURL';
+const RPC = 'rpcURL';
+const REST = 'restURL';
 export default class DecimalApi {
   constructor(params) {
-    const gateURL = params.gateURL || params.baseURL;
-    const options = {
-      baseURL: gateURL,
-    };
-    this.requester = axios.create(options);
-    const nodeURL = { params };
-    this.useNode = !!nodeURL;
-    this.rpcRequester = nodeURL ? axios.create({ baseURL: nodeURL }) : this.requester;
+    this.gateURL = params.gateURL || params.baseURL;
+    if (!(this.gateURL || this.rpcURL)) {
+      throw new Error('Either gateURL or rpcURL must be provided');
+    }
+    this.requester = axios.create();
+    this.rpcURL = params.rpcURL || this.gateURL;
+    this.restURL = params.restURL || params.rpcURL ? `${this.rpcURL}:1317` : this.gateURL;
+  }
+
+  async request(path, params = null, method = 'get', destination = GATEWAY) {
+    if (destination === GATEWAY && !this.gateURL) {
+      throw new Error('This metohod requires gateway url to be provided');
+    }
+    let handler;
+    switch (method) {
+      case 'get':
+        handler = this.requester.get;
+        break;
+      case 'post':
+        handler = this.requester.post;
+        break;
+      default:
+        throw new Error('Unknown method');
+    }
+    return handler(path, { params, baseURL: destination });
   }
 
   getNodeInfo() {
-    return this.requester.get('/rpc/node_info');
+    return this.request('/rpc/node_info');
   }
 
   async getAddress(address, txLimit) {
-    const { data } = await this.requester.get(`/address/${address}`, { params: { txLimit } });
+    const { data } = await this.request(`/address/${address}`, { txLimit });
     return data.result;
   }
 
   async getTransactionsByAddress(address, params) {
-    const { data } = await this.requester.get(`/address/${address}/txs`, { params });
+    const { data } = await this.request(`/address/${address}/txs`, params);
     return data.result;
   }
 
   async getCoinsList(params) {
-    const { data } = await this.requester.get('/coin', { params });
+    const { data } = await this.request('/coin', params);
     return data.result;
   }
 
   async getCoinsByAddress(address, params) {
-    const { data } = await this.requester.get(`/address/${address}/coins`, {
-      params,
-    });
+    const { data } = await this.request(`/address/${address}/coins`, params);
     return data.result;
   }
 
   async getCoin(symbol) {
-    const { data } = await this.requester.get(`/coin/${symbol.toLowerCase()}`);
+    const { data } = await this.request(`/coin/${symbol.toLowerCase()}`);
     return data.result;
   }
 
   async getTransaction(hash) {
-    const { data } = await this.requester.get('/rpc/tx', {
-      params: {
-        hash: `0x${hash}`,
-      },
-    });
+    const { data } = await this.request('/rpc/tx', { hash: `0x${hash}` });
     return data.result;
   }
 
   async getMultisig(address) {
-    const { data } = await this.requester.get(`/multisig/${address}`);
+    const { data } = await this.request(`/multisig/${address}`);
     return data.result;
   }
 
   async getMultisigsByAddress(address) {
-    const { data } = await this.requester.get(`/address/${address}/multisigs`);
+    const { data } = await this.request(`/address/${address}/multisigs`);
     return data.result;
   }
 
   async getStakes(address) {
-    const { data } = await this.requester.get(`/address/${address}/stakes`);
+    const { data } = await this.request(`/address/${address}/stakes`);
     return data.result;
   }
 
   async getNftStakes(address) {
-    const { data } = await this.requester.get(`/address/${address}/nfts/stakes`);
+    const { data } = await this.request(`/address/${address}/nfts/stakes`);
     return data.result;
   }
 
   async getNftById(id) {
-    const { data } = await this.requester.get(`/nfts/${id}`);
+    const { data } = await this.request(`/nfts/${id}`);
     return data.result;
   }
 
   async requestAccountSequence(address) {
-    const { data } = await this.requester.get(`/rpc/auth/accounts/${address}`);
+    const { data } = await this.request(`/rpc/auth/accounts/${address}`);
     return data.result;
   }
 
   async broadcastTx(txData) {
-    const resp = await this.rpcRequester.post('/rpc/txs', txData);
+    const resp = await this.request('/rpc/txs', txData, 'post');
     return resp.data;
   }
 
   async encodeTx(tx) {
-    const resp = await this.rpcRequester.post('/rpc/txs/encode', tx);
+    const resp = await this.request('/rpc/txs/encode', tx, 'post');
     return resp.data;
   }
 }

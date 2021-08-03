@@ -7,7 +7,7 @@ import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
 const wallet  = new Wallet('doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum');
-const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
+const decimal = new Decimal({ gateURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
 
 (async function test() {
     console.log('I')
