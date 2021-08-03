@@ -21,13 +21,13 @@ function calcPrice(coin) {
 }
 
 export default function getCoin(api) {
-  return (symbol) => {
+  return async (symbol) => {
     if (!symbol) {
       throw new Error('The coin symbol is required');
     }
 
     try {
-      const coin = api.getCoin(symbol);
+      const coin = await api.getCoin(symbol);
       coin.price = calcPrice(coin);
       return coin;
     } catch (e) {

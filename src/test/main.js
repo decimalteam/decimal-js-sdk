@@ -10,7 +10,9 @@ const wallet  = new Wallet('doctor transfer mystery electric any satisfy crop pi
 const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
 
 (async function test() {
-   await decimal.msgSwapInit(data.swapInit);
+    console.log('I')
+   const result = await decimal.getCoin('del')
+    console.log(result)
   // await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
   // await decimal.nftEditMetadata(data.nftEditMetadata);

@@ -12,8 +12,14 @@ export default function DecimalApi(options) {
 */
 export default class DecimalApi {
   constructor(params) {
-    const options = params;
+    const gateURL = params.gateURL || params.baseURL;
+    const options = {
+      baseURL: gateURL,
+    };
     this.requester = axios.create(options);
+    const nodeURL = { params };
+    this.useNode = !!nodeURL;
+    this.rpcRequester = nodeURL ? axios.create({ baseURL: nodeURL }) : this.requester;
   }
 
   getNodeInfo() {
@@ -87,12 +93,12 @@ export default class DecimalApi {
   }
 
   async broadcastTx(txData) {
-    const resp = await this.requester.post('/rpc/txs', txData);
+    const resp = await this.rpcRequester.post('/rpc/txs', txData);
     return resp.data;
   }
 
   async encodeTx(tx) {
-    const resp = await this.requester.post('/rpc/txs/encode', tx);
+    const resp = await this.rpcRequester.post('/rpc/txs/encode', tx);
     return resp.data;
   }
 }
