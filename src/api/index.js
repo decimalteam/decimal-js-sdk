@@ -16,12 +16,12 @@ const REST = 'restURL';
 export default class DecimalApi {
   constructor(params) {
     this.gateURL = params.gateURL || params.baseURL;
-    if (!(this.gateURL || params.rpcURL)) {
-      throw new Error('Either gateURL or rpcURL must be provided');
+    if (!(this.gateURL || params.restURL)) {
+      throw new Error('Either gateURL or restURL must be provided');
     }
     this.requester = axios.create();
-    this.rpcURL = params.rpcURL || this.gateURL;
-    this.restURL = params.restURL;
+    // this.rpcURL = params.rpcURL || this.gateURL;
+    this.restURL = params.restURL || this.gateURL;
   }
 
   request(_path, params = null, method = 'get', destination = GATEWAY, data = null) {
