@@ -369,9 +369,7 @@ function getValue(type, data, options, wallet) {
       value = voteProposal(data, wallet);
       break;
     case TX_TYPE.SWAP_INIT:
-      console.log(data);
       value = swapInit(data, wallet);
-      console.log(value);
       break;
     case TX_TYPE.SWAP_REDEEM:
       value = swapRedeem(data, wallet);

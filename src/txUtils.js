@@ -77,10 +77,8 @@ export function prepareTx(api) {
 export function getSignMeta(api, wallet, createNonce = true) {
   return async () => {
     const nodeInfoResp = await api.getNodeInfo();
-    console.log(nodeInfoResp);
 
     const accountResp = await api.requestAccountSequence(wallet.address, createNonce);
-    console.log(accountResp);
     return {
       account_number: `${accountResp.value.account_number}`,
       sequence: `${accountResp.value.sequence}`,
