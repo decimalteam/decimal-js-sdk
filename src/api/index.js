@@ -11,7 +11,7 @@ export default function DecimalApi(options) {
 }
 */
 const GATEWAY = 'gateURL';
-const RPC = 'rpcURL';
+// const RPC = 'rpcURL';
 const REST = 'restURL';
 export default class DecimalApi {
   constructor(params) {
@@ -21,29 +21,28 @@ export default class DecimalApi {
     }
     this.requester = axios.create();
     this.rpcURL = params.rpcURL || this.gateURL;
-    this.restURL = params.restURL || params.rpcURL ? `${this.rpcURL}:1317` : this.gateURL;
+    this.restURL = params.restURL;
   }
 
-  request(path, params = null, method = 'get', destination = GATEWAY) {
+  request(_path, params = null, method = 'get', destination = GATEWAY, data = null) {
     if (destination === GATEWAY && !this.gateURL) {
       throw new Error('This metohod requires gateway url to be provided');
     }
-    let handler;
-    switch (method) {
-      case 'get':
-        handler = this.requester.get;
-        break;
-      case 'post':
-        handler = this.requester.post;
-        break;
-      default:
-        throw new Error('Unknown method');
+    let path = _path;
+    if (destination === REST && this.gateURL) {
+      path = `/rpc${path}`;
     }
-    return handler(path, { params, baseURL: this[destination] });
+    return axios({
+      method,
+      url: path,
+      baseURL: this[destination],
+      params,
+      data,
+    });
   }
 
   getNodeInfo() {
-    return this.request('/rpc/node_info', null, 'get', RPC);
+    return this.request('/node_info', null, 'get', REST);
   }
 
   async getAddress(address, txLimit) {
@@ -86,6 +85,11 @@ export default class DecimalApi {
     return data.result;
   }
 
+  async getMultisigTxs(address, params) {
+    const { data } = await this.request(`/multisig/${address}/txs`, params);
+    return data.result;
+  }
+
   async getStakes(address) {
     const { data } = await this.request(`/address/${address}/stakes`);
     return data.result;
@@ -101,18 +105,29 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async requestAccountSequence(address) {
-    const { data } = await this.request(`/rpc/auth/accounts/${address}`);
+  async getProposals() {
+    const { data } = await this.request('/proposals');
+    return data.result;
+  }
+
+  async getValidator(address) {
+    const { data } = await this.requst(`/validator/${address}`);
+    return data.result;
+  }
+
+  async requestAccountSequence(address, incrementSequence = true) {
+    console.log(incrementSequence);
+    const { data } = await this.request(`/auth/accounts/${address}`, null, 'get', REST);
     return data.result;
   }
 
   async broadcastTx(txData) {
-    const resp = await this.request('/rpc/txs', txData, 'post', REST);
+    const resp = await this.request('/txs', null, 'post', REST, txData);
     return resp.data;
   }
 
   async encodeTx(tx) {
-    const resp = await this.request('/rpc/txs/encode', tx, 'post', REST);
+    const resp = await this.request('/txs/encode', null, 'post', REST, tx);
     return resp.data;
   }
 }

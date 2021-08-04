@@ -18,7 +18,7 @@ function rlpHash(input) {
 }
 
 async function getChainID(api) {
-  const nodeInfoResp = await api.get('/rpc/node_info');
+  const nodeInfoResp = await api.getNodeInfo();
   const chainID = nodeInfoResp.data.node_info.network;
   return chainID;
 }

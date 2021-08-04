@@ -1,9 +1,7 @@
 export default function getVotesInfo(api) {
-  return async () => {
-    const url = '/proposals';
+  return () => {
     try {
-      const { data } = await api.get(url);
-      return data.result;
+      return api.getProposals();
     } catch (e) {
       return null;
     }
