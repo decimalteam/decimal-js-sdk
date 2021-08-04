@@ -21,6 +21,7 @@ https://mainnet-gate.decimalchain.com/api/
 TESTNET -
 https://testnet-gate.decimalchain.com/api/
 
+You can use either Decimal Gateway urls provided above, or set your Decimal node REST service endpoint
 The following code can be used to generate **mnemonic** or use your mnemonic
 
 ```js
@@ -36,7 +37,12 @@ const mnemonic = bip39.generateMnemonic();
 const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
 
 const wallet = new Wallet( /*your mnemonic*/);
-const decimal = new Decimal({baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet});
+const options = {
+   gateURL: 'https://testnet-gate.decimalchain.com/api/',
+   // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
+}
+// baseURL option used in old versions is now deprecated
+const decimal = new Decimal(options);
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
