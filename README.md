@@ -13,7 +13,9 @@ $ npm install decimal-js-sdk
 
 # Usage
 
-## Available endpoints
+## Connecting
+
+You can provide your own Decimal node address to send transactions to the network, or you can use our gateways to do this and much more. Gateway URLs are provided below.
 
 MAINNET -
 https://mainnet-gate.decimalchain.com/api/
@@ -21,7 +23,18 @@ https://mainnet-gate.decimalchain.com/api/
 TESTNET -
 https://testnet-gate.decimalchain.com/api/
 
-You can use either Decimal Gateway urls provided above, or set your Decimal node REST service endpoint
+Depending on what you wish to use provide either gateURL or restURL (your node rest service url) in config object passed to the Decimal instance
+
+```js
+
+const options = {
+   gateURL: 'https://testnet-gate.decimalchain.com/api/',
+   // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
+}
+// baseURL option used in old versions is now deprecated
+const decimal = new Decimal(options);
+```
+
 The following code can be used to generate **mnemonic** or use your mnemonic
 
 ```js
@@ -38,8 +51,7 @@ const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-
 
 const wallet = new Wallet( /*your mnemonic*/);
 const options = {
-   gateURL: 'https://testnet-gate.decimalchain.com/api/',
-   // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
+   restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
 const decimal = new Decimal(options);
@@ -61,7 +73,7 @@ const txResult = await decimal.sendCoins(data, [options]); // see options for de
 import {Wallet, Decimal} from 'decimal-js-sdk';
 
 const wallet = new Wallet(/*your mnemonic*/);
-const decimal = new Decimal({baseURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
+const decimal = new Decimal({gateURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
@@ -164,7 +176,7 @@ Additionally, you can pass network parameter to enable network specific features
 
 ```js
 const decimal = new Decimal({
-    baseUrl: 'https://testnet-gate.decimalchain.com/api/',
+    gateURL: 'https://testnet-gate.decimalchain.com/api/',
     network: 'testnet', // Enable testnet only txs types
     wallet,
     meta
@@ -272,6 +284,8 @@ console.log(fee); // 0.44
 ```
 
 ## API
+
+Please note, that these methods require gateURL to be provided
 
 ### getCoinsList()
 

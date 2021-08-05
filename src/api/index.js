@@ -116,8 +116,11 @@ export default class DecimalApi {
   }
 
   async requestAccountSequence(address, incrementSequence = true) {
-    console.log(incrementSequence);
-    const { data } = await this.request(`/auth/accounts/${address}`, null, 'get', REST);
+    let path = `/auth/accounts/${address}`;
+    if (this.gateURL && !incrementSequence) {
+      path = `/accounts/${address}`;
+    }
+    const { data } = await this.request(path, null, 'get', REST);
     return data.result;
   }
 
@@ -128,6 +131,8 @@ export default class DecimalApi {
 
   async encodeTx(tx) {
     const resp = await this.request('/txs/encode', null, 'post', REST, tx);
+    console.log(tx);
+    console.log(tx.msg);
     return resp.data;
   }
 }
