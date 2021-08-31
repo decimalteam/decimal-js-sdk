@@ -111,7 +111,7 @@ export default class DecimalApi {
   }
 
   async getValidator(address) {
-    const { data } = await this.requst(`/validator/${address}`);
+    const { data } = await this.request(`/validator/${address}`);
     return data.result;
   }
 
