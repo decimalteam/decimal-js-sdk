@@ -6,13 +6,18 @@ import {makeSignature, prepareTx, postTx} from '../txUtils';
 import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
-const wallet  = new Wallet('doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum');
+const wallet  = new Wallet('stamp group slice apple music cement crumble jazz grow slow asset neither garlic hotel extend boost enroll cube rare lesson fluid soup matrix piano');
 const decimal = new Decimal({ baseURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
-
+console.log(wallet)
 (async function test() {
-   await decimal.msgSwapInit(data.swapInit);
+  // for (let i=0; i < 1; i++) {
+  //   await decimal.sendCoins(data.send);
+  // }
+
+  // await decimal.msgSwapInit(data.swapInit);
   // await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
   // await decimal.nftEditMetadata(data.nftEditMetadata);
   // await decimal.nftTransfer(data.nftTransfer);
+  //await decimal.proposalSubmit(data.submitProposal);
 }());

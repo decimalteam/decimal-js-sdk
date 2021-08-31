@@ -199,8 +199,9 @@ function multisend(data, wallet) {
 }
 
 function submitProposal(data, wallet) {
+  console.log(wallet)
   if (!wallet.availableProposalSubmit) {
-    throw new Error('This address is not available for this transaction');
+    //throw new Error('This address is not available for this transaction');
   }
 
   return {
@@ -225,6 +226,7 @@ function swapInit(data, wallet) {
     recipient: data.recipient,
     amount: getAmountToUNI(data.amount),
     token_symbol: data.tokenSymbol,
+    token_name: data.tokenName,
     transaction_number: Date.now().toString(),
     from_chain: '1',
     dest_chain: data.destChain,

@@ -405,14 +405,16 @@ SCHEMA[TX_TYPE.SWAP_INIT] = {
   type: 'object',
   properties: {
     recipient: fields.string,
+    tokenName: fields.string,
     amount: fields.amount,
     tokenSymbol: fields.string,
     destChain: fields.int,
   },
-  minProperties: 4,
-  maxProperties: 4,
+  minProperties: 5,
+  maxProperties: 5,
   required: [
     'recipient',
+    'tokenName',
     'amount',
     'tokenSymbol',
     'destChain',
