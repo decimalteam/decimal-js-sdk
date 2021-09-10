@@ -13,6 +13,8 @@ import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
+import verifyAddress from './utils';
+
 import TX_TYPE from './txTypes';
 import { validateNetwork } from './network';
 import {
@@ -50,6 +52,9 @@ export default class Decimal {
     this.getMyTransactions = getMyTransactions(apiInstance, wallet);
     this.getMyCoins = getMyCoins(apiInstance, wallet);
     this.getVotesInfo = getVotesInfo(apiInstance);
+
+    // utils functions
+    this.verifyAddress = verifyAddress;
 
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
