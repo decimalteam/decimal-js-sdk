@@ -11,10 +11,11 @@ const decimal = new Decimal({ rpcURL: 'http://46.101.127.241/rpc', restURL: 'htt
 
 (async function test() {
     console.log('I')
-   const result = await decimal.sendCoins(data.send)
-    console.log(result)
+   //const result = await decimal.sendCoins(data.send)
+    //console.log(result)
   // await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
   // await decimal.nftEditMetadata(data.nftEditMetadata);
   // await decimal.nftTransfer(data.nftTransfer);
+  console.log(`IS_VALID(${data.send.to}) = ${decimal.verifyAddress(data.send.to)}`)
 }());

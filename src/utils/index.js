@@ -12,7 +12,7 @@ export default function verifyAddress(address, prefix = 'dx') {
 
   try {
     const decoded = decode(address);
-    return (prefix === decoded.prefix) && decoded.words;
+    return (prefix === decoded.prefix) && decoded.words !== undefined;
   } catch (error) {
     return false;
   }
