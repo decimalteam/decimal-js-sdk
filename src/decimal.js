@@ -13,7 +13,7 @@ import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 
-import verifyAddress from './utils';
+import { verifyAddress } from './utils';
 
 import TX_TYPE from './txTypes';
 import { validateNetwork } from './network';

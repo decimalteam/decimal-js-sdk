@@ -5,7 +5,8 @@ import { decode } from 'bech32';
  * @param {string} prefix Prefix
  * @returns {boolean} boolean to indicate address validation
  */
-export default function verifyAddress(address, prefix = 'dx') {
+// eslint-disable-next-line import/prefer-default-export
+export function verifyAddress(address, prefix = 'dx') {
   if (!address) {
     throw new Error('address is missing.');
   }
