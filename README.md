@@ -193,14 +193,16 @@ If omitted defaults to 'mainnet', which is fine in most cases.
 ### verifyAddress
 
 ```js
-verifyAddress(address, prefix = 'dx')
+decimal.verifyAddress(address, prefix = 'dx')
 ```
 - examples:
 
 ```js
-const isValid = verifyAddress('dx13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy') // true
+const decimal = new Decimal(...)
 
-const isValidatorAddress = verifyAddress('dxvaloper13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy', 'dxveloper') // true
+const isValid = await decimal.verifyAddress('dx13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy') // true
+
+const isValidatorAddress = await decimal.verifyAddress('dxvaloper13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy', 'dxvaloper') // true
 
 ```
 
