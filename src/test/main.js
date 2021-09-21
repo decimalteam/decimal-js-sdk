@@ -11,7 +11,6 @@ const decimal = new Decimal({ rpcURL: 'http://46.101.127.241/rpc', restURL: 'htt
 
 (async function test() {
     console.log('I')
-   //const result = await decimal.sendCoins(data.send)
     //console.log(result)
   // await decimal.nftMint(data.nftMint);
   // await decimal.nftBurn(data.nftBurn);
@@ -19,5 +18,6 @@ const decimal = new Decimal({ rpcURL: 'http://46.101.127.241/rpc', restURL: 'htt
   // await decimal.nftTransfer(data.nftTransfer);
   console.log(`IS_VALID(${data.send.to}) = ${decimal.verifyAddress(data.send.to)}`)
   console.log(`IS_VALID_VALIDATOR_ADDRESS(${data.delegate.address}) = ${decimal.verifyAddress(data.delegate.address, 'dxvaloper')}`)
+  const result = await decimal.sendCoins(data.send)
 
 }());
