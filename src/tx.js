@@ -6,6 +6,7 @@ import { formTx, postTx, prepareTx } from './txUtils';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
+import { verifyAddress } from './utils';
 
 DecimalNumber.set({ precision: 40 });
 function sendCoinData(data, wallet) {
@@ -403,6 +404,29 @@ function getValue(type, data, options, wallet) {
 
 export function getTransaction(api, wallet, decimal, createNonce) {
   return async (type, data, options) => {
+    if (data.sender) {
+      if (!verifyAddress(data.sender)) {
+        throw new Error('Incorrect sender address format');
+      }
+    }
+
+    if (data.recipient) {
+      if (!verifyAddress(data.recipient)) {
+        throw new Error('Incorrect recipient address format');
+      }
+    }
+
+    if (data.validator_address) {
+      if (!verifyAddress(data.validator_address)) {
+        throw new Error('Incorrect validator address format');
+      }
+    }
+
+    if (data.delegator_address) {
+      if (!verifyAddress(data.delegator_address)) {
+        throw new Error('Incorrect delegator address format');
+      }
+    }
     const formatted = getValue(type, data, options, wallet);
     const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options, wallet);
 
@@ -412,6 +436,58 @@ export function getTransaction(api, wallet, decimal, createNonce) {
 
 export function sendTransaction(type, api, wallet, decimal) {
   return async (data, options) => {
+    if (data.from) {
+      if (!verifyAddress(data.from)) {
+        throw new Error('Incorrect sender address format');
+      }
+    }
+
+    if (data.sender) {
+      if (!verifyAddress(data.sender)) {
+        throw new Error('Incorrect sender address format');
+      }
+    }
+
+    if (data.to) {
+      if (!verifyAddress(data.to)) {
+        throw new Error('Incorrect recipient address format');
+      }
+    }
+
+    if (data.recipient) {
+      if (!verifyAddress(data.recipient)) {
+        throw new Error('Incorrect recipient address format');
+      }
+    }
+
+    if (data.owners) {
+      data.owners.forEach((address) => {
+        if (!verifyAddress(address)) {
+          throw new Error('Incorrect owner address format');
+        }
+      });
+    }
+
+    if (data.validator_address) {
+      if (!verifyAddress(data.validator_address)) {
+        throw new Error('Incorrect validator address format');
+      }
+    }
+
+    if (data.delegator_address) {
+      if (!verifyAddress(data.delegator_address)) {
+        throw new Error('Incorrect delegator address format');
+      }
+    }
+
+    if (data.sends) {
+      data.sends.forEach(({ receiver }) => {
+        if (!verifyAddress(receiver)) {
+          throw new Error('Incorrect owner address format');
+        }
+      });
+    }
+
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
     console.log(broadcastTx);
     const txResult = await postTx(api, decimal)(broadcastTx);
