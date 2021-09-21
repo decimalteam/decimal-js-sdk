@@ -4,8 +4,6 @@ export default function getAddress(api) {
       throw new Error('The address is required');
     }
 
-    const url = `/address/${address}`;
-    const { data } = await api.get(url, { params: { txLimit } });
-    return data.result;
+    return api.getAddress(address, txLimit);
   };
 }

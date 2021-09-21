@@ -4,11 +4,8 @@ export default function getCoin(api) {
       throw new Error('The address is required');
     }
 
-    const url = `/validator/${address}`;
-
     try {
-      const { data } = await api.get(url);
-      return data.result;
+      return api.getValidator(address);
     } catch (e) {
       throw new Error('[decimal-js-sdk] Such a validator does not exist');
     }

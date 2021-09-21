@@ -76,12 +76,12 @@ export function prepareTx(api) {
 
 export function getSignMeta(api, wallet, createNonce = true) {
   return async () => {
-    const nodeInfoResp = await api.get('/rpc/node_info');
+    const nodeInfoResp = await api.getNodeInfo();
 
-    const accountResp = createNonce ? await api.get(`/rpc/auth/accounts/${wallet.address}`) : await api.get(`/rpc/accounts/${wallet.address}`);
+    const accountResp = await api.requestAccountSequence(wallet.address, createNonce);
     return {
-      account_number: `${accountResp.data.result.value.account_number}`,
-      sequence: `${accountResp.data.result.value.sequence}`,
+      account_number: `${accountResp.value.account_number}`,
+      sequence: `${accountResp.value.sequence}`,
       chain_id: nodeInfoResp.data.node_info.network,
     };
   };
@@ -106,9 +106,9 @@ export function makeSignature(api, wallet, decimal, createNonce) {
 
 // send signed prepared tx for broadcast
 export function postTx(api) {
-  return async (broadcastTx, isOfflineTx) => {
-    const resp = await api.post('/rpc/txs', broadcastTx);
-    const txResult = transactionResult(resp.data);
+  return async (txData, isOfflineTx) => {
+    const data = await api.broadcastTx(txData);
+    const txResult = transactionResult(data);
 
     if (txResult.success && !isOfflineTx) {
       signMeta.sequence = (+signMeta.sequence + 1).toString();

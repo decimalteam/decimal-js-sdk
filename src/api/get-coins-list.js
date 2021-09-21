@@ -1,6 +1,5 @@
 export default function getCoinsList(api) {
-  return async (limit, offset, query) => {
-    const url = '/coin';
+  return (limit, offset, query) => {
     const params = {
       limit,
       offset,
@@ -8,7 +7,6 @@ export default function getCoinsList(api) {
     if (query) {
       params.query = query;
     }
-    const { data } = await api.get(url, { params });
-    return data.result;
+    return api.getCoinsList(params);
   };
 }

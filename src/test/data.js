@@ -1,8 +1,8 @@
 export const data = {
   send: {
-    to: 'dx1mxvw3d39fmn4vzq8x6xycjm79vkdefnwulrkzz',
+    to: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0002c7ua9nl',
     coin: 'del',
-    amount: '0.1',
+    amount: '160',
   },
   multisend: [
     {
@@ -120,8 +120,8 @@ export const data = {
       title: 'test title',
       description: 'test description',
     },
-    startBlock: '1500000',
-    endBlock: '1000000',
+    startBlock: '200000',
+    endBlock: '2000000',
   },
 
   voteProposal: {
@@ -133,7 +133,7 @@ export const data = {
     recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
     amount: '1',
     tokenName: 'decimal',
-    tokenSymbol: 'd',
+    tokenSymbol: 'DEL',
     destChain: '2',
   },
   swapRedeem: {
@@ -154,7 +154,7 @@ export const data = {
   nftMint: {
     recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
     denom: 'phone',
-    token_uri: 'https://devnet-nft.decimalchain.com/api/nfts/pepe1122',
+    token_uri: 'https://testnet-nft.decimalchain.com/api/nfts/pepe112',
     quantity: '1',
     reserve: '10000000',
     allow_mint: true,
@@ -171,13 +171,13 @@ export const data = {
     id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
     token_uri: 'uhttp://devnet.nft.decimalchain.com/api/nfts/CvavSYvudYqiGeOY67dzLmdl6NjqTdEb',
   },
-  // nftTransfer: {
-  //   denom: 'Cat',
-  //   id: 'a59913f01976735bee8411676015e2b578a49068',
-  //   recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
-  //   // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-  //   sub_token_ids: ["2"],
-  // },
+  nftTransfer: {
+    denom: 'Cat',
+    id: 'a59913f01976735bee8411676015e2b578a49068',
+    recipient: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0xg2c7ua9nl',
+    // sender: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+    sub_token_ids: ['2'],
+  },
   nftDelegate: {
     denom: 'Music',
     id: '544c7ce1eb5fd342cfc5a94f517cccd85fec794a',

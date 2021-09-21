@@ -26,10 +26,8 @@ export default function getCoin(api) {
       throw new Error('The coin symbol is required');
     }
 
-    const url = `/coin/${symbol.toLowerCase()}`;
     try {
-      const { data } = await api.get(url);
-      const coin = data.result;
+      const coin = await api.getCoin(symbol);
       coin.price = calcPrice(coin);
       return coin;
     } catch (e) {
