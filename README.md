@@ -125,6 +125,8 @@ wallet.getPublicKeyString();
 
 - [Options](#options)
 - [Types](#types)
+- [Utilities](#Utilities)
+    - [verifyAddress](#verifyAddress)
 - [API](#api)
     - [getCoinsList](#getaddress)
     - [getCoin](#getcoinslist)
@@ -185,6 +187,22 @@ const decimal = new Decimal({
 
 Available networks: ['mainnet', 'testnet', 'devnet']
 If omitted defaults to 'mainnet', which is fine in most cases.
+
+## Utilities
+
+### verifyAddress
+
+```js
+verifyAddress(address, prefix = 'dx')
+```
+- examples:
+
+```js
+const isValid = verifyAddress('dx13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy') // true
+
+const isValidatorAddress = verifyAddress('dxvaloper13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy', 'dxveloper') // true
+
+```
 
 ## Types
 
