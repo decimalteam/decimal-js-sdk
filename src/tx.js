@@ -468,7 +468,7 @@ export function sendTransaction(type, api, wallet, decimal) {
     /* FIXME: swap contains external blockchain address 
      * format that needs to be verified differently.
      */
-    if (type !== TX_TYPE.SWAP_INIT || type !== TX_TYPE.SWAP_REDEEM) {
+    if (type !== TX_TYPE.SWAP_INIT && type !== TX_TYPE.SWAP_REDEEM) {
       validateData(data);
     }
 
