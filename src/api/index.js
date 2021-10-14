@@ -100,8 +100,8 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async getNftById(id) {
-    const { data } = await this.request(`/nfts/${id}`);
+  async getNftById(id, params) {
+    const { data } = await this.request(`/nfts/${id}`, params);
     return data.result;
   }
 
