@@ -12,6 +12,7 @@ import getValidator from './api/get-validator';
 import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
+import getNft from './api/get-nft';
 
 import { verifyAddress } from './utils';
 
@@ -26,7 +27,6 @@ import {
 
 import { issueCheck } from './check';
 import { getTransaction, sendTransaction, estimateTxFee } from './tx';
-import getNft from './api/get-nft';
 
 export default class Decimal {
   constructor(options) {
