@@ -1,11 +1,7 @@
-export default function getNft(api) {
-  return (id, wallet) => {
+export default function getNft(api, wallet) {
+  return (id) => {
     if (!id) {
       throw new Error('Id is required');
-    }
-
-    if (!wallet) {
-      throw new Error('Wallet is required');
     }
 
     try {
