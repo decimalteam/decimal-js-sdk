@@ -44,7 +44,7 @@ export default class Decimal {
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
-    this.getNft = getNft(apiInstance);
+    this.getNft = getNft(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
