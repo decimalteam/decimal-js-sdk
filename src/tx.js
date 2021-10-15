@@ -305,7 +305,6 @@ function nftUnbond(data, wallet) {
   };
 }
 
-// TODO: check
 function nftUpdateReserve(data, wallet) {
   return {
     sender: wallet.address,
@@ -405,7 +404,6 @@ function getValue(type, data, options, wallet) {
     case TX_TYPE.NFT_UNBOND:
       value = nftUnbond(data, wallet);
       break;
-    // TODO: check
     case TX_TYPE.NFT_UPDATE_RESERVE:
       value = nftUpdateReserve(data, wallet);
       break;

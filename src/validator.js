@@ -570,7 +570,6 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
   ],
 };
 
-// TODO: check
 SCHEMA[TX_TYPE.NFT_UPDATE_RESERVE] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
