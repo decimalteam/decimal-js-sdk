@@ -566,7 +566,7 @@ await decimal.getMultisigTxs(multisigAddress, limit, offset);
 ### getNft()
 
 ```js
-const id = '2ff8d64694c057777707739910f83f8bda53aa37';
+const id = '2ff8d64694c057777707739910f83f8bda53aa37'; // id of requested nft
 
 await decimal.getNft(id);
 
@@ -602,14 +602,14 @@ common fields for all users
 if user is owner of requested nft then response is
 
 {
-  asset: null,
+  asset: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
   ...commonFields,
 }
 
 if user is not owner of requested nft then response is
 
 {
-  asset: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
+  asset: null,
   ...commonFields,
 }
 
