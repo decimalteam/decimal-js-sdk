@@ -36,6 +36,10 @@ const fields = {
     type: 'string',
     pattern: patterns.denom,
   },
+  reserve: {
+    type: 'string',
+    pattern: patterns.float,
+  },
   hex: {
     type: 'int',
   },
@@ -565,6 +569,26 @@ SCHEMA[TX_TYPE.NFT_UNBOND] = {
     'sub_token_ids',
   ],
 };
+
+SCHEMA[TX_TYPE.NFT_UPDATE_RESERVE] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    id: fields.string,
+    denom: fields.denom,
+    sub_token_ids: fields.array,
+    reserve: fields.reserve,
+  },
+  minProperties: 4,
+  maxProperties: 4,
+  required: [
+    'id',
+    'denom',
+    'sub_token_ids',
+    'reserve',
+  ],
+};
+
 export default function validateTxData(data, type) {
   if (!SCHEMA[type]) return true;
   console.log(data);

@@ -304,6 +304,17 @@ function nftUnbond(data, wallet) {
     sub_token_ids: data.sub_token_ids,
   };
 }
+
+function nftUpdateReserve(data, wallet) {
+  return {
+    sender: wallet.address,
+    id: data.id,
+    denom: data.denom,
+    sub_token_ids: data.sub_token_ids,
+    reserve: data.reserve,
+  };
+}
+
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
@@ -392,6 +403,9 @@ function getValue(type, data, options, wallet) {
       break;
     case TX_TYPE.NFT_UNBOND:
       value = nftUnbond(data, wallet);
+      break;
+    case TX_TYPE.NFT_UPDATE_RESERVE:
+      value = nftUpdateReserve(data, wallet);
       break;
     default:
       throw new Error('Invalid type of transaction');

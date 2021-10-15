@@ -162,6 +162,7 @@ wallet.getPublicKeyString();
     - [nftTransfer](#nfttransfer)
     - [nftDelegate](#nftdelegate)
     - [nftUnbond](#nftunbond)
+    - [nftUpdateReserve](#nftupdatereserve)
 - [Swap](#swap)
     - [swapInit](#swap-init)
     - [swapRedeem](#swap-redeem)
@@ -1120,6 +1121,19 @@ const data = {
 }
 
 await decimal.nftUnbond(data, options);
+```
+
+### nftUpdateReserve()
+
+```js
+const data = {
+    denom: 'phone',
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+    sub_token_ids: ['1', '2'],
+    reserve: '3200000000000000000'
+}
+
+await decimal.nftUpdateReserve(data, options);
 ```
 
 ## Swap
