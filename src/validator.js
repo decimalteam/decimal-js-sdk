@@ -36,7 +36,7 @@ const fields = {
     type: 'string',
     pattern: patterns.denom,
   },
-  new_reserve: {
+  reserve: {
     type: 'string',
     pattern: patterns.float,
   },
@@ -578,7 +578,7 @@ SCHEMA[TX_TYPE.NFT_UPDATE_RESERVE] = {
     id: fields.string,
     denom: fields.denom,
     sub_token_ids: fields.array,
-    new_reserve: fields.new_reserve,
+    reserve: fields.reserve,
   },
   minProperties: 4,
   maxProperties: 4,
@@ -586,7 +586,7 @@ SCHEMA[TX_TYPE.NFT_UPDATE_RESERVE] = {
     'id',
     'denom',
     'sub_token_ids',
-    'new_reserve',
+    'reserve',
   ],
 };
 

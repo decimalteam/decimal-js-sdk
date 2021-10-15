@@ -308,11 +308,11 @@ function nftUnbond(data, wallet) {
 // TODO: check
 function nftUpdateReserve(data, wallet) {
   return {
+    sender: wallet.address,
     id: data.id,
     denom: data.denom,
     sub_token_ids: data.sub_token_ids,
-    new_reserve: data.new_reserve,
-    sender: wallet.address,
+    reserve: data.reserve,
   };
 }
 
