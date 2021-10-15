@@ -102,5 +102,6 @@ export default class Decimal {
     this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
     this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
     this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
+    this.nftUpdateReserve = sendTransaction(TX_TYPE.NFT_UPDATE_RESERVE, apiInstance, wallet, this);
   }
 }
