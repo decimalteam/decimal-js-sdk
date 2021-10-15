@@ -603,14 +603,14 @@ if user is owner of requested nft then response is
 
 {
   asset: null,
-  ...comonFields,
+  ...commonFields,
 }
 
 if user is not owner of requested nft then response is
 
 {
   asset: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
-  ...comonFields,
+  ...commonFields,
 }
 
 */
