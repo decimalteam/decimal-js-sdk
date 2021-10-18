@@ -1127,10 +1127,10 @@ await decimal.nftUnbond(data, options);
 
 ```js
 const data = {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    sub_token_ids: ['1', '2'],
-    reserve: '3200000000000000000'
+    denom: 'phone', // nft collection name
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154', // nft id
+    sub_token_ids: ['1', '2'], // sub token ids which need to be updated
+    reserve: '3' // new nft sub tokens reserve in DELs
 }
 
 await decimal.nftUpdateReserve(data, options);
