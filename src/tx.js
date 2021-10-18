@@ -311,7 +311,7 @@ function nftUpdateReserve(data, wallet) {
     id: data.id,
     denom: data.denom,
     sub_token_ids: data.sub_token_ids,
-    reserve: data.reserve,
+    reserve: getAmountToUNI(data.reserve),
   };
 }
 
