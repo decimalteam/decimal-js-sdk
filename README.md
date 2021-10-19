@@ -1131,6 +1131,8 @@ const data = {
     id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154', // nft id
     sub_token_ids: ['1', '2'], // sub token ids which need to be updated
     reserve: '3' // new nft sub tokens reserve in DELs
+                 // must be greater than the current nft sub token reserve
+                 // have to consider user's account balance in DEL, total reserve differences must be less than balance
 }
 
 await decimal.nftUpdateReserve(data, options);
