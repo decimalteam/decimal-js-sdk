@@ -30,4 +30,5 @@ export default {
   NFT_TRANSFER: 'nft/msg_transfer',
   NFT_DELEGATE: 'validator/delegate_nft',
   NFT_UNBOND: 'validator/unbond_nft',
+  NFT_UPDATE_RESERVE: 'nft/update_reserve',
 };

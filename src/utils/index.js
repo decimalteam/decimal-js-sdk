@@ -2,7 +2,7 @@ import { decode } from 'bech32';
 
 /**
  * @param {string} address Decimal blockchain address
- * @param {string} prefix Prefix
+ * @param {'dx' | 'dxvaloper' | string} prefix Prefix
  * @returns {boolean} boolean to indicate address validation
  */
 // eslint-disable-next-line import/prefer-default-export

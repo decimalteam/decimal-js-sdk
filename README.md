@@ -125,6 +125,8 @@ wallet.getPublicKeyString();
 
 - [Options](#options)
 - [Types](#types)
+- [Utilities](#Utilities)
+    - [verifyAddress](#verifyAddress)
 - [API](#api)
     - [getCoinsList](#getaddress)
     - [getCoin](#getcoinslist)
@@ -133,6 +135,7 @@ wallet.getPublicKeyString();
     - [getMultisigsByAddress](#getmultisigsbyaddress)
     - [getMultisig](#getmultisig)
     - [getMultisigTxs](#getmultisigtxs)
+    - [getNft](#getNft)
     - [getStakesByAddress](#getstakesbyaddress)
     - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
@@ -159,6 +162,7 @@ wallet.getPublicKeyString();
     - [nftTransfer](#nfttransfer)
     - [nftDelegate](#nftdelegate)
     - [nftUnbond](#nftunbond)
+    - [nftUpdateReserve](#nftupdatereserve)
 - [Swap](#swap)
     - [swapInit](#swap-init)
     - [swapRedeem](#swap-redeem)
@@ -185,6 +189,24 @@ const decimal = new Decimal({
 
 Available networks: ['mainnet', 'testnet', 'devnet']
 If omitted defaults to 'mainnet', which is fine in most cases.
+
+## Utilities
+
+### verifyAddress
+
+```js
+decimal.verifyAddress(address, prefix = 'dx')
+```
+- examples:
+
+```js
+const decimal = new Decimal(...)
+
+const isValid = await decimal.verifyAddress('dx13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy') // true
+
+const isValidatorAddress = await decimal.verifyAddress('dxvaloper13wv0w5w6uzkqceevtcefgc3sk0gg33vjuew2wy', 'dxvaloper') // true
+
+```
 
 ## Types
 
@@ -539,7 +561,64 @@ await decimal.getMultisigTxs(multisigAddress, limit, offset);
   ]
 }
 */
+
 ```
+
+### getNft()
+
+```js
+const id = '2ff8d64694c057777707739910f83f8bda53aa37'; // id of requested nft
+
+await decimal.getNft(id);
+
+/*
+
+common fields for all users 
+
+{
+  allowMint: false
+  blockId: 17187
+  cover: "data:image/png;base64,iVBORw0KGgo..."
+  createdAt: "2021-09-28T06:43:48.378Z"
+  creator: "dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8"
+  description: "token"
+  headline: "tok"
+  id: 422
+  misc: {coverHash: '307a3e7ccac8dfbd522805d980e199e5e5dc1541', coverPath: 'cSWF9hjezHlgxCPvAj4DtjpIstBnvHHo_cover_93b28.png', coverExtension: 'png'}
+  nftCollection: "tok"
+  nftId: "2ff8d64694c057777707739910f83f8bda53aa37"
+  nftReserve: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+  nonFungible: false
+  owners: (3) [{…}, {…}, {…}]
+  quantity: "10"
+  slug: "cSWF9hjezHlgxCPvAj4DtjpIstBnvHHo"
+  startReserve: "100000000000000000000"
+  status: "active"
+  tokenUri: "https://devnet-nft.decimalchain.com/api/nfts/cSWF9hjezHlgxCPvAj4DtjpIstBnvHHo"
+  totalReserve: "1000000000000000000000"
+  txHash: "33A41B8C910F7BCB03958448F9F59401EC9D3089F5CF7C621248F2CE2E168063"
+  updatedAt: "2021-09-28T06:43:58.071Z
+}
+
+if user is owner of requested nft then response is
+
+{
+  asset: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
+  ...commonFields,
+}
+
+if user is not owner of requested nft then response is
+
+{
+  asset: null,
+  ...commonFields,
+}
+
+*/
+
+
+```
+
 
 ### getStakesByAddress()
 
@@ -1042,6 +1121,21 @@ const data = {
 }
 
 await decimal.nftUnbond(data, options);
+```
+
+### nftUpdateReserve()
+
+```js
+const data = {
+    denom: 'phone', // nft collection name
+    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154', // nft id
+    sub_token_ids: ['1', '2'], // sub token ids which need to be updated
+    reserve: '3' // new nft sub tokens reserve in DELs
+                 // must be greater than the current nft sub token reserve
+                 // have to consider user's account balance in DEL, total reserve differences must be less than balance
+}
+
+await decimal.nftUpdateReserve(data, options);
 ```
 
 ## Swap

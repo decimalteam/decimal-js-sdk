@@ -12,6 +12,7 @@ import getValidator from './api/get-validator';
 import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
+import getNft from './api/get-nft';
 
 import { verifyAddress } from './utils';
 
@@ -26,7 +27,6 @@ import {
 
 import { issueCheck } from './check';
 import { getTransaction, sendTransaction, estimateTxFee } from './tx';
-import getNft from './api/get-nft';
 
 export default class Decimal {
   constructor(options) {
@@ -44,7 +44,7 @@ export default class Decimal {
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
-    this.getNft = getNft(apiInstance);
+    this.getNft = getNft(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);
@@ -102,5 +102,6 @@ export default class Decimal {
     this.nftTransfer = sendTransaction(TX_TYPE.NFT_TRANSFER, apiInstance, wallet, this);
     this.nftDelegate = sendTransaction(TX_TYPE.NFT_DELEGATE, apiInstance, wallet, this);
     this.nftUnbond = sendTransaction(TX_TYPE.NFT_UNBOND, apiInstance, wallet, this);
+    this.nftUpdateReserve = sendTransaction(TX_TYPE.NFT_UPDATE_RESERVE, apiInstance, wallet, this);
   }
 }

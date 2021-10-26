@@ -17,6 +17,9 @@ const decimal = new Decimal({ rpcURL: 'http://46.101.127.241/rpc', restURL: 'htt
   // await decimal.nftEditMetadata(data.nftEditMetadata);
   // await decimal.nftTransfer(data.nftTransfer);
   console.log(`IS_VALID(${data.send.to}) = ${decimal.verifyAddress(data.send.to)}`)
+
+  console.log(`IS_VALID(dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g) = ${decimal.verifyAddress('dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g')}`)
+
   console.log(`IS_VALID_VALIDATOR_ADDRESS(${data.delegate.address}) = ${decimal.verifyAddress(data.delegate.address, 'dxvaloper')}`)
   const result = await decimal.sendCoins(data.send)
 

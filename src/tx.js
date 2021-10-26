@@ -306,6 +306,17 @@ function nftUnbond(data, wallet) {
     sub_token_ids: data.sub_token_ids,
   };
 }
+
+function nftUpdateReserve(data, wallet) {
+  return {
+    sender: wallet.address,
+    id: data.id,
+    denom: data.denom,
+    sub_token_ids: data.sub_token_ids,
+    reserve: getAmountToUNI(data.reserve),
+  };
+}
+
 function getValue(type, data, options, wallet) {
   validateTxData(data, type);
 
@@ -395,6 +406,9 @@ function getValue(type, data, options, wallet) {
     case TX_TYPE.NFT_UNBOND:
       value = nftUnbond(data, wallet);
       break;
+    case TX_TYPE.NFT_UPDATE_RESERVE:
+      value = nftUpdateReserve(data, wallet);
+      break;
     default:
       throw new Error('Invalid type of transaction');
   }
@@ -404,29 +418,6 @@ function getValue(type, data, options, wallet) {
 
 export function getTransaction(api, wallet, decimal, createNonce) {
   return async (type, data, options) => {
-    if (data.sender) {
-      if (!verifyAddress(data.sender)) {
-        throw new Error('Incorrect sender address format');
-      }
-    }
-
-    if (data.recipient) {
-      if (!verifyAddress(data.recipient)) {
-        throw new Error('Incorrect recipient address format');
-      }
-    }
-
-    if (data.validator_address) {
-      if (!verifyAddress(data.validator_address)) {
-        throw new Error('Incorrect validator address format');
-      }
-    }
-
-    if (data.delegator_address) {
-      if (!verifyAddress(data.delegator_address)) {
-        throw new Error('Incorrect delegator address format');
-      }
-    }
     const formatted = getValue(type, data, options, wallet);
     const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options, wallet);
 
@@ -434,58 +425,67 @@ export function getTransaction(api, wallet, decimal, createNonce) {
   };
 }
 
+function validateData(data) {
+  if (data.from) {
+    if (!verifyAddress(data.from)) {
+      throw new Error('Incorrect sender address format');
+    }
+  }
+
+  if (data.sender) {
+    if (!verifyAddress(data.sender)) {
+      throw new Error('Incorrect sender address format');
+    }
+  }
+
+  if (data.to) {
+    if (!verifyAddress(data.to)) {
+      throw new Error('Incorrect recipient address format');
+    }
+  }
+
+  if (data.recipient) {
+    if (!verifyAddress(data.recipient)) {
+      throw new Error('Incorrect recipient address format');
+    }
+  }
+
+  if (data.owners) {
+    data.owners.forEach((address) => {
+      if (!verifyAddress(address)) {
+        throw new Error('Incorrect owner address format');
+      }
+    });
+  }
+
+  if (data.validator_address) {
+    if (!verifyAddress(data.validator_address, 'dxvaloper')) {
+      throw new Error('Incorrect validator address format');
+    }
+  }
+
+  if (data.delegator_address) {
+    if (!verifyAddress(data.delegator_address)) {
+      throw new Error('Incorrect delegator address format');
+    }
+  }
+
+  if (data.sends) {
+    data.sends.forEach(({ receiver }) => {
+      if (!verifyAddress(receiver)) {
+        throw new Error('Incorrect owner address format');
+      }
+    });
+  }
+}
+
 export function sendTransaction(type, api, wallet, decimal) {
   return async (data, options) => {
-    if (data.from) {
-      if (!verifyAddress(data.from)) {
-        throw new Error('Incorrect sender address format');
-      }
-    }
-
-    if (data.sender) {
-      if (!verifyAddress(data.sender)) {
-        throw new Error('Incorrect sender address format');
-      }
-    }
-
-    if (data.to) {
-      if (!verifyAddress(data.to)) {
-        throw new Error('Incorrect recipient address format');
-      }
-    }
-
-    if (data.recipient) {
-      if (!verifyAddress(data.recipient)) {
-        throw new Error('Incorrect recipient address format');
-      }
-    }
-
-    if (data.owners) {
-      data.owners.forEach((address) => {
-        if (!verifyAddress(address)) {
-          throw new Error('Incorrect owner address format');
-        }
-      });
-    }
-
-    if (data.validator_address) {
-      if (!verifyAddress(data.validator_address)) {
-        throw new Error('Incorrect validator address format');
-      }
-    }
-
-    if (data.delegator_address) {
-      if (!verifyAddress(data.delegator_address)) {
-        throw new Error('Incorrect delegator address format');
-      }
-    }
-
-    if (data.sends) {
-      data.sends.forEach(({ receiver }) => {
-        if (!verifyAddress(receiver)) {
-          throw new Error('Incorrect owner address format');
-        }
-      });
+    /* FIXME: swap contains external blockchain address
+     * format that needs to be verified differently.
+     */
+    if (type !== TX_TYPE.SWAP_INIT && type !== TX_TYPE.SWAP_REDEEM) {
+      validateData(data);
     }
 
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
