@@ -1,6 +1,6 @@
 export const data = {
   send: {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    to: 'dx16rr3cvdgj8jsywhx8lfteunn9uz0002c7ua9nl',
     coin: 'del',
     amount: '160',
   },
