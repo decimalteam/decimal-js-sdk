@@ -1,4 +1,4 @@
-# Decimal JS SDK
+# Decimal JS SDK 
 
 For detailed explanation on how things work, checkout the:
 
