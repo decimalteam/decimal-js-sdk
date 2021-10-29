@@ -1,3 +1,8 @@
+const sha3 = require('js-sha3');
+const EC = require('elliptic').ec;
+
+const ec = new EC('secp256k1');
+
 export default function getNft(api, wallet) {
   return (id) => {
     if (!id) {
@@ -5,8 +10,15 @@ export default function getNft(api, wallet) {
     }
 
     try {
-      const params = { walletAddress: wallet.address };
-
+      const timestamp = Math.round(new Date().getTime() / 1000.0);
+      const msg = JSON.stringify({
+        timestamp,
+        nftId: id,
+      });
+      const msgHash = sha3.keccak256(msg);
+      const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+      const params = { timestamp, signature };
+      console.log(params);
       return api.getNftById(id, params);
     } catch (e) {
       return null;

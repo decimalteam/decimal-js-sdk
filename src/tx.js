@@ -425,16 +425,16 @@ export function getTransaction(api, wallet, decimal, createNonce) {
 
 function validateData(data) {
   if (
-    data.from === '' ||
-    data.sender === '' ||
-    data.to === '' ||
-    data.recipient === '' ||
-    data.validator_address === '' ||
-    data.delegator_address === ''
+    data.from === ''
+    || data.sender === ''
+    || data.to === ''
+    || data.recipient === ''
+    || data.validator_address === ''
+    || data.delegator_address === ''
   ) {
     throw new Error('Address cannot be empty string');
   }
-  
+
   if (data.from) {
     if (!verifyAddress(data.from)) {
       throw new Error('Incorrect sender address format');
