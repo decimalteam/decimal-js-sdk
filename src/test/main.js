@@ -6,7 +6,7 @@ import {makeSignature, prepareTx, postTx} from '../txUtils';
 import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
-const wallet  = new Wallet('');
+const wallet  = new Wallet('income space modify wealth attitude uniform guitar ready woman keen play problem hint fringe art lyrics crime learn blossom young dolphin pluck appear stadium');
 
 const decimal = new Decimal({ rpcURL: 'http://46.101.127.241/rpc', gateURL: 'https://devnet-gate.decimalchain.com/api/', wallet, });
 (async function test() {

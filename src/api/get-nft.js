@@ -18,7 +18,6 @@ export default function getNft(api, wallet) {
       const msgHash = sha3.keccak256(msg);
       const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
       const params = { timestamp, signature };
-      console.log(params);
       return api.getNftById(id, params);
     } catch (e) {
       return null;
