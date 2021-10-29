@@ -30,8 +30,8 @@ export default class Wallet {
       throw new Error('Invalid mnemonic');
     }
 
-    const wallet = createWalletFromMnemonic(_mnemonic, '', prefix, path);
-    const validatorAddress = createWalletFromMnemonic(_mnemonic, '', validatorPrefix, path).address;
+    const wallet = createWalletFromMnemonic(_mnemonic, prefix, path);
+    const validatorAddress = createWalletFromMnemonic(_mnemonic, validatorPrefix, path).address;
 
     this.mnemonic = _mnemonic;
     this.privateKey = wallet.privateKey;
