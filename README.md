@@ -623,7 +623,7 @@ if user is not owner of requested nft then response is
 ### getNfts()
 
 ```js
-const address = '2ff8d64694c057777707739910f83f8bda53aa37'; // address of requested user with nfts
+const address = 'dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8'; // address of requested user with nfts
 
 await decimal.getNfts(address);
 
@@ -662,7 +662,7 @@ common fields for all users
 if user's address
 
 {
-  cover: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
+  cover: "data:image/png;base64,iVBORw0KGgoAAAA...", // original cover of nft
   misc: {coverHash: '307a3e7ccac8dfbd522805d980e199e5e5dc1541', coverPath: 'cSWF9hjezHlgxCPvAj4DtjpIstBnvHHo_cover_93b28.png', coverExtension: 'png'}
   ...commonFields,
 }
@@ -671,8 +671,9 @@ if not user's address
 
 {
   // predefined data
-  cover: 'assets/JeqShgz5ySuYgrDr2f5Cz8MrKTSP2pyk_0299a.png',
+  cover: "data:image/png;base64,FrrvfwqeyttytyT...", // a placeholder image used for common display
   misc: null,
+  ...commonFields,
 }
 
 */
