@@ -624,8 +624,11 @@ if user is not owner of requested nft then response is
 
 ```js
 const address = 'dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8'; // address of requested user with nfts
+const limit = 10;
+const offset = 0;
+const query = '2ff8d64694c05777770'; // nft id or nft collection to search
 
-await decimal.getNfts(address);
+await decimal.getNfts(address, limit, offset, query);
 
 /*
 
