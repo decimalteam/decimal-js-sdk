@@ -13,6 +13,7 @@ import getMyTransactions from './api/get-my-transactions';
 import getVotesInfo from './api/votes';
 import getMyCoins from './api/get-my-coins';
 import getNft from './api/get-nft';
+import getNfts from './api/get-nfts';
 
 import { verifyAddress } from './utils';
 
@@ -45,6 +46,7 @@ export default class Decimal {
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
     this.getNft = getNft(apiInstance, wallet);
+    this.getNfts = getNfts(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
     this.getValidator = getValidator(apiInstance);

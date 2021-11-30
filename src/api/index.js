@@ -105,6 +105,11 @@ export default class DecimalApi {
     return data.result;
   }
 
+  async getNfts(address, params) {
+    const { data } = await this.request(`/address/${address}/nfts`, params);
+    return data.result;
+  }
+
   async getProposals() {
     const { data } = await this.request('/proposals');
     return data.result;
