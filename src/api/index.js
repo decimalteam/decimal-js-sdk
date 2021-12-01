@@ -45,8 +45,8 @@ export default class DecimalApi {
     return this.request('/node_info', null, 'get', REST);
   }
 
-  async getAddress(address, txLimit) {
-    const { data } = await this.request(`/address/${address}`, { txLimit });
+  async getAddress(address, params) {
+    const { data } = await this.request(`/address/${address}`, params);
     return data.result;
   }
 
@@ -107,6 +107,11 @@ export default class DecimalApi {
 
   async getNfts(address, params) {
     const { data } = await this.request(`/address/${address}/nfts`, params);
+    return data.result;
+  }
+
+  async getNftTxes(address, params, order) {
+    const { data } = await this.request(`/address/${address}/nfts/txs?${order}`, params);
     return data.result;
   }
 

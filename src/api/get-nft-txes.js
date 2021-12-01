@@ -3,10 +3,15 @@ const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
 
-export default function getNfts(api, wallet) {
-  return (address, limit = 10, offset = 0, query = null) => {
+// constants
+const DEFAULT_ORDER_FIELD = 'createdAt';
+const DEFAULT_ORDER_DIRECTION = 'DESC';
+const DEFAULT_ORDER = `order[${DEFAULT_ORDER_FIELD}]=${DEFAULT_ORDER_DIRECTION}`;
+
+export default function getNftTxes(api, wallet) {
+  return (address, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
     try {
-      let params = query ? { query, limit, offset } : { limit, offset };
+      let params = { limit, offset };
 
       if (!address) {
         throw new Error('The address is required');
@@ -27,7 +32,7 @@ export default function getNfts(api, wallet) {
         params = { ...params, timestamp, signature };
       }
 
-      return api.getNfts(address, params);
+      return api.getNftTxes(address, params, order);
     } catch (e) {
       return null;
     }
