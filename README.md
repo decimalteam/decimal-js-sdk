@@ -128,15 +128,16 @@ wallet.getPublicKeyString();
 - [Utilities](#Utilities)
     - [verifyAddress](#verifyAddress)
 - [API](#api)
-    - [getCoinsList](#getaddress)
-    - [getCoin](#getcoinslist)
-    - [getAddress](#getcoin)
+    - [getCoinsList](#getcoinslist)
+    - [getCoin](#getcoin)
+    - [getAddress](#getaddress)
     - [getMeta](#getmeta)
     - [getMultisigsByAddress](#getmultisigsbyaddress)
     - [getMultisig](#getmultisig)
     - [getMultisigTxs](#getmultisigtxs)
     - [getNft](#getNft)
     - [getNfts](#getNfts)
+    - [getNftTxes](#getNftTxes)
     - [getStakesByAddress](#getstakesbyaddress)
     - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
@@ -369,8 +370,10 @@ await decimal.getCoin(coinTicker);
 ### getAddress()
 
 ```js
-const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g'
-await decimal.getAddress(address);
+const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g' // address of requested user, required property
+const txLimit = 10; // optional property
+
+await decimal.getAddress(address, txLimit);
 
 /*
 {
@@ -381,6 +384,18 @@ await decimal.getAddress(address);
     "balance": {
       "tdel": "14999120000000000000000"
     },
+    "balanceNft": [
+      {
+        amount: "1"
+        collection: "testovaya"
+        // if user's address then original cover of nft
+        // else a placeholder image used for common display
+        cover: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYI
+        nftId: "4a482a53b16345bb625a214b2f9c3f2968461cd0"
+        nftReserve: [{...}]
+        nftStake: [{...}]
+      }
+    ],
     "nonce": 2,
     "txes": 5,
     "createdAt": "2020-07-29T07:48:15.089Z",
@@ -415,7 +430,8 @@ await decimal.getMeta();
 
 ```js
 const address = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g'
-await decimal.getMultisigsByAddress(address);
+
+await decimal.getMultisigsByAddress(address, txLimit);
 /*
 {
   "count": 4,
@@ -623,10 +639,10 @@ if user is not owner of requested nft then response is
 ### getNfts()
 
 ```js
-const address = 'dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8'; // address of requested user with nfts
-const limit = 10;
-const offset = 0;
-const query = '2ff8d64694c05777770'; // nft id or nft collection to search
+const address = 'dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8'; // address of requested user with nfts, required property
+const limit = 10; // optional property
+const offset = 0; // optional property
+const query = '2ff8d64694c05777770'; // nft id or nft collection to search, optional property
 
 await decimal.getNfts(address, limit, offset, query);
 
@@ -659,6 +675,70 @@ common fields for all users
     totalReserve: "1000000000000000000000"
     txHash: "33A41B8C910F7BCB03958448F9F59401EC9D3089F5CF7C621248F2CE2E168063"
     updatedAt: "2021-09-28T06:43:58.071Z
+  }]
+}
+
+if user's address
+
+{
+  cover: "data:image/png;base64,iVBORw0KGgoAAAA...", // original cover of nft
+  misc: {coverHash: '307a3e7ccac8dfbd522805d980e199e5e5dc1541', coverPath: 'cSWF9hjezHlgxCPvAj4DtjpIstBnvHHo_cover_93b28.png', coverExtension: 'png'}
+  ...commonFields,
+}
+
+if not user's address
+
+{
+  // predefined data
+  cover: "data:image/png;base64,FrrvfwqeyttytyT...", // a placeholder image used for common display
+  misc: null,
+  ...commonFields,
+}
+
+*/
+
+
+```
+
+### getNftTxes()
+
+```js
+const address = 'dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8'; // address of requested user with nfts, required property
+const limit = 10; // optional property
+const offset = 0; // optional property
+const order = 'order[createdAt]=DESC'; // sort field and direction in format order[FIELD]=DIRECTION where DIRECTION in (DISC, ASC), optional property
+
+await decimal.getNftTxes(address, limit, offset, order);
+
+/*
+
+common fields for all users 
+
+{
+  count: 1,
+  txs: [{
+    blockId: 648044
+    code: 0
+    cover: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUQ
+    createdAt: "2021-10-15T04:53:40.411Z"
+    creator: "dx1zenxxwspj8rnjstqyst9qvwaptq7jwwjnzul04"
+    data: {log: "",…}
+    description: "DAY"
+    fee: {gas_coin: null, gas_used: "430000000000000000", gas_amount: null, gas_used_number: 430000000000000000}
+    from: "dx1wjewzht52hfy3m0rpm8usdmfk764ca4yrwd6q8"
+    hash: "7F3BFBBAB54373E7E83EA7ECAF32CB1C42BC5ED4CD37AE3ECBF984D3058E8F00"
+    headline: "DAY"
+    id: 528
+    isPrivate: false
+    message: ""
+    misc: {coverHash: "6c37327f0e961595787924a89944894cd62d2a83",…}
+    nonce: 119
+    slug: "ndFK0PT2V1VmrEvd7F9jhzZLbG3b8cfI"
+    status: "active"
+    timestamp: "2021-11-15T10:15:52.669Z"
+    to: null
+    type: "delegate_nft"
+    updatedAt: "2021-10-15T04:53:48.550Z"
   }]
 }
 
