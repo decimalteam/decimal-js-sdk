@@ -137,6 +137,7 @@ wallet.getPublicKeyString();
     - [getMultisigTxs](#getmultisigtxs)
     - [getNft](#getNft)
     - [getNfts](#getNfts)
+    - [getNftTxes](#getNftTxes)
     - [getStakesByAddress](#getstakesbyaddress)
     - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
