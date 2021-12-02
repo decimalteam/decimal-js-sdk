@@ -9,30 +9,32 @@ const DEFAULT_ORDER_DIRECTION = 'DESC';
 const DEFAULT_ORDER = `order[${DEFAULT_ORDER_FIELD}]=${DEFAULT_ORDER_DIRECTION}`;
 
 export default function getNftTxes(api, wallet) {
-  return (address, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
+  return (id, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
+    if (!id) {
+      throw new Error('Nft id is required');
+    }
+
     try {
-      let params = { limit, offset };
+      const timestamp = Math.round(new Date().getTime() / 1000.0);
 
-      if (!address) {
-        throw new Error('The address is required');
-      }
+      const msg = {};
 
-      // if requested address is yours
-      if (address === wallet.address) {
-        const timestamp = Math.round(new Date().getTime() / 1000.0);
+      const data = {
+        timestamp,
+        nftId: id,
+      };
 
-        const msg = {
-          timestamp,
-        };
+      Object.keys(data).sort().forEach((key) => { msg[key] = data[key]; });
 
-        const msgHash = sha3.keccak256(JSON.stringify(msg));
+      const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-        const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+      const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
 
-        params = { ...params, timestamp, signature };
-      }
+      const params = {
+        limit, offset, timestamp, signature,
+      };
 
-      return api.getNftTxes(address, params, order);
+      return api.getNftTxes(id, params, order);
     } catch (e) {
       return null;
     }

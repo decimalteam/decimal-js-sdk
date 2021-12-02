@@ -95,8 +95,8 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async getNftStakes(address) {
-    const { data } = await this.request(`/address/${address}/nfts/stakes`);
+  async getNftStakes(address, params) {
+    const { data } = await this.request(`/address/${address}/nfts/stakes`, params);
     return data.result;
   }
 
@@ -110,7 +110,12 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async getNftTxes(address, params, order) {
+  async getNftTxes(id, params, order) {
+    const { data } = await this.request(`/nfts/${id}/txs?${order}`, params);
+    return data.result;
+  }
+
+  async getNftsTxes(address, params, order) {
     const { data } = await this.request(`/address/${address}/nfts/txs?${order}`, params);
     return data.result;
   }

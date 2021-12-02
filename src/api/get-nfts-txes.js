@@ -3,14 +3,19 @@ const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
 
-export default function getNftStakesByAddress(api, wallet) {
-  return async (address) => {
-    if (!address) {
-      throw new Error('The address is required');
-    }
+// constants
+const DEFAULT_ORDER_FIELD = 'createdAt';
+const DEFAULT_ORDER_DIRECTION = 'DESC';
+const DEFAULT_ORDER = `order[${DEFAULT_ORDER_FIELD}]=${DEFAULT_ORDER_DIRECTION}`;
 
+export default function getNftsTxes(api, wallet) {
+  return (address, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
     try {
-      let params = {};
+      let params = { limit, offset };
+
+      if (!address) {
+        throw new Error('The address is required');
+      }
 
       // if requested address is yours
       if (address === wallet.address) {
@@ -27,7 +32,7 @@ export default function getNftStakesByAddress(api, wallet) {
         params = { ...params, timestamp, signature };
       }
 
-      return api.getNftStakes(address, params);
+      return api.getNftsTxes(address, params, order);
     } catch (e) {
       return null;
     }
