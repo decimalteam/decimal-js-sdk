@@ -15,6 +15,7 @@ import getMyCoins from './api/get-my-coins';
 import getNft from './api/get-nft';
 import getNfts from './api/get-nfts';
 import getNftTxes from './api/get-nft-txes';
+import getNftsTxes from './api/get-nfts-txes';
 
 import { verifyAddress } from './utils';
 
@@ -49,8 +50,9 @@ export default class Decimal {
     this.getNft = getNft(apiInstance, wallet);
     this.getNfts = getNfts(apiInstance, wallet);
     this.getNftTxes = getNftTxes(apiInstance, wallet);
+    this.getNftsTxes = getNftsTxes(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
-    this.getNftStakesByAddress = getNftStakesByAddress(apiInstance);
+    this.getNftStakesByAddress = getNftStakesByAddress(apiInstance, wallet);
     this.getValidator = getValidator(apiInstance);
     this.getMeta = getSignMeta(apiInstance, wallet);
     this.getMyTransactions = getMyTransactions(apiInstance, wallet);

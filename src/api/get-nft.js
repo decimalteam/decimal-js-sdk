@@ -6,7 +6,7 @@ const ec = new EC('secp256k1');
 export default function getNft(api, wallet) {
   return (id) => {
     if (!id) {
-      throw new Error('Id is required');
+      throw new Error('Nft id is required');
     }
 
     try {
