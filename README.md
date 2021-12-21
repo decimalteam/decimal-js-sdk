@@ -113,12 +113,28 @@ wallet.getPrivateKeyString();
 // 8f7370936a728ff3d2306cbf2422382a4297f9059aecb5703fe83eef49d3e828
 ```
 
-`getPrivateKeyString`
+`getPublicKeyString`
 Return the public key string of 64 hex characters
 
 ```js
 wallet.getPublicKeyString();
 // 02f85bb9b5d87cda4197b09d0cd0ef5a1fb97f74f261f508f48a26d7dba2d0ed12
+```
+
+`generateAccount`
+Generates new wallet with Master key, updates wallet to new generated, account's depth, wallet id to new generated, list of wallets, private key, public key, address. Maximum to 20 wallets with current Master key.
+
+```js
+wallet.generateAccount();
+// new wallet.privateKey, wallet.publicKey, wallet.address
+```
+
+`switchAccount(id)`
+Switches to wallet from list of wallets, generated with Master key, updates wallet to picked, wallet id picked, private key, public key, address. Only to generated wallets.
+
+```js
+wallet.switchAccount(id);
+// switched to another early generated wallet.privateKey, wallet.publicKey, wallet.address
 ```
 
 # SDK instance

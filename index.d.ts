@@ -1,14 +1,29 @@
+import { Bech32String, Bytes } from '@tendermint/types';
+
+export declare class Account {
+  address: Bech32String;
+  privateKey: Bytes;
+  publicKey: Bytes;
+}
+
 export declare class Wallet {
   constructor(mnemonic?: string);
 
   mnemonic: string;
+  validatorAddress: string;
+  wallet: Account;
+  depth: number;
+  id: number;
+  wallets: Array<Account>;
   address: string;
   privateKey: string;
   publicKey: string;
-  validatorAddress: string;
+  availableProposalSubmit: boolean;
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
+  generateAccount(): void;
+  switchAccount(id: number): void;
 }
 
 export interface DecimalMeta {
