@@ -121,6 +121,22 @@ wallet.getPublicKeyString();
 // 02f85bb9b5d87cda4197b09d0cd0ef5a1fb97f74f261f508f48a26d7dba2d0ed12
 ```
 
+`generateAccount`
+Generates new wallet with Master key, updates wallet to new generated, account's depth, wallet id to new generated, list of wallets, private key, public key, address. Maximum to 20 wallets with current Master key.
+
+```js
+wallet.getPublicKeyString();
+// 02f85bb9b5d87cda4197b09d0cd0ef5a1fb97f74f261f508f48a26d7dba2d0ed12
+```
+
+`switchAccount(id)`
+Switches to wallet from list of wallets, generated with Master key, updates wallet to picked, wallet id picked, private key, public key, address. Only to generated wallets.
+
+```js
+wallet.getPublicKeyString();
+// 02f85bb9b5d87cda4197b09d0cd0ef5a1fb97f74f261f508f48a26d7dba2d0ed12
+```
+
 # SDK instance
 
 - [Options](#options)
