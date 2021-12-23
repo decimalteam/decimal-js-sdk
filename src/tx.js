@@ -237,7 +237,6 @@ function swapRedeem(data, wallet) {
     from: data.from,
     recipient: data.recipient,
     amount: getAmountToUNI(data.amount),
-    token_name: data.tokenName,
     token_symbol: data.tokenSymbol,
     transaction_number: data.transactionNumber,
     from_chain: data.fromChain,
