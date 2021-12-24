@@ -22,8 +22,9 @@ export declare class Wallet {
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
-  generateAccount(): void;
   switchAccount(id: number): void;
+  generateAccount(): void;
+  generateAndSwitchAccount(depth: number, id: number): void
 }
 
 export interface DecimalMeta {

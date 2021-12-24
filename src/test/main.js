@@ -15,7 +15,7 @@ const gateURL = 'https://devnet-gate.decimalchain.com/api/';
 const decimal = new Decimal({ gateURL, wallet, });
 
 (async function test() {
-  // txes
-  wallet.generateAccount();
+  enerateAndSwitchAccount(7, 0);
+  
   console.info(wallet);
 }());
