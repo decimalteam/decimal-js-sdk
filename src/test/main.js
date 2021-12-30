@@ -15,7 +15,13 @@ const gateURL = 'https://devnet-gate.decimalchain.com/api/';
 const decimal = new Decimal({ gateURL, wallet, });
 
 (async function test() {
-  enerateAndSwitchAccount(7, 0);
-  
-  console.info(wallet);
+  for (let i = 1; i<=100; i += 1) {
+    const data = {
+      to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+      coin: 'del',
+      amount: i + '',
+    } 
+
+    await decimal.sendCoins(data, options);
+  }
 }());

@@ -78,7 +78,7 @@ export function getSignMeta(api, wallet, createNonce = true) {
   return async () => {
     const nodeInfoResp = await api.getNodeInfo();
 
-    const accountResp = await api.requestAccountSequence(wallet.address, createNonce);
+    const accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address, createNonce); // TODO: updated method
     return {
       account_number: `${accountResp.value.account_number}`,
       sequence: `${accountResp.value.sequence}`,
