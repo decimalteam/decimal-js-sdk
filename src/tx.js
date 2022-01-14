@@ -321,6 +321,12 @@ function getValue(type, data, options, wallet) {
     options.feeCoin = options.feeCoin.toLowerCase();
   }
 
+  if (options && options.nonce) {
+    if (typeof options.nonce !== 'string') throw new Error('Custom nonce should be a string');
+
+    if (Number.isNaN(parseInt(options.nonce, 10))) throw new Error('Custom nonce should be valid number string');
+  }
+
   let value = {};
   switch (type) {
     case TX_TYPE.COIN_SEND:
@@ -416,7 +422,7 @@ function getValue(type, data, options, wallet) {
 export function getTransaction(api, wallet, decimal, createNonce) {
   return async (type, data, options) => {
     const formatted = getValue(type, data, options, wallet);
-    const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options, wallet);
+    const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options);
 
     return broadcastTx;
   };

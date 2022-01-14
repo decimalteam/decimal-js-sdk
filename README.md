@@ -283,6 +283,7 @@ const options = {
     message: 'my message', // Any additional information about the transaction
     gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
     mode: 'sync', // broadcast mode {sync | async | block}
+    nonce: '100', // Custom nonce for the transaction {valid number string}
 };
 ```
 

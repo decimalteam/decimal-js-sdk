@@ -10,7 +10,7 @@ const mnemonic = 'cook purity strategy hen column clump vocal husband goose diar
 
 const wallet  = new Wallet(mnemonic);
 
-const gateURL = 'https://devnet-gate.decimalchain.com/api/';
+const gateURL = 'https://testnet-gate.decimalchain.com/api/';
 
 const decimal = new Decimal({ gateURL, wallet, });
 
@@ -18,9 +18,10 @@ const decimal = new Decimal({ gateURL, wallet, });
   for (let i = 1; i<=100; i += 1) {
     const data = {
       to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-      coin: 'del',
+      coin: 'tdel',
       amount: i + '',
-    } 
+    }
+    // await new Promise(resolve => setTimeout(resolve, 500))
 
     await decimal.sendCoins(data, options);
   }
