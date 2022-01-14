@@ -74,20 +74,23 @@ export function prepareTx(api) {
   };
 }
 
-export function getSignMeta(api, wallet, createNonce = true) {
+export function getSignMeta(api, wallet, options, createNonce = true) {
   return async () => {
     const nodeInfoResp = await api.getNodeInfo();
 
     const accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address, createNonce); // TODO: updated method
+
+    const sequence = options.nonce ? options.nonce : accountResp.value.sequence;
+
     return {
       account_number: `${accountResp.value.account_number}`,
-      sequence: `${accountResp.value.sequence}`,
+      sequence: `${sequence}`,
       chain_id: nodeInfoResp.data.node_info.network,
     };
   };
 }
 
-export function makeSignature(api, wallet, decimal, createNonce) {
+export function makeSignature(api, wallet, decimal, options, createNonce) {
   return async (tx) => {
     const userSignMeta = decimal.signMeta;
 
@@ -95,9 +98,9 @@ export function makeSignature(api, wallet, decimal, createNonce) {
       signMeta = userSignMeta;
     }
 
-    if (true || !signMeta || signMeta.account_number === '0') { // TODO
-      signMeta = await getSignMeta(api, wallet, createNonce)();
-    }
+    // if (true || !signMeta || signMeta.account_number === '0') { // TODO: update condition
+    signMeta = await getSignMeta(api, wallet, options, createNonce)();
+    // } // TODO: update condition
 
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
@@ -121,7 +124,7 @@ export function postTx(api) {
 export function formTx(api, wallet, decimal, createNonce) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-    const signedTx = await makeSignature(api, wallet, decimal, createNonce)(unsignTx, wallet);
+    const signedTx = await makeSignature(api, wallet, decimal, options, createNonce)(unsignTx, wallet);
 
     const mode = options && options.mode ? options.mode : 'sync';
 

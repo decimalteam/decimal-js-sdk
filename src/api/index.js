@@ -132,6 +132,7 @@ export default class DecimalApi {
 
   async requestAccountSequence(address, incrementSequence = true) { // old version
     let path = `/auth/accounts/${address}`;
+
     if (this.gateURL && !incrementSequence) {
       path = `/accounts/${address}`;
     }
@@ -142,7 +143,11 @@ export default class DecimalApi {
   // method with modified rpc account request to get nonce with unconfirmed txes
   // new version, autoincrement do not need, becouse of mempool txes in new request
   async requestAccountSequenceWithUnconfirmedTxes(address, incrementSequence = true) {
-    const path = `/auth/accounts-with-unconfirmed-nonce/${address}`;
+    let path = `/auth/accounts-with-unconfirmed-nonce/${address}`;
+
+    if (this.gateURL && !incrementSequence) {
+      path = `/accounts/${address}`;
+    }
 
     const { data } = await this.request(path, null, 'get', REST);
 

@@ -102,6 +102,7 @@ export interface TxOptions {
   feeCoin?: string;
   message?: string;
   gasLimit?: string;
+  nonce?: string;
 }
 
 export interface SendCoinsData {
