@@ -99,12 +99,13 @@ export interface DecimalResponse {
 }
 
 export interface TxOptions {
+  gasLimit?: string;
   feeCoin?: string;
   feeAmount?: string;
-  gasLimit?: string;
   message?: string;
   nonce?: string;
-  mode?: string;
+  txBroadcastMode?: string;
+  accountInfoMode?: string;
   sendTxDirectly?: boolean;
 }
 

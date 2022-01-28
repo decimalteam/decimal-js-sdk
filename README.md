@@ -281,6 +281,7 @@ Each transaction method consists of input data (data) and options.
 const options = {
   gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
   feeCoin: 'BTC', // The coin that pays commission
+  // feeAmount: '4000', // Fee pay amount
   message: 'my message', // Any additional information about the transaction
   nonce: '100', // Custom nonce for the transaction {valid number string}
   txBroadcastMode: 'sync', // Broadcast tx mode {sync | async | block}
