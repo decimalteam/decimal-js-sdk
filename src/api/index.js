@@ -130,32 +130,31 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async requestAccountSequence(address, incrementSequence = true) { // old version
-    let path = `/auth/accounts/${address}`;
+  async requestAccountSequence(address, increaseTheSequence = true) { // old version
+    const path = increaseTheSequence ? `/accounts/${address}` : `/auth/accounts/${address}`;
 
-    if (this.gateURL && !incrementSequence) {
-      path = `/accounts/${address}`;
-    }
     const { data } = await this.request(path, null, 'get', REST);
+
     return data.result;
   }
 
   // method with modified rpc account request to get nonce with unconfirmed txes
   // new version, autoincrement do not need, becouse of mempool txes in new request
-  async requestAccountSequenceWithUnconfirmedTxes(address, incrementSequence = true) {
-    let path = `/auth/accounts-with-unconfirmed-nonce/${address}`;
-
-    if (this.gateURL && !incrementSequence) {
-      path = `/accounts/${address}`;
-    }
+  async requestAccountSequenceWithUnconfirmedTxes(address) {
+    const path = `/auth/accounts-with-unconfirmed-nonce/${address}`;
 
     const { data } = await this.request(path, null, 'get', REST);
 
     return data.result;
   }
 
-  async broadcastTx(txData) {
-    const resp = await this.request('/txs', null, 'post', REST, txData);
+  async broadcastTx(txData, options) {
+    const route = options.sendTxDirectly ? '/txs-directly' : '/txs';
+
+    console.info({ options, route });
+
+    const resp = await this.request(route, null, 'post', REST, txData);
+
     return resp.data;
   }
 

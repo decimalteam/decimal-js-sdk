@@ -14,15 +14,36 @@ const gateURL = 'https://testnet-gate.decimalchain.com/api/';
 
 const decimal = new Decimal({ gateURL, wallet, });
 
-(async function test() {
-  for (let i = 1; i<=100; i += 1) {
-    const data = {
-      to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-      coin: 'tdel',
-      amount: i + '',
-    }
-    // await new Promise(resolve => setTimeout(resolve, 500))
+const datas = [];
 
-    await decimal.sendCoins(data, options);
+(async () => {
+  const ids = [];
+  // const startNonce = 642;
+
+  for (let i = 1; i<=1; i += 1) {
+    ids.push(i);
   }
-}());
+
+  // options.mode = 'block';
+  
+  for await (const id of ids) {
+    const data = {
+      to: 'dx1mxvw3d39fmn4vzq8x6xycjm79vkdefnwulrkzz',
+      coin: 'tdel',
+      amount: id / 10 + '',
+    }
+
+    // options.nonce = startNonce + id + ''
+
+    // console.log(options.nonce);
+
+    
+    // const txResp = await  decimal.sendCoins(data, options);
+
+    // console.info({txResp});
+    
+    // await decimal.sendCoins(data, options);
+   
+    // await new Promise(resolve => setTimeout(resolve, 500))
+  }
+})();
