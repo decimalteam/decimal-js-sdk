@@ -160,7 +160,7 @@ export function formTx(api, wallet, decimal) {
 
     const signedTx = await makeSignature(api, wallet, decimal, options)(unsignTx, wallet);
 
-    const mode = (options && options.mode) || TX_BROADCAST_MODES.SYNC;
+    const mode = (options && options.txBroadcastMode) || TX_BROADCAST_MODES.SYNC;
 
     return createBroadcastTx(signedTx, mode);
   };

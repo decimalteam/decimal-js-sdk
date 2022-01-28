@@ -284,7 +284,7 @@ const options = {
   // feeAmount: '4000', // Fee pay amount
   message: 'my message', // Any additional information about the transaction
   nonce: '100', // Custom nonce for the transaction {valid number string}
-  txBroadcastMode: 'sync', // Broadcast tx mode {sync | async | block}
+  txBroadcastMode: 'block', // Broadcast tx mode {sync | async | block}
   accountInfoMode: 'account-mempool', // Method of obtaining nonce {blockchain | blockchain-with-autoincrement | blockchain-with-mempool}
   sendTxDirectly: true, // Broadcast tx route directly to node bypassing the queue {true | false}
 };
@@ -300,7 +300,7 @@ import {TX_TYPE} from 'decimal-js-sdk';
 const broadcastTx = await decimal.getTransaction(TX_TYPE.COIN_SEND, data, options);
 /*
 {
-  mode: "sync"
+  txBroadcastMode: "sync"
   tx: {
     fee: {amount: Array(0), gas: "9000000000000000000"},
     memo: "sdk test",
