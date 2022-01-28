@@ -193,10 +193,14 @@ export const data = {
     quantity: '1',
   },
 };
+
 export const options = {
   feeCoin: '',
   feeAmount: '',
-  message: 'sdk test',
   gasLimit: '',
-  mode: '', // sync / async / block
+  message: 'sdk test',
+  txBroadcastMode: 'block', // sync | async | block
+  accountInfoMode: 'blockchain-with-mempool', // blockchain | blockchain-with-autoincrement | blockchain-with-mempool
+  sendTxDirectly: true, // true | false
+  // nonce: '720',
 };

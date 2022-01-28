@@ -1,8 +1,10 @@
 import DecimalNumber from 'decimal.js';
 import { v4 as uuidv4 } from 'uuid';
 import TX_TYPE from './txTypes';
+import TX_BROADCAST_MODES from './txBroadcastModes';
+import ACCOUNT_INFO_MODES from './accountInfoModes';
 import validateTxData from './validator';
-import { formTx, postTx, prepareTx } from './txUtils';
+import { formTx, prepareTx, postTx } from './txUtils';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
@@ -322,9 +324,31 @@ function getValue(type, data, options, wallet) {
   }
 
   if (options && options.nonce) {
-    if (typeof options.nonce !== 'string') throw new Error('Custom nonce should be a string');
+    if (typeof options.nonce !== 'string') {
+      throw new Error('Custom nonce should be a string');
+    }
 
-    if (Number.isNaN(parseInt(options.nonce, 10))) throw new Error('Custom nonce should be valid number string');
+    if (Number.isNaN(parseInt(options.nonce, 10))) {
+      throw new Error('Custom nonce should be valid number string');
+    }
+  }
+
+  if (options && options.txBroadcastMode) {
+    if (!Object.values(TX_BROADCAST_MODES).includes(options.txBroadcastMode)) {
+      throw new Error('Tx broadcast mode should be one of TX_BROADCAST_MODES');
+    }
+  }
+
+  if (options && options.accountInfoMode) {
+    if (!Object.values(ACCOUNT_INFO_MODES).includes(options.accountInfoMode)) {
+      throw new Error('Account info mode should be one of ACCOUNT_INFO_MODES');
+    }
+  }
+
+  if (options && options.sendTxDirectly) {
+    if (typeof options.sendTxDirectly !== 'boolean') {
+      throw new Error('Send tx directly should be a boolean');
+    }
   }
 
   let value = {};
@@ -419,10 +443,10 @@ function getValue(type, data, options, wallet) {
   return { value, options };
 }
 
-export function getTransaction(api, wallet, decimal, createNonce) {
+export function getTransaction(api, wallet, decimal) {
   return async (type, data, options) => {
     const formatted = getValue(type, data, options, wallet);
-    const broadcastTx = await formTx(api, wallet, decimal, createNonce)(type, formatted.value, formatted.options);
+    const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options);
 
     return broadcastTx;
   };
@@ -503,8 +527,9 @@ export function sendTransaction(type, api, wallet, decimal) {
     }
 
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-    console.log(broadcastTx);
-    const txResult = await postTx(api, decimal)(broadcastTx);
+
+    const txResult = await postTx(api)(broadcastTx, options);
+
     return txResult;
   };
 }
@@ -515,7 +540,7 @@ export function estimateTxFee(api, wallet, decimal) {
       const { feeCoin } = options;
 
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal, false)(type, data, options);
+        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
         const feeAmounts = broadcastTx.tx.fee.amount;
         const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
 

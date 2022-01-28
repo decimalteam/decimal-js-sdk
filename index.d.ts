@@ -100,9 +100,12 @@ export interface DecimalResponse {
 
 export interface TxOptions {
   feeCoin?: string;
-  message?: string;
+  feeAmount?: string;
   gasLimit?: string;
+  message?: string;
   nonce?: string;
+  mode?: string;
+  sendTxDirectly?: boolean;
 }
 
 export interface SendCoinsData {
