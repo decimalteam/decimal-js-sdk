@@ -39,7 +39,7 @@ export function mnemonicToSeedSync(mnemonic) {
 // create wallet from mnemonic phrase
 export default class Wallet {
   // constructor
-  constructor(mnemonic) {
+  constructor(mnemonic, option) {
     // current mnemonic
     const _mnemonic = mnemonic || generateMnemonic();
 
@@ -62,8 +62,6 @@ export default class Wallet {
     this.depth = 1; // current wallet depth
     this.id = 0; // current wallet account id
 
-    // wallets
-    this.wallets = [wallet]; // list of user's wallets
 
     // current private, public keys, address
     this.privateKey = wallet.privateKey; // current private key
@@ -72,6 +70,20 @@ export default class Wallet {
 
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
+
+    //get generated wallets including master wallet
+    this.wallets = [wallet]
+
+    if(option && option.gateURL){
+      this.getGenerateWallets(option.gateURL, wallet.address).then((responce)=>{
+        const array_ids = responce.generatedWallets
+        if(array_ids){
+          array_ids.forEach(id => {
+            this.wallets.push({ ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: id })
+          });
+        }
+      })
+    }
   }
 
   // get private key in hex

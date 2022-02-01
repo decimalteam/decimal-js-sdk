@@ -50,6 +50,10 @@ const mnemonic = bip39.generateMnemonic();
 const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
 
 const wallet = new Wallet( /*your mnemonic*/);
+
+//in order to show all generated wallets by account, add option to Wallet gateUrl
+const wallet = new Wallet( /*your mnemonic*/, {gateURL: 'https://testnet-gate.decimalchain.com/api/'});
+
 const options = {
    restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
