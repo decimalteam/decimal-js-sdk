@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
+import axios from 'axios';
 import proposalAdresses from './proposalAddresses.json';
-import axios from "axios";
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -68,35 +68,14 @@ export default class Wallet {
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
 
-
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 
     // gate url
-    this.gateURL = options && options.gateURL ? options.gateURL : null
+    this.gateURL = options && options.gateURL ? options.gateURL : null;
 
     // get generated wallets including master wallet
-    this.wallets = [wallet]
-
-    if(this.gateURL){
-      try {
-        (async () => {
-          const { data } = await this.getGenerateWallets(options.gateURL, wallet.address)
-          const ids = data.result.generatedWallets
-          if(ids.length > 0 ){
-            ids.forEach(id => {
-              const derivationPath = generateDerivationPath(id);
-              // current wallet
-              const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: id };
-              this.wallets.push(wallet)
-            })
-          }
-        })()
-
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    this.wallets = [wallet];
   }
 
   // get private key in hex
@@ -220,7 +199,22 @@ export default class Wallet {
     }
   }
 
-  getGenerateWallets(gateUrl, address){
-    return  axios.get(`${gateUrl}address/${address}/generated-wallets`)
+  async synchronize() {
+    try {
+      if (!this.gateURL) {
+        throw new Error('You did not set gateURL');
+      }
+      const { data } = await axios.get(`${this.gateURL}address/${this.address}/generated-wallets`);
+      const ids = data.result.generatedWallets;
+      if (ids.length > 0) {
+        ids.map((id) => {
+          const derivationPath = generateDerivationPath(id);
+          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
+          return this.wallets.push(wallet);
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

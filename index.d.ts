@@ -19,13 +19,14 @@ export declare class Wallet {
   privateKey: string;
   publicKey: string;
   availableProposalSubmit: boolean;
+  gateUrl:string;
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
   switchAccount(id: number): void;
   generateAccount(): void;
   generateAndSwitchAccount(depth: number, id: number): void
-  getGenerateWallets(address: string): object
+  synchronize(): void
 }
 
 export interface WalletOptions {
