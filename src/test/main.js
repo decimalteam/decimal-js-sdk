@@ -10,7 +10,7 @@ const mnemonic = '';
 
 const wallet  = new Wallet(mnemonic);
 
-const gateURL = 'https:/testnet-gate.decimalchain.com/api/';
+const gateURL = 'https://testnet-gate.decimalchain.com/api/';
 
 const decimal = new Decimal({ gateURL, wallet, });
 
