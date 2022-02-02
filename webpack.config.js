@@ -69,7 +69,7 @@ const clientConfig = {
   },
   plugins: plugins(),
   devServer: {
-    port: 8080,
+    port: process.env.PORT,
     hot: isDev,
     host: 'localhost'
   },

@@ -1,11 +1,12 @@
 {
   "name": "decimal-js-sdk",
-  "version": "0.1.113",
+  "version": "0.1.114",
   "description": "",
   "main": "dist/decimal-sdk-js.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --mode production",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
+    "build": "cross-env NODE_ENV=production PORT=8080 webpack --mode production",
+    "dev": "cross-env NODE_ENV=development PORT=8081 webpack-dev-server --mode development --open",
+    "_dev": "cross-env NODE_ENV=development PORT=8082 webpack-dev-server --mode development --open"
   },
   "author": "DecimalTeam",
   "license": "MIT",

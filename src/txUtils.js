@@ -8,7 +8,21 @@ import TX_BROADCAST_MODES from './txBroadcastModes';
 DecimalNumber.set({ precision: 40 });
 let signMeta = null;
 
+/*
+  response = {
+    hash: string,
+    height: string,
+    success: boolean,
+    pending: boolean,
+    error: {
+      errorCode: string,
+      errorMessage: string,
+    },
+  }
+*/
+
 function transactionResult(json) {
+  // !IF ERROR
   if (json.code) {
     let errorMessage = '';
     if (json.raw_log) {
@@ -20,36 +34,54 @@ function transactionResult(json) {
       }
     }
 
-    return {
+    const txResult = {
       hash: json.txhash,
+      height: json.height,
       success: false,
+      pending: false,
       error: {
         errorCode: json.code,
         errorMessage,
       },
     };
-  }
 
+    console.error(`[ERROR]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+
+    return txResult;
+  }
+  // !IF ERROR
+
+  // !IF PENDING <- OLD VERSION
   if (json.pending) {
     const txResult = {
       hash: json.txhash,
+      height: json.height,
       success: true,
       pending: true,
       error: null,
     };
-    console.log(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+
+    console.warn(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+
     return txResult;
   }
+  // !IF PENDING <- OLD VERSION
 
+  // !FINAL RESPONSE
   const txResult = {
     hash: json.txhash,
+    height: json.height,
     success: true,
+    pending: false,
     error: null,
   };
+  // !FINAL RESPONSE
 
+  // !IF SUCCESS
   if (txResult.success) {
-    console.log(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+    console.info(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
   }
+  // !IF SUCCESS
 
   return txResult;
 }
@@ -100,14 +132,13 @@ export function getSignMeta(api, wallet, options) {
         break;
       }
     }
-
-    console.info({ accountResp });
-
     const accountNumber = accountResp && accountResp.value && accountResp.value.account_number;
 
     const sequence = accountResp && accountResp.value.sequence;
 
     const chainId = nodeInfoResp && nodeInfoResp.data && nodeInfoResp.data.node_info && nodeInfoResp.data.node_info.network;
+
+    console.info(`[SIGN-TX-META][ACCOUNT-NUMBER][${accountNumber}][SEQUENCE][${sequence}][CHAIN-ID][${chainId}]`);
 
     return {
       account_number: `${accountNumber || 0}`,
