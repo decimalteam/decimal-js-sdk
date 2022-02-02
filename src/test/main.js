@@ -6,11 +6,11 @@ import {makeSignature, prepareTx, postTx} from '../txUtils';
 import {createBroadcastTx} from '@tendermint/sig';
 import { getTransaction } from '../tx';
 
-const mnemonic = 'cook purity strategy hen column clump vocal husband goose diary vapor second connect coin love sure fitness collect identify ball write destroy left identify';
+const mnemonic = '';
 
 const wallet  = new Wallet(mnemonic);
 
-const gateURL = 'https://testnet-gate.decimalchain.com/api/';
+const gateURL = 'https:/testnet-gate.decimalchain.com/api/';
 
 const decimal = new Decimal({ gateURL, wallet, });
 
@@ -18,9 +18,9 @@ const datas = [];
 
 (async () => {
   const ids = [];
-  // const startNonce = 642;
+  // const startNonce = 15;
 
-  for (let i = 1; i<=1; i += 1) {
+  for (let i = 1; i<=25; i += 1) {
     ids.push(i);
   }
 
@@ -28,22 +28,22 @@ const datas = [];
   
   for await (const id of ids) {
     const data = {
-      to: 'dx1mxvw3d39fmn4vzq8x6xycjm79vkdefnwulrkzz',
+      to: 'dx14kskueht0ul2qme5qmwjvlmjr9thd0x3x9ffrw',
       coin: 'tdel',
       amount: id / 10 + '',
     }
 
-    // options.nonce = startNonce + id + ''
+    // options.nonce = startNonce + id + '';
 
     // console.log(options.nonce);
 
     
-    // const txResp = await  decimal.sendCoins(data, options);
+    const txResp = await  decimal.sendCoins(data, options);
 
-    // console.info({txResp});
+    console.info({txResp});
     
     // await decimal.sendCoins(data, options);
    
-    // await new Promise(resolve => setTimeout(resolve, 500))
+    // await new Promise(resolve => setTimeout(resolve, 1000))
   }
 })();
