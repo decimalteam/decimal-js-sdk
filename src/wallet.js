@@ -204,11 +204,12 @@ export default class Wallet {
       if (!this.gateUrl) {
         throw new Error('You did not set the gate url');
       }
+
       const { data } = await axios.get(`${this.gateUrl}address/${this.wallets[0].address}/generated-wallets`);
+      const ids = (data && data.result && data.result.generatedWallets) || [];
 
-      const ids = data.result.generatedWallets;
-
-      if (ids.length > 0) {
+      if (ids.length) {
+        this.wallets = [this.wallet];
         ids.map((id) => {
           const derivationPath = generateDerivationPath(id);
           const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
