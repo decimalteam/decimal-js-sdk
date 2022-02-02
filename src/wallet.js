@@ -72,7 +72,7 @@ export default class Wallet {
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 
     // gate url
-    this.gateURL = options && options.gateURL ? options.gateURL : null;
+    this.gateUrl = options && options.gateUrl ? options.gateUrl : null;
 
     // get generated wallets including master wallet
     this.wallets = [wallet];
@@ -201,11 +201,13 @@ export default class Wallet {
 
   async synchronize() {
     try {
-      if (!this.gateURL) {
-        throw new Error('You did not set gateURL');
+      if (!this.gateUrl) {
+        throw new Error('You did not set the gate url');
       }
-      const { data } = await axios.get(`${this.gateURL}address/${this.address}/generated-wallets`);
+      const { data } = await axios.get(`${this.gateUrl}address/${this.wallets[0].address}/generated-wallets`);
+
       const ids = data.result.generatedWallets;
+
       if (ids.length > 0) {
         ids.map((id) => {
           const derivationPath = generateDerivationPath(id);

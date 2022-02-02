@@ -19,7 +19,7 @@ export declare class Wallet {
   privateKey: string;
   publicKey: string;
   availableProposalSubmit: boolean;
-  gateUrl:string;
+  gateUrl: string;
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;

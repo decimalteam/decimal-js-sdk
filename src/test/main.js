@@ -10,9 +10,9 @@ const mnemonic = 'cook purity strategy hen column clump vocal husband goose diar
 
 const wallet  = new Wallet(mnemonic);
 
-const gateURL = 'https://testnet-gate.decimalchain.com/api/';
+const gateUrl = 'https://testnet-gate.decimalchain.com/api/';
 
-const decimal = new Decimal({ gateURL, wallet, });
+const decimal = new Decimal({ gateUrl, wallet, });
 
 const datas = [];
 

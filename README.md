@@ -23,12 +23,12 @@ https://mainnet-gate.decimalchain.com/api/
 TESTNET -
 https://testnet-gate.decimalchain.com/api/
 
-Depending on what you wish to use provide either gateURL or restURL (your node rest service url) in config object passed to the Decimal instance
+Depending on what you wish to use provide either gateUrl or restURL (your node rest service url) in config object passed to the Decimal instance
 
 ```js
 
 const options = {
-  gateURL: 'https://testnet-gate.decimalchain.com/api/',
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
   // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
@@ -45,12 +45,12 @@ const mnemonic = bip39.generateMnemonic();
 ### Get generated user  wallets
 
 ```js
-// add oprions to wallet object and call method synchronize
-const options = {
-    gateURL: 'https://testnet-gate.decimalchain.com/api/',
+// add options to wallet object and call method synchronize
+const walletOptions = {
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
 }
 
-const wallet = new Wallet(/*your mnemonic*/, options)
+const wallet = new Wallet(/*your mnemonic*/, walletOptions)
 
 wallet.synchronize()
 ```
@@ -89,7 +89,7 @@ const txResult = await decimal.sendCoins(data, [options]); // see options for de
 import { Wallet, Decimal } from 'decimal-js-sdk';
 
 const wallet = new Wallet(/*your mnemonic*/);
-const decimal = new Decimal({gateURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
+const decimal = new Decimal({gateUrl: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
 const data = {
   to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
@@ -223,7 +223,7 @@ Additionally, you can pass network parameter to enable network specific features
 
 ```js
 const decimal = new Decimal({
-  gateURL: 'https://testnet-gate.decimalchain.com/api/',
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
   network: 'testnet', // Enable testnet only txs types
   wallet,
   meta
@@ -354,7 +354,7 @@ console.log(fee); // 0.44
 
 ## API
 
-Please note, that these methods require gateURL to be provided
+Please note, that these methods require gateUrl to be provided
 
 ### getCoinsList()
 
