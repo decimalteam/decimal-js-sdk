@@ -52,7 +52,7 @@ const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-
 const wallet = new Wallet( /*your mnemonic*/);
 
 //in order to show all generated wallets by account, add option to Wallet gateUrl
-const wallet = new Wallet( /*your mnemonic*/, {gateURL: 'https://testnet-gate.decimalchain.com/api/'});
+const wallet = new Wallet( /*your mnemonic*/, { gateURL: 'https://testnet-gate.decimalchain.com/api/' });
 
 const options = {
    restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
@@ -74,7 +74,7 @@ const txResult = await decimal.sendCoins(data, [options]); // see options for de
 
 ```js
 
-import {Wallet, Decimal} from 'decimal-js-sdk';
+import { Wallet, Decimal } from 'decimal-js-sdk';
 
 const wallet = new Wallet(/*your mnemonic*/);
 const decimal = new Decimal({gateURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
@@ -94,7 +94,7 @@ const txResult = await decimal.sendCoins(data); // see sendCoins for details
 ### Generate wallet
 
 ```js
-import {Wallet} from 'decimal-js-sdk';
+import { Wallet } from 'decimal-js-sdk';
 
 const wallet = new Wallet();
 ```
@@ -102,7 +102,7 @@ const wallet = new Wallet();
 ### Generate wallet from mnemonic
 
 ```js
-import {Wallet} from 'decimal-js-sdk';
+import { Wallet } from 'decimal-js-sdk';
 
 const wallet = new Wallet('erase august mask elevator sand picture north there apple equal anchor target');
 ```

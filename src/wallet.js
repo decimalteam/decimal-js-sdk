@@ -1,6 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
+import axios from "axios";
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -39,7 +40,7 @@ export function mnemonicToSeedSync(mnemonic) {
 // create wallet from mnemonic phrase
 export default class Wallet {
   // constructor
-  constructor(mnemonic, option) {
+  constructor(mnemonic, options = null) {
     // current mnemonic
     const _mnemonic = mnemonic || generateMnemonic();
 
@@ -62,27 +63,39 @@ export default class Wallet {
     this.depth = 1; // current wallet depth
     this.id = 0; // current wallet account id
 
-
     // current private, public keys, address
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
 
+
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 
-    //get generated wallets including master wallet
+    // gate url
+    this.gateURL = options && options.gateURL ? options.gateURL : null
+
+    // get generated wallets including master wallet
     this.wallets = [wallet]
 
-    if(option && option.gateURL){
-      this.getGenerateWallets(option.gateURL, wallet.address).then((responce)=>{
-        const array_ids = responce.generatedWallets
-        if(array_ids){
-          array_ids.forEach(id => {
-            this.wallets.push({ ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: id })
-          });
-        }
-      })
+    if(this.gateURL){
+      try {
+        (async () => {
+          const { data } = await this.getGenerateWallets(options.gateURL, wallet.address)
+          const ids = data.result.generatedWallets
+          if(ids.length > 0 ){
+            ids.forEach(id => {
+              const derivationPath = generateDerivationPath(id);
+              // current wallet
+              const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: id };
+              this.wallets.push(wallet)
+            })
+          }
+        })()
+
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -111,7 +124,6 @@ export default class Wallet {
 
       // current wallet
       const wallet = this.wallets[id];
-
       // update current wallet
       this.wallet = wallet;
       this.id = id;
@@ -206,5 +218,9 @@ export default class Wallet {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  getGenerateWallets(gateUrl, address){
+    return  axios.get(`${gateUrl}address/${address}/generated-wallets`)
   }
 }

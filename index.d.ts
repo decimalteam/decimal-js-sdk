@@ -7,7 +7,7 @@ export declare class Account {
 }
 
 export declare class Wallet {
-  constructor(mnemonic?: string);
+  constructor(mnemonic?: string, options?: WalletOptions);
 
   mnemonic: string;
   validatorAddress: string;
@@ -25,6 +25,11 @@ export declare class Wallet {
   switchAccount(id: number): void;
   generateAccount(): void;
   generateAndSwitchAccount(depth: number, id: number): void
+  getGenerateWallets(address: string): object
+}
+
+export interface WalletOptions {
+  gateUrl: string
 }
 
 export interface DecimalMeta {
