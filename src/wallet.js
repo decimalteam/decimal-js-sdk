@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
-import axios from 'axios';
 import proposalAdresses from './proposalAddresses.json';
+import { getGeneratedWallets } from './utils/index';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -205,19 +205,27 @@ export default class Wallet {
         throw new Error('You did not set the gate url');
       }
 
-      const { data } = await axios.get(`${this.gateUrl}address/${this.wallets[0].address}/generated-wallets`);
-      const ids = (data && data.result && data.result.generatedWallets) || [];
+      const mainWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+
+      const ids = await getGeneratedWallets(this.gateUrl, mainWallet.address);
 
       if (ids.length) {
         this.wallets = [this.wallet];
+
+        if (this.wallet.id !== 0) {
+          this.wallets.push(mainWallet);
+        }
         ids.map((id) => {
           const derivationPath = generateDerivationPath(id);
           const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
-          return this.wallets.push(wallet);
+          if (id !== this.wallet.id) {
+            this.wallets.push(wallet);
+          }
+          return true;
         });
       }
     } catch (e) {
-      console.error(e);
+      console.error('An error occurred during wallet synchronization', e.message);
     }
   }
 }

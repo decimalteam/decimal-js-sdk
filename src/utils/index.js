@@ -1,4 +1,5 @@
 import { decode } from 'bech32';
+import axios from 'axios';
 
 /**
  * @param {string} address Decimal blockchain address
@@ -17,4 +18,9 @@ export function verifyAddress(address, prefix = 'dx') {
   } catch (error) {
     return false;
   }
+}
+
+export function getGeneratedWallets(gateUrl, address) {
+  const { data } = axios.get(`${gateUrl}address/${address}/generated-wallets`);
+  return (data && data.result && data.result.generatedWallets) || [];
 }
