@@ -7,7 +7,7 @@ export declare class Account {
 }
 
 export declare class Wallet {
-  constructor(mnemonic?: string);
+  constructor(mnemonic?: string, options?: WalletOptions);
 
   mnemonic: string;
   validatorAddress: string;
@@ -19,12 +19,18 @@ export declare class Wallet {
   privateKey: string;
   publicKey: string;
   availableProposalSubmit: boolean;
+  gateUrl: string;
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
   switchAccount(id: number): void;
   generateAccount(): void;
   generateAndSwitchAccount(depth: number, id: number): void
+  synchronize(): void
+}
+
+export interface WalletOptions {
+  gateUrl: string
 }
 
 export interface DecimalMeta {

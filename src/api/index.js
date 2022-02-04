@@ -10,26 +10,26 @@ export default function DecimalApi(options) {
   return instance;
 }
 */
-const GATEWAY = 'gateURL';
+const GATEWAY = 'gateUrl';
 // const RPC = 'rpcURL';
 const REST = 'restURL';
 export default class DecimalApi {
   constructor(params) {
-    this.gateURL = params.gateURL || params.baseURL;
-    if (!(this.gateURL || params.restURL)) {
-      throw new Error('Either gateURL or restURL must be provided');
+    this.gateUrl = params.gateUrl || params.baseURL;
+    if (!(this.gateUrl || params.restURL)) {
+      throw new Error('Either gateUrl or restURL must be provided');
     }
     this.requester = axios.create();
-    // this.rpcURL = params.rpcURL || this.gateURL;
-    this.restURL = params.restURL || this.gateURL;
+    // this.rpcURL = params.rpcURL || this.gateUrl;
+    this.restURL = params.restURL || this.gateUrl;
   }
 
   request(_path, params = null, method = 'get', destination = GATEWAY, data = null) {
-    if (destination === GATEWAY && !this.gateURL) {
+    if (destination === GATEWAY && !this.gateUrl) {
       throw new Error('This metohod requires gateway url to be provided');
     }
     let path = _path;
-    if (destination === REST && this.gateURL) {
+    if (destination === REST && this.gateUrl) {
       path = `/rpc${path}`;
     }
     return axios({

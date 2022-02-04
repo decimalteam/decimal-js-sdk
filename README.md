@@ -1,4 +1,4 @@
-# Decimal JS SDK 
+# Decimal JS SDK
 
 For detailed explanation on how things work, checkout the:
 
@@ -23,16 +23,16 @@ https://mainnet-gate.decimalchain.com/api/
 TESTNET -
 https://testnet-gate.decimalchain.com/api/
 
-Depending on what you wish to use provide either gateURL or restURL (your node rest service url) in config object passed to the Decimal instance
+Depending on what you wish to use provide either gateUrl or restURL (your node rest service url) in config object passed to the Decimal instance
 
 ```js
 
-const options = {
-   gateURL: 'https://testnet-gate.decimalchain.com/api/',
+const decimalOptions = {
+   gateUrl: 'https://testnet-gate.decimalchain.com/api/',
    // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
-const decimal = new Decimal(options);
+const decimal = new Decimal(decimalOptions);
 ```
 
 The following code can be used to generate **mnemonic** or use your mnemonic
@@ -42,19 +42,35 @@ const bip39 = require("bip39");
 const mnemonic = bip39.generateMnemonic();
 ```
 
+### Get generated user  wallets
+
+```js
+// add oprions to wallet object and call method synchronize
+const options = {
+    gateUrl: 'https://testnet-gate.decimalchain.com/api/',
+}
+
+const wallet = new Wallet(/*your mnemonic*/, options)
+
+wallet.synchronize()
+```
+
+
 ## Send coins
 
 ### CommonJS
 
 ```js
-const {Wallet, Decimal} = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
+const { Wallet, Decimal } = require('decimal-js-sdk'); // For server use 'decimal-js-sdk/dist/decimal-sdk-node'
 
 const wallet = new Wallet( /*your mnemonic*/);
-const options = {
+
+
+const decimalOptions = {
    restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
-const decimal = new Decimal(options);
+const decimal = new Decimal(decimalOptions);
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
@@ -70,10 +86,10 @@ const txResult = await decimal.sendCoins(data, [options]); // see options for de
 
 ```js
 
-import {Wallet, Decimal} from 'decimal-js-sdk';
+import { Wallet, Decimal } from 'decimal-js-sdk';
 
 const wallet = new Wallet(/*your mnemonic*/);
-const decimal = new Decimal({gateURL: 'https://testnet-gate.decimalchain.com/api/', wallet})
+const decimal = new Decimal({gateUrl: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
 const data = {
     to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
@@ -90,7 +106,7 @@ const txResult = await decimal.sendCoins(data); // see sendCoins for details
 ### Generate wallet
 
 ```js
-import {Wallet} from 'decimal-js-sdk';
+import { Wallet } from 'decimal-js-sdk';
 
 const wallet = new Wallet();
 ```
@@ -98,7 +114,7 @@ const wallet = new Wallet();
 ### Generate wallet from mnemonic
 
 ```js
-import {Wallet} from 'decimal-js-sdk';
+import { Wallet } from 'decimal-js-sdk';
 
 const wallet = new Wallet('erase august mask elevator sand picture north there apple equal anchor target');
 ```
@@ -150,56 +166,56 @@ wallet.generateAndSwitchAccount(depth, id);
 - [Options](#options)
 - [Types](#types)
 - [Utilities](#Utilities)
-    - [verifyAddress](#verifyAddress)
+  - [verifyAddress](#verifyAddress)
 - [API](#api)
-    - [getCoinsList](#getcoinslist)
-    - [getCoin](#getcoin)
-    - [getAddress](#getaddress)
-    - [getMeta](#getmeta)
-    - [getMultisigsByAddress](#getmultisigsbyaddress)
-    - [getMultisig](#getmultisig)
-    - [getMultisigTxs](#getmultisigtxs)
-    - [getNft](#getNft)
-    - [getNfts](#getNfts)
-    - [getNftTxes](#getNftTxes)
-    - [getNftsTxes](#getNftsTxes)
-    - [getStakesByAddress](#getstakesbyaddress)
-    - [getValidator](#getvalidator)
+  - [getCoinsList](#getcoinslist)
+  - [getCoin](#getcoin)
+  - [getAddress](#getaddress)
+  - [getMeta](#getmeta)
+  - [getMultisigsByAddress](#getmultisigsbyaddress)
+  - [getMultisig](#getmultisig)
+  - [getMultisigTxs](#getmultisigtxs)
+  - [getNft](#getNft)
+  - [getNfts](#getNfts)
+  - [getNftTxes](#getNftTxes)
+  - [getNftsTxes](#getNftsTxes)
+  - [getStakesByAddress](#getstakesbyaddress)
+  - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
-    - [getTransaction](#gettransaction)
-    - [postTx](#posttx)
-    - [estimateTxFee](#estimatetxfee)
+  - [getTransaction](#gettransaction)
+  - [postTx](#posttx)
+  - [estimateTxFee](#estimatetxfee)
 - [Coins](#coins)
-    - [sendCoin](#sendcoins)
-    - [multisendCoins](#multisendcoins)
-    - [buyCoins](#buycoins)
-    - [sellCoins](#sellcoins)
-    - [sellAllCoins](#sellallcoins)
-    - [createCoin](#createcoin)
+  - [sendCoin](#sendcoins)
+  - [multisendCoins](#multisendcoins)
+  - [buyCoins](#buycoins)
+  - [sellCoins](#sellcoins)
+  - [sellAllCoins](#sellallcoins)
+  - [createCoin](#createcoin)
 - [Validators](#validators)
-    - [validatorDelegate](#validatordelegate)
-    - [validatorUnbond](#validatorunbond)
-    - [validatorDeclare](#validatordeclare)
-    - [validatorEdit](#validatoredit)
-    - [validatorOn](#validatoron)
-    - [validatorOff](#validatoroff)
+  - [validatorDelegate](#validatordelegate)
+  - [validatorUnbond](#validatorunbond)
+  - [validatorDeclare](#validatordeclare)
+  - [validatorEdit](#validatoredit)
+  - [validatorOn](#validatoron)
+  - [validatorOff](#validatoroff)
 - [Checks](#nfts)
-    - [nftMint](#nftmint)
-    - [nftBurn](#nftburn)
-    - [nftTransfer](#nfttransfer)
-    - [nftDelegate](#nftdelegate)
-    - [nftUnbond](#nftunbond)
-    - [nftUpdateReserve](#nftupdatereserve)
+  - [nftMint](#nftmint)
+  - [nftBurn](#nftburn)
+  - [nftTransfer](#nfttransfer)
+  - [nftDelegate](#nftdelegate)
+  - [nftUnbond](#nftunbond)
+  - [nftUpdateReserve](#nftupdatereserve)
 - [Swap](#swap)
-    - [swapInit](#swap-init)
-    - [swapRedeem](#swap-redeem)
+  - [swapInit](#swap-init)
+  - [swapRedeem](#swap-redeem)
 - [NFTs](#checks)
-    - [issueCheck](#issuechek)
-    - [redeemCheck](#redeemcheck)
+  - [issueCheck](#issuechek)
+  - [redeemCheck](#redeemcheck)
 - [Multisig](#multisig)
-    - [multisigCreateWallet](multisigcreatewallet)
-    - [multisigCreateTx](multisigcreatetx)
-    - [multisigSignTx](multisigsigntx)
+  - [multisigCreateWallet](multisigcreatewallet)
+  - [multisigCreateTx](multisigcreatetx)
+  - [multisigSignTx](multisigsigntx)
 
 ## Network
 
@@ -207,7 +223,7 @@ Additionally, you can pass network parameter to enable network specific features
 
 ```js
 const decimal = new Decimal({
-    gateURL: 'https://testnet-gate.decimalchain.com/api/',
+    gateUrl: 'https://testnet-gate.decimalchain.com/api/',
     network: 'testnet', // Enable testnet only txs types
     wallet,
     meta
@@ -338,7 +354,7 @@ console.log(fee); // 0.44
 
 ## API
 
-Please note, that these methods require gateURL to be provided
+Please note, that these methods require gateUrl to be provided
 
 ### getCoinsList()
 
@@ -1440,7 +1456,7 @@ await decimal.multisigCreateTx(data, options);
 
 ```js
 const data = {
-    txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
+  txId: 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
 }
 
 await decimal.multisigSignTx(data, options);
