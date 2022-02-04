@@ -215,7 +215,7 @@ export default class Wallet {
 
         ids.forEach((id) => {
           if (id !== masterWallet.id) {
-            const derivationPath = generateDerivationPath(id);
+            const derivationPath = generateDerivationPath(id + 1);
             const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
