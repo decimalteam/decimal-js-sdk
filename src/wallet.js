@@ -205,22 +205,20 @@ export default class Wallet {
         throw new Error('You did not set the gate url');
       }
 
-      const  masterWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+      const masterWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
 
       const ids = await getGeneratedWallets(this.gateUrl, masterWallet.address);
 
       if (ids.length) {
-        this.wallets = [masterWallet]
-        this.switchAccount(this.wallets.id)
+        this.wallets = [masterWallet];
+        this.switchAccount(this.wallets[0].id);
 
-        ids.map((id) => {
-          const derivationPath = generateDerivationPath(id);
-          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
-
-          if (id !== this.wallet.id) {
+        ids.forEach((id) => {
+          if (id !== masterWallet.id) {
+            const derivationPath = generateDerivationPath(id);
+            const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
-          return true;
         });
       }
     } catch (e) {
