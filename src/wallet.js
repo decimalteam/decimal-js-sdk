@@ -211,11 +211,11 @@ export default class Wallet {
 
       if (ids.length) {
         this.wallets = [masterWallet];
-        this.switchAccount(this.wallets[0].id);
+        this.switchAccount(masterWallet.id);
 
         ids.forEach((id) => {
           if (id !== masterWallet.id) {
-            const derivationPath = generateDerivationPath(id + 1);
+            const derivationPath = generateDerivationPath(id);
             const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
