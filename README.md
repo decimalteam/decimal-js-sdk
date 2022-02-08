@@ -59,7 +59,7 @@ wallet.getGeneratedWallets()
 // save new generated wallet in DB
 // before save it, use method wallet.getGeneratedWallets()
 
-wallet.uploadGeneratedWallets()
+wallet.updateGeneratedWallets()
 ```
 
 

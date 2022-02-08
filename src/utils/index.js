@@ -25,26 +25,35 @@ export function verifyAddress(address, prefix = 'dx') {
 }
 
 export async function getGeneratedWallets(gateUrl, address) {
-  const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
-  return (data && data.result && data.result.generatedWallets) || [];
+  try{
+    const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
+    return (data && data.result && data.result.generatedWallets) || [];
+  }catch(error){
+    return false;
+  }
 }
 
-export async function uploadGeneratedWallets(gateUrl, wallets, generatedWallets) {
-  const timestamp = Math.round(new Date().getTime() / 1000.0);
+export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets) {
+  try{
+    const timestamp = Math.round(new Date().getTime() / 1000.0);
 
-  const msg = {
-    timestamp,
-  };
+    const msg = {
+      timestamp,
+    };
 
-  const msgHash = sha3.keccak256(JSON.stringify(msg));
+    const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-  const signature = ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true });
+    const signature = ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true });
 
-  const payload = {
-    generatedWallets,
-    timestamp,
-    signature,
-  };
+    const payload = {
+      generatedWallets,
+      timestamp,
+      signature,
+    };
 
-  await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
+    await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
+  }catch(error){
+    return false;
+  }
+
 }
