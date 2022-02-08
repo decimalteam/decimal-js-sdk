@@ -42,12 +42,9 @@ export async function uploadGeneratedWallets(gateUrl, wallets, generatedWallets)
 
   const payload = {
     generatedWallets,
-  };
-
-  const params = {
     timestamp,
     signature,
   };
 
-  await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload, { params });
+  await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
 }
