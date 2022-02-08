@@ -29,7 +29,7 @@ export async function getGeneratedWallets(gateUrl, address) {
   return (data && data.result && data.result.generatedWallets) || [];
 }
 
-export async function saveGeneratedWallet(gateUrl, wallets, generatedWallets) {
+export async function uploadGeneratedWallets(gateUrl, wallets, generatedWallets) {
   const timestamp = Math.round(new Date().getTime() / 1000.0);
 
   const msg = {

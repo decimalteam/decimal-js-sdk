@@ -52,11 +52,14 @@ const options = {
 
 const wallet = new Wallet(/*your mnemonic*/, options)
 
-wallet.synchronize()
+// get saved wallet ids from DB
+
+wallet.getGeneratedWallets()
 
 // save new generated wallet in DB
+// before save it, use method wallet.getGeneratedWallets()
 
-wallet.addIdWallet()
+wallet.uploadGeneratedWallets()
 ```
 
 
