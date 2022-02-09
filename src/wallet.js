@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
-import { getGeneratedWallets } from './utils/index';
+import { getGeneratedWallets, updateGeneratedWallets } from './utils/index';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -199,7 +199,7 @@ export default class Wallet {
     }
   }
 
-  async synchronize() {
+  async getGeneratedWallets() {
     try {
       if (!this.gateUrl) {
         throw new Error('You did not set the gate url');
@@ -223,6 +223,16 @@ export default class Wallet {
       }
     } catch (e) {
       console.error('An error occurred during wallet synchronization', e.message);
+    }
+  }
+
+  async updateGeneratedWallets() {
+    try {
+      const ids = this.wallets.map((wallet) => wallet.id);
+
+      await updateGeneratedWallets(this.gateUrl, this.wallets, ids);
+    } catch (e) {
+      console.error('An error occurred during wallets\'s id adding', e.message);
     }
   }
 }

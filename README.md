@@ -28,8 +28,8 @@ Depending on what you wish to use provide either gateUrl or restURL (your node r
 ```js
 
 const decimalOptions = {
-   gateUrl: 'https://testnet-gate.decimalchain.com/api/',
-   // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
+  // restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
 const decimal = new Decimal(decimalOptions);
@@ -47,12 +47,19 @@ const mnemonic = bip39.generateMnemonic();
 ```js
 // add oprions to wallet object and call method synchronize
 const options = {
-    gateUrl: 'https://testnet-gate.decimalchain.com/api/',
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
 }
 
 const wallet = new Wallet(/*your mnemonic*/, options)
 
-wallet.synchronize()
+// get saved wallet ids from DB
+
+wallet.getGeneratedWallets()
+
+// save new generated wallet in DB
+// before save it, use method wallet.getGeneratedWallets()
+
+wallet.updateGeneratedWallets()
 ```
 
 
@@ -67,15 +74,15 @@ const wallet = new Wallet( /*your mnemonic*/);
 
 
 const decimalOptions = {
-   restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
+  restURL: 'https://your-node.example.com/rest' if you want to use your own Decimal node instance
 }
 // baseURL option used in old versions is now deprecated
 const decimal = new Decimal(decimalOptions);
 
 const data = {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '1',
+  to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  coin: 'tdel',
+  amount: '1',
 };
 
 const txResult = await decimal.sendCoins(data, [options]); // see options for details
@@ -92,9 +99,9 @@ const wallet = new Wallet(/*your mnemonic*/);
 const decimal = new Decimal({gateUrl: 'https://testnet-gate.decimalchain.com/api/', wallet})
 
 const data = {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '1',
+  to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  coin: 'tdel',
+  amount: '1',
 };
 
 const txResult = await decimal.sendCoins(data); // see sendCoins for details
@@ -223,10 +230,10 @@ Additionally, you can pass network parameter to enable network specific features
 
 ```js
 const decimal = new Decimal({
-    gateUrl: 'https://testnet-gate.decimalchain.com/api/',
-    network: 'testnet', // Enable testnet only txs types
-    wallet,
-    meta
+  gateUrl: 'https://testnet-gate.decimalchain.com/api/',
+  network: 'testnet', // Enable testnet only txs types
+  wallet,
+  meta
 })
 ```
 
@@ -282,9 +289,9 @@ Used for generating offline transactions.
 
 ```js
 const meta = {
-    account_number: "10",
-    chain_id: "decimal-testnet-06-30-15-30",
-    sequence: "198"
+  account_number: "10",
+  chain_id: "decimal-testnet-06-30-15-30",
+  sequence: "198"
 }
 ```
 
@@ -1108,9 +1115,9 @@ await decimal.getMyTransactions(limit, offset, types);
 
 ```js
 const data = {
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tDEL',
-    amount: '100', // 100 tDEL
+  to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  coin: 'tDEL',
+  amount: '100', // 100 tDEL
 }
 
 await decimal.sendCoins(data, options);
@@ -1120,16 +1127,16 @@ await decimal.sendCoins(data, options);
 
 ```js
 const data = [
-    {
-        to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-        coin: 'tDEL',
-        amount: '100'
-    },
-    {
-        to: 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
-        coin: 'tDEL',
-        amount: '50'
-    },
+  {
+    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+    coin: 'tDEL',
+    amount: '100'
+  },
+  {
+    to: 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
+    coin: 'tDEL',
+    amount: '50'
+  },
 ]
 
 await decimal.multisendCoins(data, options);
@@ -1139,10 +1146,10 @@ await decimal.multisendCoins(data, options);
 
 ```js
 const data = {
-    buyCoin: 'BTC',
-    amount: '10',
-    spendCoin: 'DEL',
-    maxSpendLimit: '20', // Optionally
+  buyCoin: 'BTC',
+  amount: '10',
+  spendCoin: 'DEL',
+  maxSpendLimit: '20', // Optionally
 }
 
 await decimal.buyCoins(data, options);
@@ -1154,10 +1161,10 @@ await decimal.buyCoins(data, options);
 
 ```js
 const data = {
-    sellCoin: 'DEL',
-    amount: '10',
-    getCoin: 'ETH',
-    minBuyLimit: '2', // Optionally
+  sellCoin: 'DEL',
+  amount: '10',
+  getCoin: 'ETH',
+  minBuyLimit: '2', // Optionally
 }
 
 await decimal.sellCoins(data, options);
@@ -1169,9 +1176,9 @@ await decimal.sellCoins(data, options);
 
 ```js
 const data = {
-    sellCoin: 'BTC',
-    getCoin: 'DEL',
-    minBuyLimit: '10', // Optionally
+  sellCoin: 'BTC',
+  getCoin: 'DEL',
+  minBuyLimit: '10', // Optionally
 }
 
 await decimal.sellAllCoins(data, options);
@@ -1181,12 +1188,12 @@ await decimal.sellAllCoins(data, options);
 
 ```js
 const data = {
-    title: 'Test coin',
-    ticker: 'TESTTT',
-    initSupply: '50000',
-    maxSupply: '100000',
-    reserve: '12000',
-    crr: '45',
+  title: 'Test coin',
+  ticker: 'TESTTT',
+  initSupply: '50000',
+  maxSupply: '100000',
+  reserve: '12000',
+  crr: '45',
 }
 
 await decimal.createCoin(data, options);
@@ -1198,9 +1205,9 @@ await decimal.createCoin(data, options);
 
 ```js
 const data = {
-    address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
-    coin: 'tdel',
-    stake: '10',
+  address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
+  coin: 'tdel',
+  stake: '10',
 }
 
 await decimal.validatorDelegate(data, options);
@@ -1210,9 +1217,9 @@ await decimal.validatorDelegate(data, options);
 
 ```js
 const data = {
-    address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
-    coin: 'tdel',
-    stake: '10',
+  address: 'dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
+  coin: 'tdel',
+  stake: '10',
 }
 
 await decimal.validatorUnbond(data, options);
@@ -1222,18 +1229,18 @@ await decimal.validatorUnbond(data, options);
 
 ```js
 const data = {
-    rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    stake: '10',
-    pubKey: 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y=',
-    commission: '10',
-    description: {
-        moniker: 'my-node-123',
-        identity: '',
-        website: 'hello.ru',
-        securityContact: 'test@test.com',
-        details: 'details node',
-    },
+  rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  coin: 'tdel',
+  stake: '10',
+  pubKey: 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y=',
+  commission: '10',
+  description: {
+    moniker: 'my-node-123',
+    identity: '',
+    website: 'hello.ru',
+    securityContact: 'test@test.com',
+    details: 'details node',
+  },
 }
 
 await decimal.validatorDeclare(data, options);
@@ -1243,14 +1250,14 @@ await decimal.validatorDeclare(data, options);
 
 ```js
 const data = {
-    rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    description: {
-        moniker: 'my-node-123-edit',
-        identity: '321',
-        website: 'hello.ru',
-        securityContact: 'test@test.com',
-        details: 'details node',
-    },
+  rewardAddress: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  description: {
+    moniker: 'my-node-123-edit',
+    identity: '321',
+    website: 'hello.ru',
+    securityContact: 'test@test.com',
+    details: 'details node',
+  },
 }
 
 await decimal.validatorEdit(data, options);
@@ -1274,11 +1281,11 @@ await decimal.validatorOff(options);
 
 ```js
 const data = {
-    nonce: '34',
-    coin: 'tdel',
-    amount: '100',
-    password: '123',
-    dueBlock: '999999999',
+  nonce: '34',
+  coin: 'tdel',
+  amount: '100',
+  password: '123',
+  dueBlock: '999999999',
 }
 
 await decimal.issueCheck(data, options);
@@ -1288,8 +1295,8 @@ await decimal.issueCheck(data, options);
 
 ```js
 const data = {
-    check: 'ERp9FR24Vz19XG....',
-    password: '123',
+  check: 'ERp9FR24Vz19XG....',
+  password: '123',
 }
 
 await decimal.redeemCheck(data, options);
@@ -1301,13 +1308,13 @@ await decimal.redeemCheck(data, options);
 
 ```js
 const data = {
-    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    // id: 'myId', If not present, UUID would be generated instead
-    denom: 'phone',
-    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
-    quantity: '1',
-    reserve: '1',
-    allow_mint: true,
+  recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+  // id: 'myId', If not present, UUID would be generated instead
+  denom: 'phone',
+  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+  quantity: '1',
+  reserve: '1',
+  allow_mint: true,
 }
 
 await decimal.nftMint(data, options);
@@ -1317,9 +1324,9 @@ await decimal.nftMint(data, options);
 
 ```js
 const data = {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    sub_token_ids: ['1', '2']
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
 }
 
 await decimal.nftBurn(data, options);
@@ -1329,9 +1336,9 @@ await decimal.nftBurn(data, options);
 
 ```js
 const data = {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
 }
 
 await decimal.nftEditMetadata(data, options);
@@ -1341,10 +1348,10 @@ await decimal.nftEditMetadata(data, options);
 
 ```js
 const data = {
-    recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    sub_token_ids: ['1', '2']
+  recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  sub_token_ids: ['1', '2']
 }
 
 await decimal.nftTransfer(data, options);
@@ -1354,10 +1361,10 @@ await decimal.nftTransfer(data, options);
 
 ```js
 const data = {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
-    sub_token_ids: ['1', '2']
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
 }
 
 await decimal.nftDelegate(data, options);
@@ -1367,10 +1374,10 @@ await decimal.nftDelegate(data, options);
 
 ```js
 const data = {
-    denom: 'phone',
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
-    validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
-    sub_token_ids: ['1', '2']
+  denom: 'phone',
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154',
+  validator_address: 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3',
+  sub_token_ids: ['1', '2']
 }
 
 await decimal.nftUnbond(data, options);
@@ -1380,12 +1387,12 @@ await decimal.nftUnbond(data, options);
 
 ```js
 const data = {
-    denom: 'phone', // nft collection name
-    id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154', // nft id
-    sub_token_ids: ['1', '2'], // sub token ids which need to be updated
-    reserve: '3' // new nft sub tokens reserve in DELs
-                 // must be greater than the current nft sub token reserve
-                 // have to consider user's account balance in DEL, total reserve differences must be less than balance
+  denom: 'phone', // nft collection name
+  id: 'd6ebb0c3-f075-43f2-ac60-ac0d02858154', // nft id
+  sub_token_ids: ['1', '2'], // sub token ids which need to be updated
+  reserve: '3' // new nft sub tokens reserve in DELs
+               // must be greater than the current nft sub token reserve
+               // have to consider user's account balance in DEL, total reserve differences must be less than balance
 }
 
 await decimal.nftUpdateReserve(data, options);
@@ -1397,11 +1404,11 @@ await decimal.nftUpdateReserve(data, options);
 
 ```js
 const data = {
-    recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
-    amount: '1',
-    tokenName: 'decimal',
-    tokenSymbol: 'DEL',
-    destChain: '2',
+  recipient: '0x45376AD024c767577714C7B92882578aE8B7f98C',
+  amount: '1',
+  tokenName: 'decimal',
+  tokenSymbol: 'DEL',
+  destChain: '2',
 }
 await decimal.msgSwapInit(data, options)
 ```
@@ -1411,16 +1418,16 @@ await decimal.msgSwapInit(data, options)
 ```js
 
 const data = {
-    from: '0x856F08B12cB844fa05CDF1eBfFd303B091D34d09',
-    amount: '2',
-    recipient: 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9',
-    tokenName: 'muh coin',
-    transactionNumber: 'qqqqqqqq',
-    tokenSymbol: 'coin',
-    fromChain: '2',
-    v: 0x1c,
-    r: '0xb8b3eb4980e649a65b7e136fbcafda4d12e3b11a40d8aaa7d951e13fbe483579',
-    s: '0x74de77f4a9f4045992cf6f220cff9be67a2c0332124e60af0a6791c9b0a64c36',
+  from: '0x856F08B12cB844fa05CDF1eBfFd303B091D34d09',
+  amount: '2',
+  recipient: 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9',
+  tokenName: 'muh coin',
+  transactionNumber: 'qqqqqqqq',
+  tokenSymbol: 'coin',
+  fromChain: '2',
+  v: 0x1c,
+  r: '0xb8b3eb4980e649a65b7e136fbcafda4d12e3b11a40d8aaa7d951e13fbe483579',
+  s: '0x74de77f4a9f4045992cf6f220cff9be67a2c0332124e60af0a6791c9b0a64c36',
 }
 await decimal.msgSwapInit(data, options)
 ```
@@ -1431,9 +1438,9 @@ await decimal.msgSwapInit(data, options)
 
 ```js
 const data = {
-    owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1v9macmluxh7rk3zsd69v7dwv9fsjhctn2jfhz9'],
-    weights: ['1', '1'],
-    threshold: '2',
+  owners: ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1v9macmluxh7rk3zsd69v7dwv9fsjhctn2jfhz9'],
+  weights: ['1', '1'],
+  threshold: '2',
 }
 
 await decimal.multisigCreateWallet(data, options);
@@ -1443,10 +1450,10 @@ await decimal.multisigCreateWallet(data, options);
 
 ```js
 const data = {
-    from: 'dx1am6ke3l79kjzdqhwgx37em04mzg686ekf9p3pq',
-    to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-    coin: 'tdel',
-    amount: '10',
+  from: 'dx1am6ke3l79kjzdqhwgx37em04mzg686ekf9p3pq',
+  to: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+  coin: 'tdel',
+  amount: '10',
 }
 
 await decimal.multisigCreateTx(data, options);
