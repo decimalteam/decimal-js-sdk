@@ -52,7 +52,7 @@ export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets)
       signature,
     };
 
-    await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
+    await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
   }catch(error){
     console.error(error)
     return null;
