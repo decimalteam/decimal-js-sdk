@@ -29,7 +29,8 @@ export async function getGeneratedWallets(gateUrl, address) {
     const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
     return (data && data.result && data.result.generatedWallets) || [];
   }catch(error){
-    return false;
+    console.error(error)
+    return null;
   }
 }
 
@@ -53,7 +54,8 @@ export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets)
 
     await axios.patch(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
   }catch(error){
-    return false;
+    console.error(error)
+    return null;
   }
 
 }

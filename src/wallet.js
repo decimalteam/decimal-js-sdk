@@ -230,12 +230,6 @@ export default class Wallet {
     try {
       const ids = this.wallets.map((wallet) => wallet.id);
 
-      if (ids.length) {
-        ids.push(ids[ids.length - 1] + 1);
-      } else {
-        ids.push(1);
-      }
-
       await updateGeneratedWallets(this.gateUrl, this.wallets, ids);
     } catch (e) {
       console.error('An error occurred during wallets\'s id adding', e.message);
