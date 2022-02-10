@@ -25,17 +25,17 @@ export function verifyAddress(address, prefix = 'dx') {
 }
 
 export async function getGeneratedWallets(gateUrl, address) {
-  try{
+  try {
     const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
     return (data && data.result && data.result.generatedWallets) || [];
-  }catch(error){
-    console.error(error)
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
 export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets) {
-  try{
+  try {
     const timestamp = Math.round(new Date().getTime() / 1000.0);
 
     const msg = {
@@ -53,9 +53,8 @@ export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets)
     };
 
     await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
-  }catch(error){
-    console.error(error)
+  } catch (error) {
+    console.error(error);
     return null;
   }
-
 }

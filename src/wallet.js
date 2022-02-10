@@ -179,17 +179,27 @@ export default class Wallet {
 
       // generate accounts to depth amount
       for (let _depth = this.depth + 1; _depth <= depth; _depth += 1) {
-        // current derivation path
-        const derivationPath = generateDerivationPath(_depth);
+        // check wallets
+        let ckeckWallets = true;
 
-        // current wallet
-        const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+        this.wallets.forEach((wallet) => {
+          if (wallet.id === _depth - 1) {
+            ckeckWallets = false;
+          }
+        });
+        if (ckeckWallets) {
+          // current derivation path
+          const derivationPath = generateDerivationPath(_depth);
 
-        // update current wallet
-        this.depth = _depth;
+          // current wallet
+          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
 
-        // update wallets
-        this.wallets = [...this.wallets, wallet];
+          // update current wallet
+          this.depth = _depth;
+
+          // update wallets
+          this.wallets = [...this.wallets, wallet];
+        }
       }
 
       // swith account
@@ -212,14 +222,15 @@ export default class Wallet {
       if (ids.length) {
         this.wallets = [masterWallet];
         this.switchAccount(masterWallet.id);
-
         ids.forEach((id) => {
           if (id !== masterWallet.id) {
-            const derivationPath = generateDerivationPath(id);
+            const derivationPath = generateDerivationPath(id + 1);
             const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
         });
+
+        this.depth = this.wallets.length;
       }
     } catch (e) {
       console.error('An error occurred during wallet synchronization', e.message);
