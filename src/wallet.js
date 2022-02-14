@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
-import { getGeneratedWallets, updateGeneratedWallets } from './utils/index';
+import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets } from './utils/index';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -179,15 +179,15 @@ export default class Wallet {
 
       // generate accounts to depth amount
       for (let _depth = this.depth + 1; _depth <= depth; _depth += 1) {
-        // check wallets
-        let ckeckWallets = true;
+        let haskWallet = true;
 
+        // if wallet is alredy in this.wallets array
         this.wallets.forEach((wallet) => {
           if (wallet.id === _depth - 1) {
-            ckeckWallets = false;
+            haskWallet = false;
           }
         });
-        if (ckeckWallets) {
+        if (haskWallet) {
           // current derivation path
           const derivationPath = generateDerivationPath(_depth);
 
@@ -209,7 +209,7 @@ export default class Wallet {
     }
   }
 
-  async getGeneratedWallets() {
+  async getAndUseGeneratedWallets() {
     try {
       if (!this.gateUrl) {
         throw new Error('You did not set the gate url');
@@ -217,7 +217,7 @@ export default class Wallet {
 
       const masterWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
 
-      const ids = await getGeneratedWallets(this.gateUrl, masterWallet.address);
+      const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
 
       if (ids.length) {
         this.wallets = [masterWallet];
@@ -237,11 +237,11 @@ export default class Wallet {
     }
   }
 
-  async updateGeneratedWallets() {
+  async sendAndSaveGeneratedWallets() {
     try {
       const ids = this.wallets.map((wallet) => wallet.id);
 
-      await updateGeneratedWallets(this.gateUrl, this.wallets, ids);
+      await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
     } catch (e) {
       console.error('An error occurred during wallets\'s id adding', e.message);
     }

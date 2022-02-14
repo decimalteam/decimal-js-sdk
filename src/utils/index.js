@@ -24,7 +24,7 @@ export function verifyAddress(address, prefix = 'dx') {
   }
 }
 
-export async function getGeneratedWallets(gateUrl, address) {
+export async function getAndUseGeneratedWallets(gateUrl, address) {
   try {
     const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
     return (data && data.result && data.result.generatedWallets) || [];
@@ -34,7 +34,7 @@ export async function getGeneratedWallets(gateUrl, address) {
   }
 }
 
-export async function updateGeneratedWallets(gateUrl, wallets, generatedWallets) {
+export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWallets) {
   try {
     const timestamp = Math.round(new Date().getTime() / 1000.0);
 

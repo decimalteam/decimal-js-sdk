@@ -42,7 +42,7 @@ const bip39 = require("bip39");
 const mnemonic = bip39.generateMnemonic();
 ```
 
-### Get generated user  wallets
+### Get generated user  wallets from DB
 
 ```js
 // add oprions to wallet object and call method synchronize
@@ -54,12 +54,12 @@ const wallet = new Wallet(/*your mnemonic*/, options)
 
 // get saved wallet ids from DB
 
-wallet.getGeneratedWallets()
+wallet.getAndUseGeneratedWallets()
 
 // save new generated wallet in DB
-// before save it, use method wallet.getGeneratedWallets()
+// before save it, use method wallet.getAndUseGeneratedWallets()
 
-wallet.updateGeneratedWallets()
+wallet.sendAndSaveGeneratedWallets()
 ```
 
 
