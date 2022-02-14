@@ -192,6 +192,7 @@ wallet.generateAndSwitchAccount(depth, id);
   - [getTransaction](#gettransaction)
   - [postTx](#posttx)
   - [estimateTxFee](#estimatetxfee)
+  - [getTransactionByHash](#getTransactionByHash)
 - [Coins](#coins)
   - [sendCoin](#sendcoins)
   - [multisendCoins](#multisendcoins)
@@ -357,7 +358,15 @@ const result = await decimal.postTx(broadcastTx);
 ```js
 const fee = await decimal.estimateTxFee(TX_TYPE.COIN_SEND, data, options);
 console.log(fee); // 0.44
+
 ```
+
+### getTransactionByHash()
+
+```js
+await decimal.getTransactionByHash(hash);
+```
+
 
 ## API
 
