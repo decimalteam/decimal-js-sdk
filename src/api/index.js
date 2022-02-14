@@ -164,4 +164,16 @@ export default class DecimalApi {
     console.log(tx.msg);
     return resp.data;
   }
+
+  async getTransactionByHash(hash) {
+    try {
+      const { data } = await this.request(`/tx/${hash}`);
+
+      return data.result;
+    } catch (e) {
+      console.error(e);
+
+      return null;
+    }
+  }
 }

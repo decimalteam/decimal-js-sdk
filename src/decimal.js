@@ -16,6 +16,7 @@ import getNft from './api/get-nft';
 import getNfts from './api/get-nfts';
 import getNftTxes from './api/get-nft-txes';
 import getNftsTxes from './api/get-nfts-txes';
+import getTransactionByHash from './api/get-transaction-by-hash';
 
 import { verifyAddress } from './utils';
 
@@ -67,6 +68,7 @@ export default class Decimal {
     this.makeSignature = makeSignature(apiInstance, wallet, this);
     this.postTx = postTx(apiInstance);
     this.getTransaction = getTransaction(apiInstance, wallet, this);
+    this.getTransactionByHash = getTransactionByHash(apiInstance, wallet, this);
 
     // get fee
     this.estimateTxFee = estimateTxFee(apiInstance, wallet, this);
