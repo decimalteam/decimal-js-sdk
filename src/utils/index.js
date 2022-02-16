@@ -1,4 +1,5 @@
 import { decode } from 'bech32';
+import * as CryptoJS from 'crypto-js';
 import axios from 'axios';
 
 const sha3 = require('js-sha3');
@@ -52,9 +53,33 @@ export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWal
       signature,
     };
 
-    await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
+    return await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+export function getStringHash(value) {
+  return CryptoJS.SHA1(value).toString();
+}
+
+export function generateNftId(headline, description, slug, coverHash = null, assetHash = null) {
+  try {
+    const hashes = [
+      getStringHash(headline),
+      getStringHash(description),
+      getStringHash(slug),
+      coverHash,
+      assetHash,
+    ];
+
+    const id = hashes.reduce((acc, value) => acc + value);
+
+    return getStringHash(id);
+  } catch (e) {
+    console.error(e);
+
+    throw new Error('Error when trying to get a hash ', e.message);
   }
 }

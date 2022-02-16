@@ -252,7 +252,7 @@ function swapRedeem(data, wallet) {
 function nftMint(data, wallet) {
   return {
     denom: data.denom,
-    id: data.id ? data.id : uuidv4(),
+    id: data.id,
     sender: wallet.address,
     recipient: data.recipient ? data.recipient : wallet.address,
     quantity: data.quantity,

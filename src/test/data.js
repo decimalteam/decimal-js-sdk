@@ -199,7 +199,7 @@ export const options = {
   feeAmount: '',
   gasLimit: '',
   message: 'sdk test',
-  txBroadcastMode: 'sync', // sync | async | block
+  txBroadcastMode: 'block', // sync | async | block
   accountInfoMode: 'blockchain-with-mempool', // blockchain | blockchain-with-autoincrement | blockchain-with-mempool
   sendTxDirectly: true, // true | false
   // nonce: '720',

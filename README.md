@@ -1315,12 +1315,22 @@ await decimal.redeemCheck(data, options);
 
 ### nftMint()
 
+import generateNftId from './utils';
+
 ```js
+const id = generateNftId(
+  'asdfg',  // nft name string
+  'asdfgasdfg', // nft description string
+  'CadgWIHKcOkPzn5X0Eji96F7RLiLAxPQ', // nft slug 
+  '7446c6522319e02ca5552c257d0c01faa89c41a9', // cover file SHA-1 hash or null
+  '7446c6522319e02ca5552c257d0c01faa89c41a9' // asset file SHA-1 hash or null
+);
+
 const data = {
+  id, // hash string
+  denom: 'phone', // nft collection string
   recipient: 'dx1lx4lvt8sjuxj8vw5dcf6knnq0pacre4w6hdh2v',
-  // id: 'myId', If not present, UUID would be generated instead
-  denom: 'phone',
-  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/pepe112',
+  token_uri: 'https://develop.nft.decimalchain.com/api/nfts/CadgWIHKcOkPzn5X0Eji96F7RLiLAxPQ',
   quantity: '1',
   reserve: '1',
   allow_mint: true,

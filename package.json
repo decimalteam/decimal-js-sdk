@@ -1,6 +1,6 @@
 {
   "name": "decimal-js-sdk",
-  "version": "0.1.119",
+  "version": "0.1.120",
   "description": "",
   "main": "dist/decimal-sdk-js.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "bech32": "^1.1.4",
     "bip39": "^3.0.2",
     "bs58": "^4.0.1",
+    "crypto-js": "^4.1.1",
     "decimal.js": "^10.2.0",
     "decimal.js-light": "^2.5.0",
     "elliptic": "^6.5.4",
