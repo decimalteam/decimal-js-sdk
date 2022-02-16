@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
-import { getGeneratedWallets, updateGeneratedWallets } from './utils/index';
+import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets } from './utils/index';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -179,17 +179,27 @@ export default class Wallet {
 
       // generate accounts to depth amount
       for (let _depth = this.depth + 1; _depth <= depth; _depth += 1) {
-        // current derivation path
-        const derivationPath = generateDerivationPath(_depth);
+        let hasWalletInArrayWallets = true;
 
-        // current wallet
-        const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+        // if wallet is already in this.wallets array
+        this.wallets.forEach((wallet) => {
+          if (wallet.id === _depth - 1) {
+            hasWalletInArrayWallets = false;
+          }
+        });
+        if (hasWalletInArrayWallets) {
+          // current derivation path
+          const derivationPath = generateDerivationPath(_depth);
 
-        // update current wallet
-        this.depth = _depth;
+          // current wallet
+          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
 
-        // update wallets
-        this.wallets = [...this.wallets, wallet];
+          // update current wallet
+          this.depth = _depth;
+
+          // update wallets
+          this.wallets = [...this.wallets, wallet];
+        }
       }
 
       // swith account
@@ -199,7 +209,7 @@ export default class Wallet {
     }
   }
 
-  async getGeneratedWallets() {
+  async getAndUseGeneratedWallets() {
     try {
       if (!this.gateUrl) {
         throw new Error('You did not set the gate url');
@@ -207,30 +217,31 @@ export default class Wallet {
 
       const masterWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
 
-      const ids = await getGeneratedWallets(this.gateUrl, masterWallet.address);
+      const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
 
       if (ids.length) {
         this.wallets = [masterWallet];
         this.switchAccount(masterWallet.id);
-
         ids.forEach((id) => {
           if (id !== masterWallet.id) {
-            const derivationPath = generateDerivationPath(id);
+            const derivationPath = generateDerivationPath(id + 1);
             const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
         });
+
+        this.depth = this.wallets.length;
       }
     } catch (e) {
       console.error('An error occurred during wallet synchronization', e.message);
     }
   }
 
-  async updateGeneratedWallets() {
+  async sendAndSaveGeneratedWallets() {
     try {
       const ids = this.wallets.map((wallet) => wallet.id);
 
-      await updateGeneratedWallets(this.gateUrl, this.wallets, ids);
+      await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
     } catch (e) {
       console.error('An error occurred during wallets\'s id adding', e.message);
     }
