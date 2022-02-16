@@ -179,15 +179,15 @@ export default class Wallet {
 
       // generate accounts to depth amount
       for (let _depth = this.depth + 1; _depth <= depth; _depth += 1) {
-        let haskWallet = true;
+        let hasWalletInArrayWallets = true;
 
-        // if wallet is alredy in this.wallets array
+        // if wallet is already in this.wallets array
         this.wallets.forEach((wallet) => {
           if (wallet.id === _depth - 1) {
-            haskWallet = false;
+            hasWalletInArrayWallets = false;
           }
         });
-        if (haskWallet) {
+        if (hasWalletInArrayWallets) {
           // current derivation path
           const derivationPath = generateDerivationPath(_depth);
 
