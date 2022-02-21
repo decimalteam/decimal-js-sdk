@@ -470,11 +470,11 @@ SCHEMA[TX_TYPE.NFT_MINT] = {
   required: [
     'denom',
     'id',
-    'recipient',
     'token_uri',
     'quantity',
     'reserve',
     'allow_mint',
+    // 'recipient',
     // 'sender',
   ],
 };
