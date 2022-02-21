@@ -26,8 +26,8 @@ export declare class Wallet {
   switchAccount(id: number): void;
   generateAccount(): void;
   generateAndSwitchAccount(depth: number, id: number): void
-  getGeneratedWallets(): void
-  updateGeneratedWallets(): void
+  getAndUseGeneratedWallets(): void
+  sendAndSaveGeneratedWallets(): void
 }
 
 export interface WalletOptions {
