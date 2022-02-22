@@ -45,7 +45,7 @@ export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWal
 
     const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-    const signature = ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true });
+    const signature = JSON.stringify(ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true }));
 
     const payload = {
       generatedWallets,
