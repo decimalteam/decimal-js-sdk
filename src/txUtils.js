@@ -114,24 +114,29 @@ export function getSignMeta(api, wallet, options) {
 
     let accountResp = null;
 
-    switch (options.accountInfoMode) {
-      case ACCOUNT_INFO_MODES.BLOCKCHAIN: {
-        accountResp = await api.requestAccountSequence(wallet.address, false);
-        break;
+    if (options && options.accountInfoMode) {
+      switch (options.accountInfoMode) {
+        case ACCOUNT_INFO_MODES.BLOCKCHAIN: {
+          accountResp = await api.requestAccountSequence(wallet.address, false);
+          break;
+        }
+        case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_AUTOINCREMENT: {
+          accountResp = await api.requestAccountSequence(wallet.address, true);
+          break;
+        }
+        case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_MEMPOOL: {
+          accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address);
+          break;
+        }
+        default: {
+          accountResp = await api.requestAccountSequence(wallet.address, true);
+          break;
+        }
       }
-      case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_AUTOINCREMENT: {
-        accountResp = await api.requestAccountSequence(wallet.address, true);
-        break;
-      }
-      case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_MEMPOOL: {
-        accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address);
-        break;
-      }
-      default: {
-        accountResp = await api.requestAccountSequence(wallet.address, true);
-        break;
-      }
+    } else {
+      accountResp = await api.requestAccountSequence(wallet.address, true);
     }
+
     const accountNumber = accountResp && accountResp.value && accountResp.value.account_number;
 
     const sequence = accountResp && accountResp.value.sequence;

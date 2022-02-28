@@ -149,7 +149,7 @@ export default class DecimalApi {
   }
 
   async broadcastTx(txData, options) {
-    const route = options.sendTxDirectly ? '/txs-directly' : '/txs';
+    const route = options && options.sendTxDirectly ? '/txs-directly' : '/txs';
 
     console.info({ options, route });
 
