@@ -165,8 +165,6 @@ export function makeSignature(api, wallet, decimal, options) {
     signMeta = await getSignMeta(api, wallet, options)();
     // } // TODO: update condition
 
-    console.info({ tx, signMeta, wallet });
-
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
   };
@@ -176,8 +174,6 @@ export function makeSignature(api, wallet, decimal, options) {
 export function postTx(api) {
   return async (txData, options) => {
     const data = await api.broadcastTx(txData, options);
-
-    console.info({ sendTxResult: data });
 
     // TODO: EXTEND
     const txResult = transactionResult(data);

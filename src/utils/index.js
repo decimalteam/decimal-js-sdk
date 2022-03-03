@@ -28,10 +28,12 @@ export function verifyAddress(address, prefix = 'dx') {
 export async function getAndUseGeneratedWallets(gateUrl, address) {
   try {
     const { data } = await axios.get(`${gateUrl}address/${address}/generated-wallets`);
+
     return (data && data.result && data.result.generatedWallets) || [];
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch (e) {
+    if (e.response && e.response.code && e.response.code !== 404) console.error(e);
+
+    return [];
   }
 }
 
@@ -53,10 +55,13 @@ export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWal
       signature,
     };
 
-    return await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
-  } catch (error) {
-    console.error(error);
-    return null;
+    const { data: { result = false } } = await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
+
+    return result;
+  } catch (e) {
+    if (e.response && e.response.code && e.response.code !== 404) console.error(e);
+
+    return false;
   }
 }
 
