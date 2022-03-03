@@ -219,7 +219,7 @@ export default class Wallet {
 
       const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
 
-      if (ids.length) {
+      if (ids && ids.length) {
         this.wallets = [masterWallet];
         this.switchAccount(masterWallet.id);
         ids.forEach((id) => {
@@ -231,9 +231,13 @@ export default class Wallet {
         });
 
         this.depth = this.wallets.length;
-      }
+
+        console.info('[GET-GENERATED-WALLETS-STATUS]: TRUE');
+      } else console.info('[GET-GENERATED-WALLETS-STATUS]: FALSE');
     } catch (e) {
       console.error('An error occurred during wallet synchronization', e.message);
+
+      console.warn('[GET-GENERATED-WALLETS-STATUS]: FALSE');
     }
   }
 
@@ -241,9 +245,15 @@ export default class Wallet {
     try {
       const ids = this.wallets.map((wallet) => wallet.id);
 
-      await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
+      const updated = await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
+
+      console.info({ updated });
+
+      console.info(`[SAVE-GENERATED-WALLETS-STATUS]: ${updated.toString().toUpperCase()}`);
     } catch (e) {
       console.error('An error occurred during wallets\'s id adding', e.message);
+
+      console.warn('[SAVE-GENERATED-WALLETS-STATUS]: FALSE');
     }
   }
 }

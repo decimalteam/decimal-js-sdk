@@ -1,5 +1,4 @@
 import DecimalNumber from 'decimal.js';
-import { v4 as uuidv4 } from 'uuid';
 import TX_TYPE from './txTypes';
 import TX_BROADCAST_MODES from './txBroadcastModes';
 import ACCOUNT_INFO_MODES from './accountInfoModes';
