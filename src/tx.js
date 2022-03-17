@@ -9,6 +9,9 @@ import { redeemCheck } from './check';
 import { getCommission } from './fees';
 import { verifyAddress } from './utils';
 
+// constants
+const MAX_MEMO_BYTES_LENGTH = 256;
+
 DecimalNumber.set({ precision: 40 });
 function sendCoinData(data, wallet) {
   return {
@@ -347,6 +350,12 @@ function getValue(type, data, options, wallet) {
   if (options && options.sendTxDirectly) {
     if (typeof options.sendTxDirectly !== 'boolean') {
       throw new Error('Send tx directly should be a boolean');
+    }
+  }
+
+  if (options && options.memo) {
+    if (typeof options.memo !== 'string' || Buffer.byteLength(options.memo, 'utf8') > MAX_MEMO_BYTES_LENGTH) {
+      throw new Error(`Memo should be a string with maximum ${MAX_MEMO_BYTES_LENGTH} bytes length`);
     }
   }
 
