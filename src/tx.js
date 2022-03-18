@@ -353,8 +353,10 @@ function getValue(type, data, options, wallet) {
     }
   }
 
+  console.warn((new TextEncoder().encode(options.memo)).length);
+
   if (options && options.memo) {
-    if (typeof options.memo !== 'string' || Buffer.byteLength(options.memo, 'utf8') > MAX_MEMO_BYTES_LENGTH) {
+    if (typeof options.memo !== 'string' || (new TextEncoder().encode(options.memo)).length > MAX_MEMO_BYTES_LENGTH) {
       throw new Error(`Memo should be a string with maximum ${MAX_MEMO_BYTES_LENGTH} bytes length`);
     }
   }
