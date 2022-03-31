@@ -925,8 +925,16 @@ await decimal.getBlockedAddresses(limit, offset, type, q);
 /*
 {
 
-  updated: true,
-  isBlocked: true,
+  count: 10,
+  blockedAddresses: [
+    {
+      isBlocked: true,
+      blockedBy: 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+      blockedAt: '2022-03-31T05:36:23.125Z',
+      type: 'both',
+      reason: 'wrong actions'
+    }
+  ]
 }
 */
 
