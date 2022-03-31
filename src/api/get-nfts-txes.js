@@ -34,6 +34,8 @@ export default function getNftsTxes(api, wallet) {
 
       return api.getNftsTxes(address, params, order);
     } catch (e) {
+      console.error(e);
+
       return null;
     }
   };

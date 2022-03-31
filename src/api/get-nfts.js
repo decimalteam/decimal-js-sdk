@@ -29,6 +29,8 @@ export default function getNfts(api, wallet) {
 
       return api.getNfts(address, params);
     } catch (e) {
+      console.error(e);
+
       return null;
     }
   };

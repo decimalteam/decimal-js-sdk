@@ -29,6 +29,8 @@ export default function getNft(api, wallet) {
 
       return api.getNftById(id, params);
     } catch (e) {
+      console.error(e);
+
       return null;
     }
   };

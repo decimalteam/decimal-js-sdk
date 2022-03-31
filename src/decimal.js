@@ -16,6 +16,8 @@ import getNft from './api/get-nft';
 import getNfts from './api/get-nfts';
 import getNftTxes from './api/get-nft-txes';
 import getNftsTxes from './api/get-nfts-txes';
+import updateAddressBlockingData from './api/update-address-blocking-data';
+import getBlockedAddresses from './api/get-blocked-addresses';
 import getTransactionByHash from './api/get-transaction-by-hash';
 
 import { verifyAddress } from './utils';
@@ -52,6 +54,8 @@ export default class Decimal {
     this.getNfts = getNfts(apiInstance, wallet);
     this.getNftTxes = getNftTxes(apiInstance, wallet);
     this.getNftsTxes = getNftsTxes(apiInstance, wallet);
+    this.updateAddressBlockingData = updateAddressBlockingData(apiInstance, wallet);
+    this.getBlockedAddresses = getBlockedAddresses(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance, wallet);
     this.getValidator = getValidator(apiInstance);

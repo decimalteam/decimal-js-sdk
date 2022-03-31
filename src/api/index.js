@@ -120,6 +120,16 @@ export default class DecimalApi {
     return data.result;
   }
 
+  async updateAddressBlockingData(address, payload) {
+    const { data } = await this.request(`/address/${address}/blocking-data`, null, 'put', GATEWAY, payload);
+    return data.result;
+  }
+
+  async getBlockedAddresses(params) {
+    const { data } = await this.request('/blocked-addresses', params);
+    return data.result;
+  }
+
   async getProposals() {
     const { data } = await this.request('/proposals');
     return data.result;
