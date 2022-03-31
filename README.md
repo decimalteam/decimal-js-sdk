@@ -186,6 +186,8 @@ wallet.generateAndSwitchAccount(depth, id);
   - [getNfts](#getNfts)
   - [getNftTxes](#getNftTxes)
   - [getNftsTxes](#getNftsTxes)
+  - [updateAddressBlockingData](#updateAddressBlockingData)
+  - [getBlockedAddressData](#getBlockedAddressData)
   - [getStakesByAddress](#getstakesbyaddress)
   - [getValidator](#getvalidator)
 - [Tx utils](#txutils)
@@ -884,6 +886,48 @@ if not user's address
   ...commonFields,
 }
 
+*/
+
+
+```
+
+### updateAddressBlockingData()
+
+```js
+const address = 10; // blocking address 
+const isBlocked = true; // blocking status
+const type = 'both'; // blocking type, one of 'both'|'incoming'|'outgoing'
+const reason = 'suspicious activity'; // optional property, blocking reason (do not need if unblocking)
+
+await decimal.updateAddressBlockingData(address, isBlocked, type, reason);
+
+/*
+{
+
+  updated: true,
+  isBlocked: true,
+}
+*/
+
+
+```
+
+### getBlockedAddresses()
+
+```js
+const limit = 10;
+const offset = 0;
+const type = 'both'; // optional property, blocking type, one of 'both'|'incoming'|'outgoing'
+const q = 'dx14'; // optional property, address to query
+
+await decimal.getBlockedAddresses(limit, offset, type, q);
+
+/*
+{
+
+  updated: true,
+  isBlocked: true,
+}
 */
 
 

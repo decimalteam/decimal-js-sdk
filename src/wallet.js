@@ -247,8 +247,6 @@ export default class Wallet {
 
       const updated = await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
 
-      console.info({ updated });
-
       console.info(`[SAVE-GENERATED-WALLETS-STATUS]: ${updated.toString().toUpperCase()}`);
     } catch (e) {
       console.error('An error occurred during wallets\'s id adding', e.message);
