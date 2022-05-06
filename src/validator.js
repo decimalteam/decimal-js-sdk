@@ -8,6 +8,7 @@ const patterns = {
   int: /^\d+$/,
   denom: /^[A-Za-z\-_]+$/,
   url: /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
+  check: /^[a-zA-Z0-9]{240,260}$/,
 };
 
 const fields = {
@@ -43,7 +44,10 @@ const fields = {
   hex: {
     type: 'int',
   },
-
+  check: {
+    type: 'string',
+    pattern: patterns.check,
+  },
 };
 
 SCHEMA[TX_TYPE.COIN_SEND] = {
@@ -310,7 +314,7 @@ SCHEMA[TX_TYPE.COIN_REDEEM_CHECK] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'object',
   properties: {
-    check: fields.string,
+    check: fields.check,
     password: fields.string,
   },
   minProperties: 2,
