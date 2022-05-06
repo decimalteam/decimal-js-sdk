@@ -7,7 +7,7 @@ import { formTx, prepareTx, postTx } from './txUtils';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
-import { verifyAddress } from './utils';
+import { verifyAddress, verifyCheck } from './utils';
 
 // constants
 const MAX_MEMO_BYTES_LENGTH = 256;
@@ -470,6 +470,12 @@ function validateData(data) {
     || data.delegator_address === ''
   ) {
     throw new Error('Address cannot be empty string');
+  }
+
+  if (data.check) {
+    if (!verifyCheck(data.check)) {
+      throw new Error('Incorrect check format');
+    }
   }
 
   if (data.from) {

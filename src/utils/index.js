@@ -1,6 +1,8 @@
 import { decode } from 'bech32';
 import * as CryptoJS from 'crypto-js';
 import axios from 'axios';
+import bs58 from 'bs58';
+import { decode as rlpDecode } from 'rlp';
 
 const sha3 = require('js-sha3');
 const EC = require('elliptic').ec;
@@ -21,6 +23,15 @@ export function verifyAddress(address, prefix = 'dx') {
     const decoded = decode(address);
     return (prefix === decoded.prefix) && decoded.words !== undefined;
   } catch (error) {
+    return false;
+  }
+}
+
+export function verifyCheck(check) {
+  try {
+    const decodedCheck = bs58.decode(check);
+    return rlpDecode(decodedCheck);
+  } catch (e) {
     return false;
   }
 }
