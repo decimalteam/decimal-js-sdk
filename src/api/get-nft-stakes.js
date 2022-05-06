@@ -29,6 +29,8 @@ export default function getNftStakesByAddress(api, wallet) {
 
       return api.getNftStakes(address, params);
     } catch (e) {
+      console.error(e);
+
       return null;
     }
   };
