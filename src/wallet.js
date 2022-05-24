@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
-import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets } from './utils/index';
+import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp } from './utils';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -76,6 +76,10 @@ export default class Wallet {
 
     // get generated wallets including master wallet
     this.wallets = [wallet];
+
+    // current nonce for sending transactions and lifetime of the current nonce, valid for 6 secs
+    this.currentNonce = null;
+    this.currentNonceValidUntil = null;
   }
 
   // get private key in hex
@@ -111,6 +115,9 @@ export default class Wallet {
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
       this.address = wallet.address; // current address
+
+      // update current nonce for sending transactions and lifetime of the current nonce
+      this.updateNonce(null);
     } catch (e) {
       console.error(e);
     }
@@ -253,5 +260,10 @@ export default class Wallet {
 
       console.warn('[SAVE-GENERATED-WALLETS-STATUS]: FALSE');
     }
+  }
+
+  updateNonce(nonce) {
+    this.currentNonce = nonce;
+    this.currentNonceValidUntil = nonce ? getTimestamp() : null;
   }
 }

@@ -70,7 +70,7 @@ export default class Decimal {
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance, wallet, this);
-    this.postTx = postTx(apiInstance);
+    this.postTx = postTx(apiInstance, wallet);
     this.getTransaction = getTransaction(apiInstance, wallet, this);
     this.getTransactionByHash = getTransactionByHash(apiInstance, wallet, this);
 

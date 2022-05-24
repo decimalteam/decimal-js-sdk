@@ -305,12 +305,12 @@ Each transaction method consists of input data (data) and options.
 const options = {
   gasLimit: '9000000000000000000', // The maximum amount of gas you are willing to pay for a transaction
   feeCoin: 'BTC', // The coin that pays commission
-  // feeAmount: '4000', // Fee pay amount
+  feeAmount: '4000', // Fee pay amount
   message: 'my message', // Any additional information about the transaction
+  txBroadcastMode: 'sync', // Broadcast tx mode {sync | async | block}
+  accountInfoMode: 'blockchain-with-mempool', // Method of obtaining nonce, receive nonce with unconfirmed transactions in a mempool or not {blockchain | blockchain-with-mempool}
+  setNonceAutomatically: true, // Automatically calculate nonce within a small transaction pool, after getting the first one from blockchain {true | false}
   nonce: '100', // Custom nonce for the transaction {valid number string}
-  txBroadcastMode: 'block', // Broadcast tx mode {sync | async | block}
-  accountInfoMode: 'account-mempool', // Method of obtaining nonce {blockchain | blockchain-with-autoincrement | blockchain-with-mempool}
-  sendTxDirectly: true, // Broadcast tx route directly to node bypassing the queue {true | false}
 };
 ```
 

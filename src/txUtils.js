@@ -1,9 +1,12 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-expressions */
 import { signTx, createBroadcastTx } from '@tendermint/sig';
 import DecimalNumber from 'decimal.js';
 import { setCommission } from './fees';
 import TX_TYPE from './txTypes';
 import ACCOUNT_INFO_MODES from './accountInfoModes';
 import TX_BROADCAST_MODES from './txBroadcastModes';
+import { isNonceSetAutomatically, updateNonce } from './utils';
 
 DecimalNumber.set({ precision: 40 });
 let signMeta = null;
@@ -21,67 +24,35 @@ let signMeta = null;
   }
 */
 
-function transactionResult(json) {
+function processTxResponse(json, wallet) {
+  let errorMessage = null;
+
   // !IF ERROR
-  if (json.code) {
-    let errorMessage = '';
-    if (json.raw_log) {
-      const rawLogAsString = json.raw_log.toString();
-      if (rawLogAsString[0] === '{' && rawLogAsString.message) {
-        errorMessage = rawLogAsString.message;
-      } else {
-        errorMessage = rawLogAsString;
-      }
-    }
-
-    const txResult = {
-      hash: json.txhash,
-      height: json.height,
-      success: false,
-      pending: false,
-      error: {
-        errorCode: json.code,
-        errorMessage,
-      },
-    };
-
-    console.error(`[ERROR]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
-
-    return txResult;
+  if (json.code && json.raw_log) {
+    const rawLogAsString = json.raw_log.toString();
+    errorMessage = rawLogAsString[0] === '{' && rawLogAsString.message
+      ? rawLogAsString.message
+      : rawLogAsString;
   }
   // !IF ERROR
 
-  // !IF PENDING <- OLD VERSION
-  if (json.pending) {
-    const txResult = {
-      hash: json.txhash,
-      height: json.height,
-      success: true,
-      pending: true,
-      error: null,
-    };
-
-    console.warn(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
-
-    return txResult;
-  }
-  // !IF PENDING <- OLD VERSION
-
-  // !FINAL RESPONSE
   const txResult = {
     hash: json.txhash,
     height: json.height,
-    success: true,
-    pending: false,
-    error: null,
+    success: !json.code,
+    pending: json.pending,
+    error: json.code ? {
+      errorCode: json.code,
+      errorMessage,
+    } : null,
   };
-  // !FINAL RESPONSE
 
-  // !IF SUCCESS
-  if (txResult.success) {
-    console.info(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
-  }
-  // !IF SUCCESS
+  json.code ? console.error(`[ERROR]: https://explorer.decimalchain.com/transactions/${txResult.hash}`)
+    : json.pending ? console.warn(`[PENDING]: https://explorer.decimalchain.com/transactions/${txResult.hash}`)
+      : console.info(`[SUCCESS]: https://explorer.decimalchain.com/transactions/${txResult.hash}`);
+
+  // setting the current nonce in wallet if set nonce automatically is enabled
+  Boolean(wallet.currentNonce) && updateNonce(wallet, json.code ? null : +wallet.currentNonce + 1);
 
   return txResult;
 }
@@ -120,10 +91,6 @@ export function getSignMeta(api, wallet, options) {
           accountResp = await api.requestAccountSequence(wallet.address, false);
           break;
         }
-        case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_AUTOINCREMENT: {
-          accountResp = await api.requestAccountSequence(wallet.address, true);
-          break;
-        }
         case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_MEMPOOL: {
           accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address);
           break;
@@ -139,15 +106,20 @@ export function getSignMeta(api, wallet, options) {
 
     const accountNumber = accountResp && accountResp.value && accountResp.value.account_number;
 
-    const sequence = accountResp && accountResp.value.sequence;
+    const sequence = accountResp && accountResp.value && accountResp.value.sequence;
 
     const chainId = nodeInfoResp && nodeInfoResp.data && nodeInfoResp.data.node_info && nodeInfoResp.data.node_info.network;
+
+    const nonce = isNonceSetAutomatically(wallet, options) ? wallet.currentNonce : (options && options.nonce) || sequence;
+
+    // setting the current nonce in wallet if set nonce automatically is enabled
+    options.setNonceAutomatically && updateNonce(wallet, nonce);
 
     console.info(`[SIGN-TX-META][ACCOUNT-NUMBER][${accountNumber}][SEQUENCE][${sequence}][CHAIN-ID][${chainId}]`);
 
     return {
       account_number: `${accountNumber || 0}`,
-      sequence: `${(options && options.nonce) || sequence}`,
+      sequence: `${nonce || 0}`,
       chain_id: `${chainId || 0}`,
     };
   };
@@ -161,9 +133,7 @@ export function makeSignature(api, wallet, decimal, options) {
       signMeta = userSignMeta;
     }
 
-    // if (true || !signMeta || signMeta.account_number === '0') { // TODO: update condition
     signMeta = await getSignMeta(api, wallet, options)();
-    // } // TODO: update condition
 
     const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
@@ -171,18 +141,13 @@ export function makeSignature(api, wallet, decimal, options) {
 }
 
 // send signed prepared tx for broadcast
-export function postTx(api) {
-  return async (txData, options) => {
-    const data = await api.broadcastTx(txData, options);
+export function postTx(api, wallet) {
+  return async (txData) => {
+    const txResponse = await api.broadcastTx(txData);
 
-    // TODO: EXTEND
-    const txResult = transactionResult(data);
+    const formattedTxResponse = processTxResponse(txResponse, wallet);
 
-    // if (txResult.success && !isOfflineTx) {
-    //   signMeta.sequence = (+signMeta.sequence + 1).toString();
-    // }
-
-    return txResult;
+    return formattedTxResponse;
   };
 }
 

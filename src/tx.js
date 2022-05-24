@@ -347,9 +347,9 @@ function getValue(type, data, options, wallet) {
     }
   }
 
-  if (options && options.sendTxDirectly) {
-    if (typeof options.sendTxDirectly !== 'boolean') {
-      throw new Error('Send tx directly should be a boolean');
+  if (options && options.setNonceAutomatically) {
+    if (typeof options.setNonceAutomatically !== 'boolean') {
+      throw new Error('Set nonce automatically should be a boolean');
     }
   }
 
@@ -542,7 +542,7 @@ export function sendTransaction(type, api, wallet, decimal) {
 
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
 
-    const txResult = await postTx(api)(broadcastTx, options);
+    const txResult = await postTx(api, wallet)(broadcastTx);
 
     return txResult;
   };

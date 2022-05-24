@@ -198,9 +198,9 @@ export const options = {
   feeCoin: '',
   feeAmount: '',
   gasLimit: '',
-  message: 'sdk test',
-  txBroadcastMode: 'block', // sync | async | block
-  accountInfoMode: 'blockchain-with-mempool', // blockchain | blockchain-with-autoincrement | blockchain-with-mempool
-  sendTxDirectly: true, // true | false
-  // nonce: '720',
+  message: 'sdk test', // string
+  txBroadcastMode: 'sync', // sync | async | block
+  accountInfoMode: 'blockchain', // blockchain | blockchain-with-mempool
+  setNonceAutomatically: true, // true | false
+  // nonce: '720', // string
 };

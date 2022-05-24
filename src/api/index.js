@@ -28,10 +28,13 @@ export default class DecimalApi {
     if (destination === GATEWAY && !this.gateUrl) {
       throw new Error('This metohod requires gateway url to be provided');
     }
+
     let path = _path;
+
     if (destination === REST && this.gateUrl) {
       path = `/rpc${path}`;
     }
+
     return axios({
       method,
       url: path,
@@ -140,7 +143,7 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async requestAccountSequence(address, increaseTheSequence = true) { // old version
+  async requestAccountSequence(address, increaseTheSequence = false) { // old version
     const path = increaseTheSequence ? `/accounts/${address}` : `/auth/accounts/${address}`;
 
     const { data } = await this.request(path, null, 'get', REST);
@@ -158,10 +161,8 @@ export default class DecimalApi {
     return data.result;
   }
 
-  async broadcastTx(txData, options) {
-    const route = options && options.sendTxDirectly ? '/txs-directly' : '/txs';
-
-    const resp = await this.request(route, null, 'post', REST, txData);
+  async broadcastTx(txData) {
+    const resp = await this.request('/txs', null, 'post', REST, txData);
 
     return resp.data;
   }

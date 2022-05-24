@@ -8,12 +8,15 @@ const sha3 = require('js-sha3');
 const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
+
+// constants
+const MAX_AUTOMATICALLY_NONCE_VALID_UNTIL = 6 * 1000;
+
 /**
  * @param {string} address Decimal blockchain address
  * @param {'dx' | 'dxvaloper' | string} prefix Prefix
  * @returns {boolean} boolean to indicate address validation
  */
-// eslint-disable-next-line import/prefer-default-export
 export function verifyAddress(address, prefix = 'dx') {
   if (!address) {
     throw new Error('address is missing.');
@@ -98,4 +101,16 @@ export function generateNftId(headline, description, slug, coverHash = null, ass
 
     throw new Error('Error when trying to get a hash ', e.message);
   }
+}
+
+export function getTimestamp() {
+  return new Date().getTime();
+}
+
+export function isNonceSetAutomatically(wallet, options) {
+  return options.setNonceAutomatically && Boolean(wallet.currentNonce) && (getTimestamp() - wallet.currentNonceValidUntil) < MAX_AUTOMATICALLY_NONCE_VALID_UNTIL;
+}
+
+export function updateNonce(wallet, nonce) {
+  wallet.updateNonce(+nonce);
 }

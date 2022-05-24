@@ -20,6 +20,8 @@ export declare class Wallet {
   publicKey: string;
   availableProposalSubmit: boolean;
   gateUrl: string;
+  currentNonce: number;
+  currentNonceValidUntil: number;
 
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
@@ -28,6 +30,7 @@ export declare class Wallet {
   generateAndSwitchAccount(depth: number, id: number): void
   getAndUseGeneratedWallets(): void
   sendAndSaveGeneratedWallets(): void
+  updateNonce(nonce: number): void
 }
 
 export interface WalletOptions {
@@ -60,8 +63,8 @@ export interface Tx {
   timestamp: string;
   status: string;
   type: string;
-  fee: object; //TODO: describe interface
-  data: object; //TODO: describe interface
+  fee: object;
+  data: object;
   nonce: number;
   code: number;
   message: string;
@@ -110,10 +113,10 @@ export interface TxOptions {
   feeCoin?: string;
   feeAmount?: string;
   message?: string;
-  nonce?: string;
   txBroadcastMode?: string;
   accountInfoMode?: string;
-  sendTxDirectly?: boolean;
+  setNonceAutomatically?: boolean;
+  nonce?: string;
 }
 
 export interface SendCoinsData {
