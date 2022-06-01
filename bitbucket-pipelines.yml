@@ -10,6 +10,8 @@ pipelines:
           script:
             # Generates a .npmrc file configured for installing private modules:
             - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+            # run test
+            - npm run test
             # installs public and private moduless.
             - npm install
             # build dist
