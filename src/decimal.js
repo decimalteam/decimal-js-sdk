@@ -79,6 +79,7 @@ export default class Decimal {
 
     // tx methods
     this.sendCoins = sendTransaction(TX_TYPE.COIN_SEND, apiInstance, wallet, this);
+    this.burnCoins = sendTransaction(TX_TYPE.COIN_BURN, apiInstance, wallet, this);
     this.buyCoins = sendTransaction(TX_TYPE.COIN_BUY, apiInstance, wallet, this);
     this.sellCoins = sendTransaction(TX_TYPE.COIN_SELL, apiInstance, wallet, this);
     this.sellAllCoins = sendTransaction(TX_TYPE.COIN_SELL_ALL, apiInstance, wallet, this);

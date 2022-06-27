@@ -67,6 +67,21 @@ SCHEMA[TX_TYPE.COIN_SEND] = {
   ],
 };
 
+SCHEMA[TX_TYPE.COIN_BURN] = {
+  $schema: 'http://json-schema.org/schema#',
+  type: 'object',
+  properties: {
+    coin: fields.string,
+    amount: fields.amount,
+  },
+  minProperties: 2,
+  maxProperties: 2,
+  required: [
+    'coin',
+    'amount',
+  ],
+};
+
 SCHEMA[TX_TYPE.COIN_MULTISEND] = {
   $schema: 'http://json-schema.org/schema#',
   type: 'array',
