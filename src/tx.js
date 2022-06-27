@@ -23,6 +23,17 @@ function sendCoinData(data, wallet) {
     },
   };
 }
+
+function burnCoinData(data, wallet) {
+  return {
+    sender: wallet.address,
+    coin: {
+      amount: getAmountToUNI(data.amount),
+      denom: data.coin.toLowerCase(),
+    },
+  };
+}
+
 function buyCoinData(data, wallet) {
   const maxSpendLimit = data.maxSpendLimit ? getAmountToUNI(data.maxSpendLimit) : getAmountToUNI('100000000000');
   return {
@@ -363,6 +374,9 @@ function getValue(type, data, options, wallet) {
   switch (type) {
     case TX_TYPE.COIN_SEND:
       value = sendCoinData(data, wallet);
+      break;
+    case TX_TYPE.COIN_BURN:
+      value = burnCoinData(data, wallet);
       break;
     case TX_TYPE.COIN_BUY:
       value = buyCoinData(data, wallet);

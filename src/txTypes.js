@@ -4,6 +4,7 @@ export default {
   COIN_UPDATE: 'coin/update_coin',
   COIN_SELL: 'coin/sell_coin',
   COIN_SEND: 'coin/send_coin',
+  COIN_BURN: 'coin/burn_coin',
   COIN_MULTISEND: 'coin/multi_send_coin',
   COIN_SELL_ALL: 'coin/sell_all_coin',
   COIN_REDEEM_CHECK: 'coin/redeem_check',

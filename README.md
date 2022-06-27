@@ -194,7 +194,8 @@ wallet.generateAndSwitchAccount(depth, id);
   - [estimateTxFee](#estimatetxfee)
   - [getTransactionByHash](#getTransactionByHash)
 - [Coins](#coins)
-  - [sendCoin](#sendcoins)
+  - [sendCoins](#sendCoins)
+  - [burnCoins](#burnCoins)
   - [multisendCoins](#multisendcoins)
   - [buyCoins](#buycoins)
   - [sellCoins](#sellcoins)
@@ -1132,6 +1133,17 @@ const data = {
 await decimal.sendCoins(data, options);
 ```
 
+### burnCoins()
+
+```js
+const data = {
+  coin: 'tDEL',
+  amount: '100', // 100 tDEL
+}
+
+await decimal.burnCoins(data, options);
+```
+
 ### multisendCoins()
 
 ```js
@@ -1448,7 +1460,7 @@ const data = {
   r: '0xb8b3eb4980e649a65b7e136fbcafda4d12e3b11a40d8aaa7d951e13fbe483579',
   s: '0x74de77f4a9f4045992cf6f220cff9be67a2c0332124e60af0a6791c9b0a64c36',
 }
-await decimal.msgSwapInit(data, options)
+await decimal.msgSwapRedeem(data, options)
 ```
 
 ## Multisig
