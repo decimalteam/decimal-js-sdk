@@ -6,7 +6,9 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production PORT=8080 webpack --mode production",
     "dev": "cross-env NODE_ENV=development PORT=8081 webpack-dev-server --mode development --open",
-    "release": "standard-version"
+    "release:major": "npm version major && conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && git push origin && git push origin --tags",
+    "release:minor": "npm version minor && conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && git push origin && git push origin --tags",
+    "release:patch": "npm version patch && conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && git push origin && git push origin --tags"
   },
   "author": "DecimalTeam",
   "license": "MIT",
@@ -17,6 +19,7 @@
     "bech32": "^1.1.4",
     "bip39": "^3.0.2",
     "bs58": "^4.0.1",
+    "conventional-changelog-cli": "^2.2.2",
     "crypto-js": "^4.1.1",
     "decimal.js": "^10.2.0",
     "decimal.js-light": "^2.5.0",
@@ -47,7 +50,6 @@
     "eslint-plugin-import": "^2.20.1",
     "fs": "0.0.1-security",
     "html-webpack-plugin": "^3.2.0",
-    "standard-version": "^9.5.0",
     "terser-webpack-plugin": "^5.1.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.11",
