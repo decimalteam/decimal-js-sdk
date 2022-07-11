@@ -1,3 +1,10 @@
+### [0.2.8](https://bitbucket.org/decimalteam/decimal-js-sdk/compare/v0.2.7...v0.2.8) (2022-07-11)
+
+
+### Bug Fixes
+
+* fix CHANGELOG.md ([95f95bc](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/95f95bcf3776c6569f10aa288901c559119d5f37))
+
 ### [0.2.7](https://bitbucket.org/decimalteam/decimal-js-sdk/compare/fee571a42e9ddc97c71c6be669cec6eaac953db1...v0.2.7) (2022-07-08)
 
 
@@ -9,6 +16,7 @@
 * added changelog ([ecce634](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/ecce63467996d4eaf6ea238f6d87cc7c4aefd9c8))
 * added generate and switch method to wallet, updated previoues methods ([6cbf7b1](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/6cbf7b12aa2afe80271b9662ea7feae456564d3b))
 * added get nft txes method, updated get address method ([dfc17d7](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/dfc17d7a143cceccdeab3d92ca55066d242fe413))
+* added get nft txes method, updated get address method ([5c9a770](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/5c9a770142d035b84814005d4f2f692c69911f15))
 * added get nfts method to sdk ([6a16eb4](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/6a16eb405d33e29f752c6dcb0cfc2a1273120fd7))
 * added new method for update nft reserve ([ed917aa](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/ed917aa8eb074d8511caea7d346dee8c2545054d))
 * added new rpc method to get nonce with txes mempool ([93d6bd4](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/93d6bd49f6490dc1a01bfcac8ed58a275be76ccc))
@@ -18,6 +26,7 @@
 * added schema for data validation, added data object for tx ([8521ad9](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/8521ad997c568a1d2e3799b7f94b7e9b93d7f85a))
 * added the ability to set custom nonce for txes ([36d717d](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/36d717d3aff1879d4869e43aa0ab8f8be48796f3))
 * added wallet derivation to Wallet, generate account and switch account methods ([60437c9](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/60437c9f28c7c975fdc4a80c69e04d4d43027afe))
+* **address:** added new method to block addresses, and get blocked addresses list ([ab25302](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/ab253024ad2abc63a3ffa64ad0ed019a2958ad97))
 * **burn-coin:** added new tx type burn coin ([eb8606b](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/eb8606bb9fe8f1c3057986ad4863010d5b39e49b))
 * **changelog:** added changelog to the project. ([fc8ff59](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/fc8ff59afcfa767a7ea705446189b6efd21db7a8))
 * **check-redeem:** added new check for correct check hash ([1431f94](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/1431f94b1d6a3991941381f1a23ebfd9bbd49394))
