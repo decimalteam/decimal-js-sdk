@@ -1,3 +1,10 @@
+### [0.2.8](https://bitbucket.org/decimalteam/decimal-js-sdk/compare/v0.2.7...v0.2.8) (2022-07-11)
+
+
+### Bug Fixes
+
+* fix CHANGELOG.md ([95f95bc](https://bitbucket.org/decimalteam/decimal-js-sdk/commit/95f95bcf3776c6569f10aa288901c559119d5f37))
+
 ### [0.2.7](https://bitbucket.org/decimalteam/decimal-js-sdk/compare/fee571a42e9ddc97c71c6be669cec6eaac953db1...v0.2.7) (2022-07-08)
 
 
