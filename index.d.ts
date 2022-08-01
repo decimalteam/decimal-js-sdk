@@ -16,6 +16,7 @@ export declare class Wallet {
   id: number;
   wallets: Array<Account>;
   address: string;
+  evmAddress: string;
   privateKey: string;
   publicKey: string;
   availableProposalSubmit: boolean;

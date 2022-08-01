@@ -1,7 +1,9 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
-import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp } from './utils';
+import {
+  getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp, decodeCosmosAccountAddress,
+} from './utils';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -67,6 +69,7 @@ export default class Wallet {
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
+    this.evmAddress = decodeCosmosAccountAddress(wallet.address); // current evm address
 
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
@@ -115,6 +118,7 @@ export default class Wallet {
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
       this.address = wallet.address; // current address
+      this.evmAddress = decodeCosmosAccountAddress(wallet.address); // current evm address
 
       // update current nonce for sending transactions and lifetime of the current nonce
       this.updateNonce(null);
