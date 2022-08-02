@@ -1,9 +1,10 @@
 import { decode } from 'bech32';
-import * as CryptoJS from 'crypto-js';
+import { publicKeyConvert } from 'secp256k1';
+import { decode as rlpDecode } from 'rlp';
 import * as bech32 from 'bech32-buffer';
+import * as CryptoJS from 'crypto-js';
 import axios from 'axios';
 import bs58 from 'bs58';
-import { decode as rlpDecode } from 'rlp';
 
 const sha3 = require('js-sha3');
 const EC = require('elliptic').ec;
@@ -128,4 +129,36 @@ export const decodeCosmosAccountAddress = (cosmosAccountAddress) => {
   } catch (e) {
     return null;
   }
+};
+
+export const encodeCosmosAccountAddress = (evmAccountAddress) => {
+  const formattedEvmAccountAddress = evmAccountAddress.startsWith('0x')
+    ? evmAccountAddress.slice(2)
+    : evmAccountAddress;
+
+  const bufferedEvmAccountAddress = Buffer.from(formattedEvmAccountAddress, 'hex');
+
+  const cosmosAccountAddress = bech32.encode('dx', bufferedEvmAccountAddress);
+
+  return cosmosAccountAddress;
+};
+
+export const encodeEvmAccountAddress = (publicKey) => {
+  const decompressedPublicKey = publicKeyConvert(publicKey, false);
+
+  const slicedDecompressedPublicKey = decompressedPublicKey.slice(1);
+
+  const hexedDecompressedPublicKey = sha3.keccak256(slicedDecompressedPublicKey);
+
+  const evmAccountAddress = `0x${hexedDecompressedPublicKey.substring(hexedDecompressedPublicKey.length - 40, hexedDecompressedPublicKey.length)}`;
+
+  return evmAccountAddress;
+};
+
+export const encodeAddresses = (publicKey) => {
+  const evmAccountAddress = encodeEvmAccountAddress(publicKey);
+
+  const cosmosAccountAddress = encodeCosmosAccountAddress(evmAccountAddress);
+
+  return { cosmosAccountAddress, evmAccountAddress };
 };

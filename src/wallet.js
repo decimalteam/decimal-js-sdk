@@ -2,7 +2,7 @@ import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import proposalAdresses from './proposalAddresses.json';
 import {
-  getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp, decodeCosmosAccountAddress,
+  getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp, encodeAddresses,
 } from './utils';
 
 // constants
@@ -53,12 +53,12 @@ export default class Wallet {
     // generate master wallet
     const wallet = { ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
 
-    // generate validator address
-    const validatorAddress = createWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
+    // generate cosmos and evm addresses from publicKey
+    const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(wallet.publicKey);
 
     // master fields
     this.mnemonic = _mnemonic; // master mnemonic to generate
-    this.validatorAddress = validatorAddress; // do not need to change with derivation path update
+    this.validatorAddress = createWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address; // do not need to change with derivation path update
 
     // current wallet
     this.wallet = wallet; // current wallet
@@ -68,8 +68,9 @@ export default class Wallet {
     // current private, public keys, address
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
-    this.address = wallet.address; // current address
-    this.evmAddress = decodeCosmosAccountAddress(wallet.address); // current evm address
+
+    this.evmAddress = evmAccountAddress; // current evm address
+    this.address = cosmosAccountAddress; // current address
 
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
@@ -110,6 +111,10 @@ export default class Wallet {
 
       // current wallet
       const wallet = this.wallets[id];
+
+      // generate cosmos and evm addresses from publicKey
+      const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(wallet.publicKey);
+
       // update current wallet
       this.wallet = wallet;
       this.id = id;
@@ -117,8 +122,9 @@ export default class Wallet {
       // update current private, public keys, address
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
-      this.address = wallet.address; // current address
-      this.evmAddress = decodeCosmosAccountAddress(wallet.address); // current evm address
+
+      this.evmAddress = evmAccountAddress; // current evm address
+      this.address = cosmosAccountAddress; // current address
 
       // update current nonce for sending transactions and lifetime of the current nonce
       this.updateNonce(null);
