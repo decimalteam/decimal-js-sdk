@@ -39,6 +39,18 @@ export function mnemonicToSeedSync(mnemonic) {
   return bip39.mnemonicToSeedSync(mnemonic);
 }
 
+export function createDecimalWalletFromMnemonic(mnemonic, addressPrefix = ADDRESS_PREFIX, derivation_path = MASTER_DERIVATION_PATH, id = 0) {
+  const { privateKey, publicKey } = { ...createWalletFromMnemonic(mnemonic, addressPrefix, derivation_path), id };
+
+  const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(publicKey);
+
+  const wallet = {
+    privateKey, publicKey, address: cosmosAccountAddress, evmAddress: evmAccountAddress,
+  };
+
+  return wallet;
+}
+
 // create wallet from mnemonic phrase
 export default class Wallet {
   // constructor
@@ -51,10 +63,7 @@ export default class Wallet {
     }
 
     // generate master wallet
-    const wallet = { ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
-
-    // generate cosmos and evm addresses from publicKey
-    const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(wallet.publicKey);
+    const wallet = createDecimalWalletFromMnemonic(_mnemonic);
 
     // master fields
     this.mnemonic = _mnemonic; // master mnemonic to generate
@@ -69,8 +78,8 @@ export default class Wallet {
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
 
-    this.evmAddress = evmAccountAddress; // current evm address
-    this.address = cosmosAccountAddress; // current address
+    this.evmAddress = wallet.evmAddress; // current evm address
+    this.address = wallet.address; // current address
 
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
@@ -112,9 +121,6 @@ export default class Wallet {
       // current wallet
       const wallet = this.wallets[id];
 
-      // generate cosmos and evm addresses from publicKey
-      const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(wallet.publicKey);
-
       // update current wallet
       this.wallet = wallet;
       this.id = id;
@@ -123,8 +129,8 @@ export default class Wallet {
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
 
-      this.evmAddress = evmAccountAddress; // current evm address
-      this.address = cosmosAccountAddress; // current address
+      this.evmAddress = wallet.evmAddress; // current evm address
+      this.address = wallet.address; // current address
 
       // update current nonce for sending transactions and lifetime of the current nonce
       this.updateNonce(null);
@@ -148,7 +154,7 @@ export default class Wallet {
       const derivationPath = generateDerivationPath(depth);
 
       // current wallet
-      const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: depth - 1 };
+      const wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, depth - 1);
 
       // update current wallet
       this.depth = depth;
@@ -209,7 +215,7 @@ export default class Wallet {
           const derivationPath = generateDerivationPath(_depth);
 
           // current wallet
-          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+          const wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, _depth - 1);
 
           // update current wallet
           this.depth = _depth;
