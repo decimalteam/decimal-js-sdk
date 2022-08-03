@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### v0.3.2 -  2022-08-03
+#### Fixes
+* Bugs with implementation of new unstable interface [`PR`](https://bitbucket.org/decimalteam/decimal-js-sdk/pull-requests/57)
+
 ### v0.2.8 -  2022-07-11
 #### Fixes
 * Description of changelog change [`#33386`](https://bitbucket.org/decimalteam/decimal-js-sdk/pull-requests/54)
