@@ -1,6 +1,5 @@
 import { decode } from 'bech32';
 import * as CryptoJS from 'crypto-js';
-import * as bech32 from 'bech32-buffer';
 import axios from 'axios';
 import bs58 from 'bs58';
 import { decode as rlpDecode } from 'rlp';
@@ -115,17 +114,3 @@ export function isNonceSetAutomatically(wallet, options) {
 export function updateNonce(wallet, nonce) {
   wallet.updateNonce(+nonce);
 }
-
-export const decodeCosmosAccountAddress = (cosmosAccountAddress) => {
-  try {
-    const decodedCosmosAccountAddress = bech32.decode(cosmosAccountAddress);
-
-    const hexedEvmAccountAddress = Buffer.from(decodedCosmosAccountAddress.data).toString('hex');
-
-    const evmAccountAddress = `0x${hexedEvmAccountAddress}`;
-
-    return evmAccountAddress;
-  } catch (e) {
-    return null;
-  }
-};
