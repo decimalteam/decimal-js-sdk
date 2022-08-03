@@ -40,12 +40,12 @@ export function mnemonicToSeedSync(mnemonic) {
 }
 
 export function createDecimalWalletFromMnemonic(mnemonic, addressPrefix = ADDRESS_PREFIX, derivation_path = MASTER_DERIVATION_PATH, id = 0) {
-  const { privateKey, publicKey } = { ...createWalletFromMnemonic(mnemonic, addressPrefix, derivation_path), id };
+  const { privateKey, publicKey } = createWalletFromMnemonic(mnemonic, addressPrefix, derivation_path);
 
   const { evmAccountAddress, cosmosAccountAddress } = encodeAddresses(publicKey);
 
   const wallet = {
-    privateKey, publicKey, address: cosmosAccountAddress, evmAddress: evmAccountAddress,
+    privateKey, publicKey, address: cosmosAccountAddress, evmAddress: evmAccountAddress, id,
   };
 
   return wallet;
