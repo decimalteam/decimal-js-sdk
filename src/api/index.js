@@ -168,6 +168,7 @@ export default class DecimalApi {
   }
 
   async encodeTx(tx) {
+    console.log('encodeTx call');
     const resp = await this.request('/txs/encode', null, 'post', REST, tx);
     console.log(tx);
     console.log(tx.msg);
