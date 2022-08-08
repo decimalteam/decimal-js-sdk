@@ -89,22 +89,22 @@ const mnemonic_dec2 = 'hold liquid enhance slim clerk frame grape welcome hybrid
         txBody.messages[0].type_url = '/decimal.coin.v1.MsgSendCoin'
     
         // build AuthInfo
-        // const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
-        //     signer_infos: [
-        //     {
-        //         public_key: cosmosclient.codec.instanceToProtoAny(senderPublicKey),
-        //         mode_info: {
-        //         single: {
-        //             mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
-        //         },
-        //         },
-        //         sequence: Long.fromString(sequence),
-        //     },
-        //     ],
-        //     fee: {
-        //     gas_limit: Long.fromString('200000'),
-        //     },
-        // });
+        const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
+            signer_infos: [
+            {
+                public_key: cosmosclient.codec.instanceToProtoAny(senderPublicKey),
+                mode_info: {
+                single: {
+                    mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+                },
+                },
+                sequence: Long.fromString(sequence),
+            },
+            ],
+            fee: {
+            gas_limit: Long.fromString('200000'),
+            },
+        });
 
         // HARDCODED public_key: 'invalid length: tx parse error'
         // authInfo.signer_infos[0].public_key.type_url = "/ethermint.crypto.v1.ethsecp256k1.PubKey";
