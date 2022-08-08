@@ -34,7 +34,9 @@ export default class DecimalApi {
     if (destination === REST && this.gateUrl) {
       path = `/rpc${path}`;
     }
-
+    console.log(JSON.stringify(data));
+    // console.log(this.restURL + path);
+    console.log('axios path: ', this.gateUrl + path);
     return axios({
       method,
       url: path,
@@ -45,6 +47,7 @@ export default class DecimalApi {
   }
 
   getNodeInfo() {
+    console.log('getNodeInfo');
     return this.request('/node_info', null, 'get', REST);
   }
 
@@ -144,6 +147,7 @@ export default class DecimalApi {
   }
 
   async requestAccountSequence(address, increaseTheSequence = false) { // old version
+    console.log('requestAccountSequence');
     const path = increaseTheSequence ? `/accounts/${address}` : `/auth/accounts/${address}`;
 
     const { data } = await this.request(path, null, 'get', REST);
@@ -168,10 +172,11 @@ export default class DecimalApi {
   }
 
   async encodeTx(tx) {
-    console.log('encodeTx call');
+    console.log('encodeTx request');
     const resp = await this.request('/txs/encode', null, 'post', REST, tx);
     console.log(tx);
     console.log(tx.msg);
+    console.log(resp.data);
     return resp.data;
   }
 

@@ -58,6 +58,7 @@ function processTxResponse(json, wallet) {
 }
 
 export function prepareTx(api) {
+  console.log('prepareTx');
   return async (type, value, options) => {
     const tx = {
       msg: [{ type, value }],
@@ -80,33 +81,36 @@ export function prepareTx(api) {
 }
 
 export function getSignMeta(api, wallet, options) {
+  console.log('getSignMeta');
   return async () => {
     const nodeInfoResp = await api.getNodeInfo();
 
     let accountResp = null;
 
-    if (options && options.accountInfoMode) {
-      switch (options.accountInfoMode) {
-        case ACCOUNT_INFO_MODES.BLOCKCHAIN: {
-          accountResp = await api.requestAccountSequence(wallet.address, false);
-          break;
-        }
-        case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_MEMPOOL: {
-          accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address);
-          break;
-        }
-        default: {
-          accountResp = await api.requestAccountSequence(wallet.address, true);
-          break;
-        }
-      }
-    } else {
-      accountResp = await api.requestAccountSequence(wallet.address, true);
-    }
+    // if (options && options.accountInfoMode) {
+    //   switch (options.accountInfoMode) {
+    //     case ACCOUNT_INFO_MODES.BLOCKCHAIN: {
+    //       accountResp = await api.requestAccountSequence(wallet.address, false);
+    //       break;
+    //     }
+    //     case ACCOUNT_INFO_MODES.BLOCKCHAIN_WITH_MEMPOOL: {
+    //       accountResp = await api.requestAccountSequenceWithUnconfirmedTxes(wallet.address);
+    //       break;
+    //     }
+    //     default: {
+    //       accountResp = await api.requestAccountSequence(wallet.address, true);
+    //       break;
+    //     }
+    //   }
+    // } else {
+    //   accountResp = await api.requestAccountSequence(wallet.address, true);
+    // }
 
-    const accountNumber = accountResp && accountResp.value && accountResp.value.account_number;
+    accountResp = await api.requestAccountSequence(wallet.address, false);
+    console.log(accountResp);
+    const accountNumber = accountResp && accountResp.base_account && accountResp.base_account.account_number;
 
-    const sequence = accountResp && accountResp.value && accountResp.value.sequence;
+    const sequence = accountResp && accountResp.base_account && accountResp.base_account.sequence;
 
     const chainId = nodeInfoResp && nodeInfoResp.data && nodeInfoResp.data.node_info && nodeInfoResp.data.node_info.network;
 
@@ -126,6 +130,7 @@ export function getSignMeta(api, wallet, options) {
 }
 
 export function makeSignature(api, wallet, decimal, options) {
+  console.log('makeSignature');
   return async (tx) => {
     const userSignMeta = decimal.signMeta;
 
@@ -134,14 +139,16 @@ export function makeSignature(api, wallet, decimal, options) {
     }
 
     signMeta = await getSignMeta(api, wallet, options)();
-
+    console.log('signMeta: ', signMeta);
     const stdTx = signTx(tx, signMeta, wallet);
+    console.log('stdTx: ', stdTx);
     return stdTx;
   };
 }
 
 // send signed prepared tx for broadcast
 export function postTx(api, wallet) {
+  console.log('postTx');
   return async (txData) => {
     const txResponse = await api.broadcastTx(txData);
 
@@ -152,6 +159,7 @@ export function postTx(api, wallet) {
 }
 
 export function formTx(api, wallet, decimal) {
+  console.log('formTx');
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
 

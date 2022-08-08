@@ -13,8 +13,10 @@
   "author": "DecimalTeam",
   "license": "MIT",
   "dependencies": {
+    "@cosmos-client/core": "^0.46.0-rc2",
     "@tendermint/belt": "^0.3.0",
     "@tendermint/sig": "^0.6.0",
+    "@types/long": "^4.0.2",
     "axios": "^0.21.4",
     "bech32": "^1.1.4",
     "bech32-buffer": "^0.2.0",
@@ -28,6 +30,7 @@
     "i": "^0.3.7",
     "js-sha3": "^0.8.0",
     "jsonschema": "^1.2.6",
+    "long": "^5.2.0",
     "npm": "^6.14.5",
     "rlp": "^2.2.5",
     "secp256k1": "^4.0.2",

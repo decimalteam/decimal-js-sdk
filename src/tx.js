@@ -469,7 +469,7 @@ export function getTransaction(api, wallet, decimal) {
   return async (type, data, options) => {
     const formatted = getValue(type, data, options, wallet);
     const broadcastTx = await formTx(api, wallet, decimal)(type, formatted.value, formatted.options);
-
+    console.log('broadcast TX: ', broadcastTx);
     return broadcastTx;
   };
 }
@@ -555,7 +555,7 @@ export function sendTransaction(type, api, wallet, decimal) {
     }
 
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-
+    console.log(broadcastTx)
     const txResult = await postTx(api, wallet)(broadcastTx);
 
     return txResult;

@@ -60,13 +60,18 @@ async function getTxSize(api, tx) {
       ...tx,
     },
   };
-  const signatureSize = 109;
-  console.log('getTxSize transaction: ', tx);
+  console.log('tx: ',JSON.stringify(tx));
+  console.log('praparedTx: ',JSON.stringify(preparedTx));
+  // const signatureSize = 109;
+  // console.log('getTxSize transaction: ', tx);
   const encodeTxResp = await api.encodeTx(preparedTx);
-  const encodedTxBase64 = encodeTxResp.tx;
-  const encodedTx = Buffer.from(encodedTxBase64, 'base64');
-  const size = encodedTx.length + signatureSize;
-
+  console.log('encodeTxResp: ',JSON.stringify(encodeTxResp));
+  
+  // const encodedTxBase64 = encodeTxResp.tx;
+  // const encodedTx = Buffer.from(encodedTxBase64, 'base64');
+  // const size = encodedTx.length + signatureSize;
+  // console.log('size: ', size);
+  const size = 205;
   return size;
 }
 
@@ -104,7 +109,7 @@ export function setCommission(api) {
     }];
 
     const fee = await getCommission(api)(tx, feeCoin);
-
+    console.log('SetCommission -> fee from getCommission: ', fee);
     const feeAmountSize = Buffer.from(getAmountToUNI(fee.value.times(unit))).length;
 
     const feeForFeeAmount = new DecimalNumber(feeAmountSize).times(2); // base {units}
