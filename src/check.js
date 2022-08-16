@@ -13,7 +13,7 @@ import { getAmountToUNI } from './math';
 
 function rlpHash(input) {
   const hash = new Keccak(256);
-  hash.update(rlpEncode(input));
+  hash.update(Buffer.from(rlpEncode(input)));
   return hash.digest();
 }
 
