@@ -3,7 +3,9 @@ import TX_TYPE from './txTypes';
 import TX_BROADCAST_MODES from './txBroadcastModes';
 import ACCOUNT_INFO_MODES from './accountInfoModes';
 import validateTxData from './validator';
-import { formTx, prepareTx, postTx } from './txUtils';
+import {
+  formTx, prepareTx, postTx,
+} from './txUtils';
 import { getAmountFromUNI, getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
@@ -553,9 +555,8 @@ export function sendTransaction(type, api, wallet, decimal) {
     if (type !== TX_TYPE.SWAP_INIT && type !== TX_TYPE.SWAP_REDEEM) {
       validateData(data);
     }
-
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-
+    console.log('ordinary broadcastTx: ', JSON.stringify(broadcastTx));
     const txResult = await postTx(api, wallet)(broadcastTx);
 
     return txResult;

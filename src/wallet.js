@@ -1,14 +1,22 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp } from './utils';
+import DecimalApp from './ledger/utils';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
 const VALIDATOR_ADDRESS_PREFIX = 'dxvaloper';
 const MASTER_DERIVATION_PATH = "m/44'/60'/0'/0/0";
+export const MASTER_DERIVATION_PATH_ARRAY = [44, 60, 0, 0, 0];
 const MNEMONIC_STRENGTH = 256;
 const MAX_ACCOUNTS_NUMBER = 20;
+const LEDGER_MODS = {
+  usb: 'usb',
+  emulator: 'emulator',
+};
 
 // generate derivation path for depth method
 export function generateDerivationPath(depth) {
@@ -39,23 +47,64 @@ export function mnemonicToSeedSync(mnemonic) {
 
 // create wallet from mnemonic phrase
 export default class Wallet {
-  // constructor
-  constructor(mnemonic, options = null) {
-    // current mnemonic
-    const _mnemonic = mnemonic || generateMnemonic();
-
-    if (!validateMnemonic(_mnemonic)) {
-      throw new Error('Invalid mnemonic');
+  static async initLedger(mode, options = null, apduPort = 40000) {
+    let transport;
+    if (mode === LEDGER_MODS.usb) {
+      transport = await TransportWebUSB.create();
+    } else if (mode === LEDGER_MODS.emulator) {
+      transport = await SpeculosTransport.open({ apduPort });
+    } else {
+      throw new Error('Not implemented connection type');
     }
+    const path = MASTER_DERIVATION_PATH_ARRAY;
+    const decimalNanoApp = new DecimalApp(transport);
+    const validatorAddress = (await decimalNanoApp.getAddressAndPubKey(path, VALIDATOR_ADDRESS_PREFIX)).bech32_address;
+    // eslint-disable-next-line camelcase
+    const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+    const wallet = {
+      publicKey: compressed_pk,
+      privateKey: null,
+      address: bech32_address,
+      id: 0,
+    };
+    const ledgerOptions = {
+      transport,
+      wallet,
+      validatorAddress,
+      decimalNanoApp,
+    };
+    return new Wallet('', options, ledgerOptions);
+  }
 
-    // generate master wallet
-    const wallet = { ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+  // constructor
+  constructor(mnemonic, options = null, ledgerOptions = null) {
+    let wallet;
+    let validatorAddress;
+    // current mnemonic
+    if (ledgerOptions) {
+      // generate master wallet
+      wallet = ledgerOptions.wallet;
+      // generate validator address
+      validatorAddress = ledgerOptions.validatorAddress;
+      this.transport = ledgerOptions.transport;
+      this.nanoApp = ledgerOptions.decimalNanoApp;
+      this.mnemonic = '';
+    } else {
+      const _mnemonic = mnemonic || generateMnemonic();
 
-    // generate validator address
-    const validatorAddress = createWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
+      if (!validateMnemonic(_mnemonic)) {
+        throw new Error('Invalid mnemonic');
+      }
 
+      // generate master wallet
+      wallet = { ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+
+      // generate validator address
+      validatorAddress = createWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
+      this.mnemonic = _mnemonic;
+    }
     // master fields
-    this.mnemonic = _mnemonic; // master mnemonic to generate
+    // master mnemonic to generate
     this.validatorAddress = validatorAddress; // do not need to change with derivation path update
 
     // current wallet

@@ -1,12 +1,17 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
-import { signTx, createBroadcastTx } from '@tendermint/sig';
+import { signTx, createBroadcastTx, createSignMsg } from '@tendermint/sig';
 import DecimalNumber from 'decimal.js';
+import { bytesToBase64 } from '@tendermint/belt';
+import secp256k1 from 'secp256k1';
 import { setCommission } from './fees';
 import TX_TYPE from './txTypes';
 import ACCOUNT_INFO_MODES from './accountInfoModes';
 import TX_BROADCAST_MODES from './txBroadcastModes';
 import { isNonceSetAutomatically, updateNonce } from './utils';
+import { MASTER_DERIVATION_PATH_ARRAY } from './wallet';
+
+const sortobject = require('deep-sort-object');
 
 DecimalNumber.set({ precision: 40 });
 let signMeta = null;
@@ -127,15 +132,37 @@ export function getSignMeta(api, wallet, options) {
 
 export function makeSignature(api, wallet, decimal, options) {
   return async (tx) => {
+    let stdTx;
     const userSignMeta = decimal.signMeta;
 
     if (userSignMeta) {
       signMeta = userSignMeta;
     }
-
     signMeta = await getSignMeta(api, wallet, options)();
-
-    const stdTx = signTx(tx, signMeta, wallet);
+    if (wallet.transport) {
+      const path = MASTER_DERIVATION_PATH_ARRAY;
+      path[path.length - 1] = wallet.depth - 1;
+      const { publicKey } = wallet;
+      const signMsg = sortobject(createSignMsg(tx, signMeta));
+      const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(signMsg));
+      // const preparedSignature = signature.signature.toString();
+      const signature = bytesToBase64(secp256k1.signatureImport(signatureBuffer.signature));
+      const signatures = [
+        {
+          signature,
+          pub_key: {
+            type: 'tendermint/PubKeySecp256k1',
+            value: bytesToBase64(publicKey),
+          },
+        },
+      ];
+      stdTx = {
+        ...tx,
+        signatures,
+      };
+    } else {
+      stdTx = signTx(tx, signMeta, wallet);
+    }
     return stdTx;
   };
 }

@@ -37,6 +37,10 @@ const entryFile = () => {
 const plugins = () => {
   const plugins = [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/hid-framing/,
+        '@ledgerhq/devices/lib/hid-framing'
+    ),
   ]
   if (isDev) {
     plugins.push(
@@ -82,7 +86,8 @@ const clientConfig = {
     ]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty'
   }
 }
 
@@ -108,6 +113,10 @@ const serverConfig = {
   },
   plugins:   [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/hid-framing/,
+        '@ledgerhq/devices/lib/hid-framing'
+    ),
   ],
   module: {
     rules: [
@@ -118,7 +127,8 @@ const serverConfig = {
     ]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty'
   }
 }
 
