@@ -1,10 +1,12 @@
 import * as bip39 from 'bip39';
 import { createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
-import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
+// import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp } from './utils';
 import DecimalApp from './ledger/utils';
+// import WebSocketTransport from './ledger/WebSocketTransport';
+import HttpTransport from './ledger/HttpTransport';
 
 // constants
 const ADDRESS_PREFIX = 'dx';
@@ -47,12 +49,12 @@ export function mnemonicToSeedSync(mnemonic) {
 
 // create wallet from mnemonic phrase
 export default class Wallet {
-  static async initLedger(mode, options = null, apduPort = 40000) {
+  static async initLedger(mode, options = null, apduPort = 5001) {
     let transport;
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.emulator) {
-      transport = await SpeculosTransport.open({ apduPort });
+      transport = await HttpTransport.open(`ws://127.0.0.1:${apduPort}`);
     } else {
       throw new Error('Not implemented connection type');
     }
