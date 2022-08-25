@@ -36,7 +36,6 @@ export declare class Wallet {
 
 export interface WalletOptions {
   gateUrl: string,
-  isLedger?: boolean,
 }
 
 export interface DecimalMeta {
