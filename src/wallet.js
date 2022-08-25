@@ -49,12 +49,12 @@ export function mnemonicToSeedSync(mnemonic) {
 
 // create wallet from mnemonic phrase
 export default class Wallet {
-  static async initLedger(mode, options = null, apduPort = 5001) {
+  static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
     let transport;
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.emulator) {
-      transport = await HttpTransport.open(`ws://127.0.0.1:${apduPort}`);
+      transport = await HttpTransport.open(emulatorUrl);
     } else {
       throw new Error('Not implemented connection type');
     }

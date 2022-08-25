@@ -23,7 +23,7 @@ export declare class Wallet {
   currentNonce: number;
   currentNonceValidUntil: number;
 
-  static initLedger(mode: string, options?: WalletOptions, apduPort?: number): Wallet;
+  static initLedger(mode: string, options?: WalletOptions, emulatorUrl?: string): Wallet;
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
   switchAccount(id: number): void;
