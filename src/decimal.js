@@ -28,7 +28,7 @@ import {
   prepareTx,
   makeSignature,
   postTx,
-  getSignMeta,
+  getSignMeta, makeLedgerSignature, makeLedgerMsgSignature,
 } from './txUtils';
 
 import { issueCheck } from './check';
@@ -45,17 +45,17 @@ export default class Decimal {
     // api
     this.getCoinsList = getCoinslist(apiInstance);
     this.getCoin = getCoin(apiInstance);
-    this.getAddress = getAddress(apiInstance, wallet);
+    this.getAddress = getAddress(apiInstance, wallet, this);
     this.getNonce = getNonce(apiInstance);
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
-    this.getNft = getNft(apiInstance, wallet);
+    this.getNft = getNft(apiInstance, wallet, this);
     this.getNfts = getNfts(apiInstance, wallet);
     this.getNftTxes = getNftTxes(apiInstance, wallet);
     this.getNftsTxes = getNftsTxes(apiInstance, wallet);
     this.updateAddressBlockingData = updateAddressBlockingData(apiInstance, wallet);
-    this.getBlockedAddresses = getBlockedAddresses(apiInstance, wallet);
+    this.getBlockedAddresses = getBlockedAddresses(apiInstance, wallet, this);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance, wallet);
     this.getValidator = getValidator(apiInstance);
@@ -70,6 +70,8 @@ export default class Decimal {
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance, wallet, this);
+    this.makeLedgerSignature = makeLedgerSignature(apiInstance, wallet, this);
+    this.makeLedgerMsgSignature = makeLedgerMsgSignature(apiInstance, wallet, this);
     this.postTx = postTx(apiInstance, wallet);
     this.getTransaction = getTransaction(apiInstance, wallet, this);
     this.getTransactionByHash = getTransactionByHash(apiInstance, wallet, this);

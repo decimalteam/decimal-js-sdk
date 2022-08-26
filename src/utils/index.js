@@ -3,7 +3,12 @@ import * as CryptoJS from 'crypto-js';
 import axios from 'axios';
 import bs58 from 'bs58';
 import { decode as rlpDecode } from 'rlp';
+import {
+  publicKeyConvert, ecdsaVerify, ecdsaRecover, signatureImport, signatureNormalize,
+} from 'secp256k1';
+import { sha256 } from '@tendermint/sig';
 
+const sortobject = require('deep-sort-object');
 const sha3 = require('js-sha3');
 const EC = require('elliptic').ec;
 
@@ -113,4 +118,45 @@ export function isNonceSetAutomatically(wallet, options) {
 
 export function updateNonce(wallet, nonce) {
   wallet.updateNonce(+nonce);
+}
+
+export const encodeEvmAccountAddress = (publicKey) => {
+  const decompressedPublicKey = publicKeyConvert(publicKey, false);
+  const slicedDecompressedPublicKey = decompressedPublicKey.slice(1);
+  const hexedDecompressedPublicKey = sha3.keccak256(slicedDecompressedPublicKey);
+  const evmAccountAddress = `0x${hexedDecompressedPublicKey.substring(hexedDecompressedPublicKey.length - 40, hexedDecompressedPublicKey.length)}`;
+  return evmAccountAddress;
+};
+
+export function checkLedgerSignature(
+  data,
+  signature,
+) {
+  try {
+    const StdSignMsg = {
+      fee: {
+        amount: 0,
+        gas: 0,
+      },
+      memo: '',
+      msgs: [data],
+      account_number: '',
+      sequence: '',
+      chain_id: '',
+    };
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(JSON.stringify(sortobject(StdSignMsg)));
+    const hash = sha256(bytes);
+    const parsed = JSON.parse(signature);
+    const signatureBytes = signatureImport(Buffer.from(parsed.signature.data));
+    const normalized = signatureNormalize(signatureBytes);
+    const pubKey = ecdsaRecover(normalized, 1, hash, true);
+    const isValid = ecdsaVerify(signatureBytes, hash, pubKey);
+
+    return isValid;
+  } catch (e) {
+    console.error(e);
+
+    return false;
+  }
 }

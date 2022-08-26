@@ -3,7 +3,9 @@ import { createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
-import { getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp } from './utils';
+import {
+  getAndUseGeneratedWallets, sendAndSaveGeneratedWallets, getTimestamp, encodeEvmAccountAddress,
+} from './utils';
 import DecimalApp from './ledger/utils';
 // import WebSocketTransport from './ledger/WebSocketTransport';
 import HttpTransport from './ledger/HttpTransport';
@@ -46,7 +48,29 @@ export function mnemonicToSeedSync(mnemonic) {
   }
   return bip39.mnemonicToSeedSync(mnemonic);
 }
+export function createDecimalWalletFromMnemonic(
+  mnemonic,
+  addressPrefix = ADDRESS_PREFIX,
+  derivation_path = MASTER_DERIVATION_PATH,
+  id = 0,
+) {
+  const { privateKey, publicKey, address } = createWalletFromMnemonic(
+    mnemonic,
+    addressPrefix,
+    derivation_path,
+  );
+  const evmAddress = encodeEvmAccountAddress(publicKey);
 
+  const wallet = {
+    privateKey,
+    publicKey,
+    address,
+    evmAddress,
+    id,
+  };
+
+  return wallet;
+}
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
@@ -99,10 +123,10 @@ export default class Wallet {
       }
 
       // generate master wallet
-      wallet = { ...createWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+      wallet = { ...createDecimalWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
 
       // generate validator address
-      validatorAddress = createWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
+      validatorAddress = createDecimalWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
       this.mnemonic = _mnemonic;
     }
     // master fields
@@ -118,7 +142,7 @@ export default class Wallet {
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
-
+    this.evmAddress = wallet.evmAddress || encodeEvmAccountAddress(this.publicKey);
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 

@@ -129,40 +129,70 @@ export function getSignMeta(api, wallet, options) {
     };
   };
 }
-
+// eslint-disable-next-line no-unused-vars
+export function makeLedgerMsgSignature(api, wallet, decimal, options) {
+  return async (data) => {
+    // const userSignMeta = decimal.signMeta;
+    // if (userSignMeta) {
+    //   signMeta = userSignMeta;
+    // }
+    // signMeta = await getSignMeta(api, wallet, options)();
+    const path = MASTER_DERIVATION_PATH_ARRAY;
+    path[path.length - 1] = wallet.depth - 1;
+    const StdSignMsg = {
+      ...signMeta,
+      account_number: '',
+      sequence: '',
+      chain_id: '',
+      fee: {
+        amount: 0,
+        gas: 0,
+      },
+      memo: '',
+      msgs: [data],
+    };
+    const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(sortobject(StdSignMsg)));
+    return signatureBuffer;
+  };
+}
+export function makeLedgerSignature(api, wallet, decimal, options) {
+  return async (tx) => {
+    const userSignMeta = decimal.signMeta;
+    if (userSignMeta) {
+      signMeta = userSignMeta;
+    }
+    signMeta = await getSignMeta(api, wallet, options)();
+    const path = MASTER_DERIVATION_PATH_ARRAY;
+    path[path.length - 1] = wallet.depth - 1;
+    const { publicKey } = wallet;
+    const signMsg = sortobject(createSignMsg(tx, signMeta));
+    const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(signMsg));
+    const signature = bytesToBase64(secp256k1.signatureImport(signatureBuffer.signature));
+    const signatures = [
+      {
+        signature,
+        pub_key: {
+          type: 'tendermint/PubKeySecp256k1',
+          value: bytesToBase64(publicKey),
+        },
+      },
+    ];
+    const stdTx = {
+      ...tx,
+      signatures,
+    };
+    return stdTx;
+  };
+}
 export function makeSignature(api, wallet, decimal, options) {
   return async (tx) => {
-    let stdTx;
     const userSignMeta = decimal.signMeta;
 
     if (userSignMeta) {
       signMeta = userSignMeta;
     }
     signMeta = await getSignMeta(api, wallet, options)();
-    if (wallet.transport) {
-      const path = MASTER_DERIVATION_PATH_ARRAY;
-      path[path.length - 1] = wallet.depth - 1;
-      const { publicKey } = wallet;
-      const signMsg = sortobject(createSignMsg(tx, signMeta));
-      const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(signMsg));
-      // const preparedSignature = signature.signature.toString();
-      const signature = bytesToBase64(secp256k1.signatureImport(signatureBuffer.signature));
-      const signatures = [
-        {
-          signature,
-          pub_key: {
-            type: 'tendermint/PubKeySecp256k1',
-            value: bytesToBase64(publicKey),
-          },
-        },
-      ];
-      stdTx = {
-        ...tx,
-        signatures,
-      };
-    } else {
-      stdTx = signTx(tx, signMeta, wallet);
-    }
+    const stdTx = signTx(tx, signMeta, wallet);
     return stdTx;
   };
 }
@@ -181,9 +211,12 @@ export function postTx(api, wallet) {
 export function formTx(api, wallet, decimal) {
   return async (type, value, options) => {
     const unsignTx = await prepareTx(api)(type, value, options);
-
-    const signedTx = await makeSignature(api, wallet, decimal, options)(unsignTx, wallet);
-
+    let signedTx;
+    if (wallet.transport) {
+      signedTx = await makeLedgerSignature(api, wallet, decimal, options)(unsignTx, wallet);
+    } else {
+      signedTx = await makeSignature(api, wallet, decimal, options)(unsignTx, wallet);
+    }
     const mode = (options && options.txBroadcastMode) || TX_BROADCAST_MODES.SYNC;
 
     return createBroadcastTx(signedTx, mode);

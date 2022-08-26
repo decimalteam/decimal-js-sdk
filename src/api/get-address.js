@@ -3,7 +3,7 @@ const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
 
-export default function getAddress(api, wallet) {
+export default function getAddress(api, wallet, decimal) {
   return async (address, txLimit = 10) => {
     try {
       let params = { txLimit };
@@ -19,12 +19,17 @@ export default function getAddress(api, wallet) {
         const msg = {
           timestamp,
         };
-
+        let signature;
+        const isLedger = !!wallet.nanoApp;
         const msgHash = sha3.keccak256(JSON.stringify(msg));
-
-        const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
-
-        params = { ...params, timestamp, signature };
+        if (isLedger) {
+          signature = await decimal.makeLedgerMsgSignature(msg);
+        } else {
+          signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        }
+        params = {
+          ...params, timestamp, signature, isLedger,
+        };
       }
 
       return api.getAddress(address, params);

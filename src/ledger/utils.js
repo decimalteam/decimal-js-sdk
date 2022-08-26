@@ -181,7 +181,6 @@ export default class DecimalApp {
       case 1:
         return publicKeyv1(this, serializedPath);
       case 2: {
-        // here may be an error
         const data = Buffer.concat([DecimalApp.serializeHRP('dx'), serializedPath]);
         return publicKeyv2(this, data);
       }
