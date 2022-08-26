@@ -111,10 +111,12 @@ export default class Wallet {
     const validatorAddress = (await decimalNanoApp.getAddressAndPubKey(path, VALIDATOR_ADDRESS_PREFIX)).bech32_address;
     // eslint-disable-next-line camelcase
     const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+    const evmAddress = encodeEvmAccountAddress(compressed_pk);
     const wallet = {
       publicKey: compressed_pk,
       privateKey: null,
       address: bech32_address,
+      evmAddress,
       id: 0,
     };
     const ledgerOptions = {
@@ -166,7 +168,7 @@ export default class Wallet {
     this.privateKey = wallet.privateKey; // current private key
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
-    this.evmAddress = wallet.evmAddress || encodeEvmAccountAddress(this.publicKey);
+    this.evmAddress = wallet.evmAddress;
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 
@@ -214,8 +216,10 @@ export default class Wallet {
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
       this.address = wallet.address; // current address
+      this.evmAddress = wallet.evmAddress;
+      // update current nonce
 
-      // update current nonce for sending transactions and lifetime of the current nonce
+      // for sending transactions and lifetime of the current nonce
       this.updateNonce(null);
     } catch (e) {
       console.error(e);
@@ -258,7 +262,7 @@ export default class Wallet {
   }
 
   // generate accounts and switch if necessary
-  generateAndSwitchAccount(depth, id) {
+  async generateAndSwitchAccount(depth, id) {
     try {
       // if depth does not exist
       if (typeof depth === 'undefined' || !Number.isInteger(depth)) {
@@ -303,7 +307,13 @@ export default class Wallet {
           const derivationPath = generateDerivationPath(_depth);
 
           // current wallet
-          const wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+          let wallet;
+          if (this.transport) {
+            // eslint-disable-next-line no-await-in-loop
+            wallet = { ...await initGeneratedLedgerWallet(this.transport, _depth) };
+          } else {
+            wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+          }
 
           // update current wallet
           this.depth = _depth;
@@ -337,13 +347,20 @@ export default class Wallet {
       if (ids && ids.length) {
         this.wallets = [masterWallet];
         this.switchAccount(masterWallet.id);
-        ids.forEach((id) => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const id of ids) {
           if (id !== masterWallet.id) {
             const derivationPath = generateDerivationPath(id + 1);
-            const wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
+            let wallet;
+            if (this.transport) {
+              // eslint-disable-next-line no-await-in-loop
+              wallet = { ...await initGeneratedLedgerWallet(this.transport, id + 1) };
+            } else {
+              wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
+            }
             this.wallets.push(wallet);
           }
-        });
+        }
 
         this.depth = this.wallets.length;
 
