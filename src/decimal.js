@@ -45,17 +45,17 @@ export default class Decimal {
     // api
     this.getCoinsList = getCoinslist(apiInstance);
     this.getCoin = getCoin(apiInstance);
-    this.getAddress = getAddress(apiInstance, wallet, this);
+    this.getAddress = getAddress(apiInstance, wallet);
     this.getNonce = getNonce(apiInstance);
     this.getMultisigsByAddress = getMultisigsByAddress(apiInstance);
     this.getMultisig = getMultisig(apiInstance);
     this.getMultisigTxs = getMultisigTxs(apiInstance);
-    this.getNft = getNft(apiInstance, wallet, this);
+    this.getNft = getNft(apiInstance, wallet);
     this.getNfts = getNfts(apiInstance, wallet);
     this.getNftTxes = getNftTxes(apiInstance, wallet);
     this.getNftsTxes = getNftsTxes(apiInstance, wallet);
     this.updateAddressBlockingData = updateAddressBlockingData(apiInstance, wallet);
-    this.getBlockedAddresses = getBlockedAddresses(apiInstance, wallet, this);
+    this.getBlockedAddresses = getBlockedAddresses(apiInstance, wallet);
     this.getStakesByAddress = getStakesByAddress(apiInstance);
     this.getNftStakesByAddress = getNftStakesByAddress(apiInstance, wallet);
     this.getValidator = getValidator(apiInstance);

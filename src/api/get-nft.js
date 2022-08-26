@@ -3,7 +3,7 @@ const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
 
-export default function getNft(api, wallet, decimal) {
+export default function getNft(api, wallet) {
   return async (id) => {
     if (!id) {
       throw new Error('Nft id is required');
@@ -26,7 +26,8 @@ export default function getNft(api, wallet, decimal) {
       let signature;
       const isLedger = !!wallet.nanoApp;
       if (isLedger) {
-        signature = await decimal.makeLedgerMsgSignature(msg);
+        // signature = await decimal.makeLedgerMsgSignature(msg);
+        signature = wallet.publicKey;
       } else {
         signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
       }

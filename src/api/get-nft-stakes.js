@@ -22,7 +22,14 @@ export default function getNftStakesByAddress(api, wallet) {
 
         const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-        const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        let signature;
+        const isLedger = !!wallet.nanoApp;
+        if (isLedger) {
+          // signature = await decimal.makeLedgerMsgSignature(msg);
+          signature = wallet.publicKey;
+        } else {
+          signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        }
 
         params = { ...params, timestamp, signature };
       }

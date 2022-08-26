@@ -6,7 +6,7 @@ import { decode as rlpDecode } from 'rlp';
 import {
   publicKeyConvert, ecdsaVerify, ecdsaRecover, signatureImport, signatureNormalize,
 } from 'secp256k1';
-import { sha256 } from '@tendermint/sig';
+import { createAddress, sha256 } from '@tendermint/sig';
 
 const sortobject = require('deep-sort-object');
 const sha3 = require('js-sha3');
@@ -149,10 +149,18 @@ export function checkLedgerSignature(
     const hash = sha256(bytes);
     const parsed = JSON.parse(signature);
     const signatureBytes = signatureImport(Buffer.from(parsed.signature.data));
+    const u8 = Uint8Array.from(Buffer.from(parsed.signature.data));
+    console.log(u8);
+    console.log(u8[u8.length - 1]);
+    console.log(u8.length);
     const normalized = signatureNormalize(signatureBytes);
-    const pubKey = ecdsaRecover(normalized, 1, hash, true);
+    console.log(normalized);
+    // const recid = normalized[normalized.length - 1];
+    const pubKey = ecdsaRecover(normalized, 2, hash, true);
+    console.log(pubKey);
     const isValid = ecdsaVerify(signatureBytes, hash, pubKey);
-
+    const walletAddress = createAddress(pubKey, 'dx');
+    console.log(walletAddress);
     return isValid;
   } catch (e) {
     console.error(e);

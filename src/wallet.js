@@ -30,6 +30,15 @@ export function generateDerivationPath(depth) {
   const correctDepth = depth - 1;
   return `m/44'/60'/0'/0/${correctDepth}`;
 }
+export function generateDerivationPathArray(depth) {
+  if (!Number.isInteger(depth) || depth < 1) {
+    throw new Error(`Invalid depth number ${depth}, must be integer number between 1 and ${MAX_ACCOUNTS_NUMBER}`);
+  }
+  const correctDepth = depth - 1;
+  const path = MASTER_DERIVATION_PATH_ARRAY;
+  path[path.length - 1] = correctDepth;
+  return path;
+}
 
 // generate random mnemonic method
 export function generateMnemonic() {
@@ -47,6 +56,21 @@ export function mnemonicToSeedSync(mnemonic) {
     throw new Error('Invalid mnemonic phrase');
   }
   return bip39.mnemonicToSeedSync(mnemonic);
+}
+export async function initGeneratedLedgerWallet(transport, depth) {
+  const path = generateDerivationPathArray(depth);
+  const decimalNanoApp = new DecimalApp(transport);
+  // eslint-disable-next-line camelcase
+  const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+  const evmAddress = encodeEvmAccountAddress(compressed_pk);
+  const wallet = {
+    publicKey: compressed_pk,
+    privateKey: null,
+    address: bech32_address,
+    evmAddress,
+    id: depth - 1,
+  };
+  return wallet;
 }
 export function createDecimalWalletFromMnemonic(
   mnemonic,
@@ -199,7 +223,7 @@ export default class Wallet {
   }
 
   // generate next account and switch to last
-  generateAccount() {
+  async generateAccount() {
     try {
       // current depth
       const depth = this.depth + 1;
@@ -213,7 +237,12 @@ export default class Wallet {
       const derivationPath = generateDerivationPath(depth);
 
       // current wallet
-      const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: depth - 1 };
+      let wallet;
+      if (this.transport) {
+        wallet = { ...await initGeneratedLedgerWallet(this.transport, depth) };
+      } else {
+        wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: depth - 1 };
+      }
 
       // update current wallet
       this.depth = depth;
@@ -274,7 +303,7 @@ export default class Wallet {
           const derivationPath = generateDerivationPath(_depth);
 
           // current wallet
-          const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+          const wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
 
           // update current wallet
           this.depth = _depth;
@@ -296,8 +325,12 @@ export default class Wallet {
       if (!this.gateUrl) {
         throw new Error('You did not set the gate url');
       }
-
-      const masterWallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+      let masterWallet;
+      if (this.transport) {
+        masterWallet = { ...await initGeneratedLedgerWallet(this.transport, 1) };
+      } else {
+        masterWallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+      }
 
       const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
 
@@ -307,7 +340,7 @@ export default class Wallet {
         ids.forEach((id) => {
           if (id !== masterWallet.id) {
             const derivationPath = generateDerivationPath(id + 1);
-            const wallet = { ...createWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
+            const wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
             this.wallets.push(wallet);
           }
         });

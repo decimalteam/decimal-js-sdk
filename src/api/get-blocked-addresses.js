@@ -3,7 +3,7 @@ const EC = require('elliptic').ec;
 
 const ec = new EC('secp256k1');
 
-export default function getNftTxes(api, wallet, decimal) {
+export default function getNftTxes(api, wallet) {
   return async (limit = 10, offset = 0, type = null, q = null) => {
     try {
       const timestamp = Math.round(new Date().getTime() / 1000.0);
@@ -21,7 +21,8 @@ export default function getNftTxes(api, wallet, decimal) {
       let signature;
       const isLedger = !!wallet.nanoApp;
       if (isLedger) {
-        signature = await decimal.makeLedgerMsgSignature(msg);
+        // signature = await decimal.makeLedgerMsgSignature(msg);
+        signature = wallet.publicKey;
       } else {
         signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
       }
