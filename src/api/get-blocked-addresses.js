@@ -27,7 +27,7 @@ export default function getNftTxes(api, wallet) {
         signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
       }
       const params = {
-        limit, offset, timestamp, signature, ...(type && { type }), ...(q && { q }),
+        isLedger, limit, offset, timestamp, signature, ...(type && { type }), ...(q && { q }),
       };
 
       return api.getBlockedAddresses(params);

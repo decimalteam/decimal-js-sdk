@@ -38,7 +38,7 @@ export default function getNftTxes(api, wallet) {
       }
 
       const params = {
-        limit, offset, timestamp, signature,
+        limit, offset, timestamp, signature, isLedger,
       };
 
       return api.getNftTxes(id, params, order);

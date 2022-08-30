@@ -31,7 +31,9 @@ export default function getNftStakesByAddress(api, wallet) {
           signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
         }
 
-        params = { ...params, timestamp, signature };
+        params = {
+          ...params, timestamp, signature, isLedger,
+        };
       }
 
       return api.getNftStakes(address, params);

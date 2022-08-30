@@ -32,7 +32,7 @@ export default function getNft(api, wallet) {
         signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
       }
 
-      const params = { timestamp, signature };
+      const params = { timestamp, signature, isLedger };
 
       return api.getNftById(id, params);
     } catch (e) {
