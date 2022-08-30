@@ -1,5 +1,5 @@
 import * as bip39 from 'bip39';
-import { createWalletFromMnemonic } from '@tendermint/sig';
+import { createAddress, createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
@@ -108,9 +108,9 @@ export default class Wallet {
     }
     const path = MASTER_DERIVATION_PATH_ARRAY;
     const decimalNanoApp = new DecimalApp(transport);
-    const validatorAddress = (await decimalNanoApp.getAddressAndPubKey(path, VALIDATOR_ADDRESS_PREFIX)).bech32_address;
     // eslint-disable-next-line camelcase
     const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+    const validatorAddress = createAddress(compressed_pk, VALIDATOR_ADDRESS_PREFIX);
     const evmAddress = encodeEvmAccountAddress(compressed_pk);
     const wallet = {
       publicKey: compressed_pk,
