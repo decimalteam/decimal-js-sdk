@@ -56,24 +56,30 @@ export async function getAndUseGeneratedWallets(gateUrl, address) {
   }
 }
 
-export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWallets) {
+export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWallets, wallet) {
   try {
     const timestamp = Math.round(new Date().getTime() / 1000.0);
 
     const msg = {
       timestamp,
     };
-
+    let signature;
+    const isLedger = !!wallet.nanoApp;
     const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-    const signature = JSON.stringify(ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true }));
-
+    if (isLedger) {
+      signature = JSON.stringify(wallet.publicKey);
+    } else {
+      signature = JSON.stringify(ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true }));
+    }
     const payload = {
       generatedWallets,
       timestamp,
       signature,
+      isLedger,
     };
-
+    console.log(JSON.stringify(payload));
+    console.log(`${gateUrl}address/${wallets[0].address}/generated-wallets`);
     const { data: { result = false } } = await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
 
     return result;

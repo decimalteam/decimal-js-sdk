@@ -567,18 +567,22 @@ export function estimateTxFee(api, wallet, decimal) {
   return async (type, data, options) => {
     try {
       const { feeCoin } = options;
-
+      let preparedFeeCoin;
+      // if (feeCoin) {
+      //   const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+      //   const feeAmounts = broadcastTx.tx.fee.amount;
+      //   const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+      //
+      //   return getAmountFromUNI(fee);
+      // }
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-        const feeAmounts = broadcastTx.tx.fee.amount;
-        const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
-
-        return getAmountFromUNI(fee);
+        preparedFeeCoin = feeCoin.toLowerCase();
+      } else {
+        preparedFeeCoin = 'del';
       }
-
       const formatted = getValue(type, data, options, wallet);
       const tx = await prepareTx(api)(type, formatted.value, formatted.options);
-      const fee = await getCommission(api)(tx, 'del');
+      const fee = await getCommission(api)(tx, preparedFeeCoin);
 
       return fee.value.times(0.001).toFixed();
     } catch (e) {

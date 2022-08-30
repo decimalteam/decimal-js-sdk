@@ -337,13 +337,13 @@ export default class Wallet {
       }
       let masterWallet;
       if (this.transport) {
-        masterWallet = { ...await initGeneratedLedgerWallet(this.transport, 1) };
+        masterWallet = { ...this.wallet };
       } else {
         masterWallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
       }
 
       const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
-
+      console.log(ids);
       if (ids && ids.length) {
         this.wallets = [masterWallet];
         this.switchAccount(masterWallet.id);
@@ -377,7 +377,7 @@ export default class Wallet {
     try {
       const ids = this.wallets.map((wallet) => wallet.id);
 
-      const updated = await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids);
+      const updated = await sendAndSaveGeneratedWallets(this.gateUrl, this.wallets, ids, this);
 
       console.info(`[SAVE-GENERATED-WALLETS-STATUS]: ${updated.toString().toUpperCase()}`);
     } catch (e) {
