@@ -57,7 +57,16 @@ export function mnemonicToSeedSync(mnemonic) {
   }
   return bip39.mnemonicToSeedSync(mnemonic);
 }
-export async function initGeneratedLedgerWallet(transport, depth) {
+export async function initGeneratedLedgerWallet(transport, depth, empty = false) {
+  if (empty) {
+    return {
+      publicKey: null,
+      privateKey: null,
+      address: null,
+      evmAddress: null,
+      id: depth - 1,
+    };
+  }
   const path = generateDerivationPathArray(depth);
   const decimalNanoApp = new DecimalApp(transport);
   // eslint-disable-next-line camelcase
@@ -149,7 +158,7 @@ export default class Wallet {
       }
 
       // generate master wallet
-      wallet = { ...createDecimalWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+      wallet = createDecimalWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH);
 
       // generate validator address
       validatorAddress = createDecimalWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
@@ -194,7 +203,7 @@ export default class Wallet {
   }
 
   // switch to account by id private method
-  switchAccount(id) {
+  async switchAccount(id) {
     try {
       // if id does not exist
       if (typeof id === 'undefined' || !Number.isInteger(id)) {
@@ -205,7 +214,9 @@ export default class Wallet {
       if (id > this.depth) {
         throw new Error(`You have not generated an account with ${id} id`);
       }
-
+      if (this.wallets[id].address === null) {
+        this.wallets[id] = await initGeneratedLedgerWallet(this.transport, id + 1);
+      }
       // current wallet
       const wallet = this.wallets[id];
       // update current wallet
@@ -243,9 +254,9 @@ export default class Wallet {
       // current wallet
       let wallet;
       if (this.transport) {
-        wallet = { ...await initGeneratedLedgerWallet(this.transport, depth) };
+        wallet = await initGeneratedLedgerWallet(this.transport, depth);
       } else {
-        wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: depth - 1 };
+        wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, depth - 1);
       }
 
       // update current wallet
@@ -255,7 +266,7 @@ export default class Wallet {
       this.wallets = [...this.wallets, wallet];
 
       // update wallet
-      this.switchAccount(depth - 1);
+      await this.switchAccount(depth - 1);
     } catch (e) {
       console.error(e);
     }
@@ -289,7 +300,7 @@ export default class Wallet {
       // if depth less or equal to current depth
       if (depth <= this.depth) {
         // swith account
-        this.switchAccount(_id);
+        await this.switchAccount(_id);
       }
 
       // generate accounts to depth amount
@@ -310,9 +321,9 @@ export default class Wallet {
           let wallet;
           if (this.transport) {
             // eslint-disable-next-line no-await-in-loop
-            wallet = { ...await initGeneratedLedgerWallet(this.transport, _depth) };
+            wallet = await initGeneratedLedgerWallet(this.transport, _depth, true);
           } else {
-            wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id: _depth - 1 };
+            wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, _depth - 1);
           }
 
           // update current wallet
@@ -324,7 +335,7 @@ export default class Wallet {
       }
 
       // swith account
-      this.switchAccount(_id);
+      await this.switchAccount(_id);
     } catch (e) {
       console.error(e);
     }
@@ -337,16 +348,17 @@ export default class Wallet {
       }
       let masterWallet;
       if (this.transport) {
-        masterWallet = { ...this.wallet };
+        // eslint-disable-next-line prefer-destructuring
+        masterWallet = this.wallets[0];
       } else {
-        masterWallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH), id: 0 };
+        masterWallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH, 0);
       }
 
       const ids = await getAndUseGeneratedWallets(this.gateUrl, masterWallet.address);
       console.log(ids);
       if (ids && ids.length) {
         this.wallets = [masterWallet];
-        this.switchAccount(masterWallet.id);
+        await this.switchAccount(masterWallet.id);
         // eslint-disable-next-line no-restricted-syntax
         for (const id of ids) {
           if (id !== masterWallet.id) {
@@ -354,9 +366,9 @@ export default class Wallet {
             let wallet;
             if (this.transport) {
               // eslint-disable-next-line no-await-in-loop
-              wallet = { ...await initGeneratedLedgerWallet(this.transport, id + 1) };
+              wallet = await initGeneratedLedgerWallet(this.transport, id + 1, true);
             } else {
-              wallet = { ...createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath), id };
+              wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, id);
             }
             this.wallets.push(wallet);
           }

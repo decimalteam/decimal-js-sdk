@@ -68,9 +68,9 @@ export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWal
     const msgHash = sha3.keccak256(JSON.stringify(msg));
 
     if (isLedger) {
-      signature = JSON.stringify(wallet.publicKey);
+      signature = JSON.stringify(wallets[0].publicKey);
     } else {
-      signature = JSON.stringify(ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true }));
+      signature = JSON.stringify(ec.sign(msgHash, wallets[0].privateKey, 'hex', { canonical: true }));
     }
     const payload = {
       generatedWallets,
@@ -78,6 +78,8 @@ export async function sendAndSaveGeneratedWallets(gateUrl, wallets, generatedWal
       signature,
       isLedger,
     };
+    // eslint-disable-next-line no-use-before-define
+    getWalletAddressFromSignature(msg, signature);
     console.log(JSON.stringify(payload));
     console.log(`${gateUrl}address/${wallets[0].address}/generated-wallets`);
     const { data: { result = false } } = await axios.put(`${gateUrl}address/${wallets[0].address}/generated-wallets`, payload);
@@ -172,5 +174,49 @@ export function checkLedgerSignature(
     console.error(e);
 
     return false;
+  }
+}
+
+export function getWalletAddressFromSignature(
+  data,
+  signature,
+) {
+  try {
+    // sort msg object by keys
+    const msg = sortobject(data);
+
+    console.log(msg);
+    // getting message hash
+    const msgHash = sha3.keccak256(JSON.stringify(msg));
+
+    console.log('msgHash', msgHash);
+    // hex to decimal function
+    const hexToDecimal = (x) => ec.keyFromPrivate(x, 'hex').getPrivate().toString(10);
+
+    // casting signature as string
+    const rawSignature = signature;
+
+    // parsing raw signature from string
+    const parsedSignature = JSON.parse(rawSignature);
+
+    // getting public key from signature
+    const pubKeyRecovered = ec.recoverPubKey(
+      hexToDecimal(msgHash),
+      parsedSignature,
+      parsedSignature.recoveryParam,
+      'hex',
+    );
+
+    console.log('pubKeyRecovered', pubKeyRecovered.encodeCompressed('bites'));
+    // getting wallet address from recovered public key
+    const walletAddress = createAddress(pubKeyRecovered.encodeCompressed('bites'), 'dx');
+
+    console.log('address from utils: ', walletAddress);
+
+    return walletAddress;
+  } catch (e) {
+    console.error(e);
+
+    return null;
   }
 }
