@@ -363,7 +363,6 @@ export default class Wallet {
       console.log(ids);
       if (ids && ids.length) {
         this.wallets = [masterWallet];
-        await this.switchAccount(masterWallet.id);
         // eslint-disable-next-line no-restricted-syntax
         for (const id of ids) {
           if (id !== masterWallet.id) {
