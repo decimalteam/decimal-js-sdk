@@ -164,6 +164,7 @@ export function makeLedgerSignature(api, wallet, decimal, options) {
     signMeta = await getSignMeta(api, wallet, options)();
     const path = MASTER_DERIVATION_PATH_ARRAY;
     path[path.length - 1] = wallet.id;
+    console.log(path);
     const { publicKey } = wallet;
     const signMsg = sortobject(createSignMsg(tx, signMeta));
     const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(signMsg));
