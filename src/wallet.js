@@ -117,21 +117,30 @@ export default class Wallet {
     }
     const path = MASTER_DERIVATION_PATH_ARRAY;
     const decimalNanoApp = new DecimalApp(transport);
-    // eslint-disable-next-line camelcase
-    const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
-    const validatorAddress = createAddress(compressed_pk, VALIDATOR_ADDRESS_PREFIX);
-    const evmAddress = encodeEvmAccountAddress(compressed_pk);
-    const wallet = {
-      publicKey: compressed_pk,
-      privateKey: null,
-      address: bech32_address,
-      evmAddress,
-      id: 0,
-    };
+    let wallet;
+    if (options.masterAddress) {
+      wallet = {
+        publicKey: null,
+        privateKey: null,
+        address: options.masterAddress,
+        evmAddress: null,
+        id: 0,
+      };
+    } else {
+      // eslint-disable-next-line camelcase
+      const { compressed_pk, bech32_address } = await decimalNanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+      const evmAddress = encodeEvmAccountAddress(compressed_pk);
+      wallet = {
+        publicKey: compressed_pk,
+        privateKey: null,
+        address: bech32_address,
+        evmAddress,
+        id: 0,
+      };
+    }
     const ledgerOptions = {
       transport,
       wallet,
-      validatorAddress,
       decimalNanoApp,
     };
     return new Wallet('', options, ledgerOptions);
@@ -140,13 +149,11 @@ export default class Wallet {
   // constructor
   constructor(mnemonic, options = null, ledgerOptions = null) {
     let wallet;
-    let validatorAddress;
     // current mnemonic
     if (ledgerOptions) {
       // generate master wallet
       wallet = ledgerOptions.wallet;
       // generate validator address
-      validatorAddress = ledgerOptions.validatorAddress;
       this.transport = ledgerOptions.transport;
       this.nanoApp = ledgerOptions.decimalNanoApp;
       this.mnemonic = '';
@@ -161,12 +168,8 @@ export default class Wallet {
       wallet = createDecimalWalletFromMnemonic(_mnemonic, ADDRESS_PREFIX, MASTER_DERIVATION_PATH);
 
       // generate validator address
-      validatorAddress = createDecimalWalletFromMnemonic(_mnemonic, VALIDATOR_ADDRESS_PREFIX, MASTER_DERIVATION_PATH).address;
       this.mnemonic = _mnemonic;
     }
-    // master fields
-    // master mnemonic to generate
-    this.validatorAddress = validatorAddress; // do not need to change with derivation path update
 
     // current wallet
     this.wallet = wallet; // current wallet
@@ -178,6 +181,7 @@ export default class Wallet {
     this.publicKey = wallet.publicKey; // current public key
     this.address = wallet.address; // current address
     this.evmAddress = wallet.evmAddress;
+    this.validatorAddress = this.publicKey ? createAddress(wallet.publicKey, VALIDATOR_ADDRESS_PREFIX) : '';
     // is available proposal submit
     this.availableProposalSubmit = !!(proposalAdresses.addresses.find((address) => address === wallet.address));
 
@@ -214,7 +218,7 @@ export default class Wallet {
       if (id > this.depth) {
         throw new Error(`You have not generated an account with ${id} id`);
       }
-      if (this.wallets[id].address === null) {
+      if (this.wallets[id].publicKey === null) {
         this.wallets[id] = await initGeneratedLedgerWallet(this.transport, id + 1);
       }
       // current wallet
@@ -228,6 +232,7 @@ export default class Wallet {
       this.publicKey = wallet.publicKey; // current public key
       this.address = wallet.address; // current address
       this.evmAddress = wallet.evmAddress;
+      this.validatorAddress = this.publicKey ? createAddress(wallet.publicKey, VALIDATOR_ADDRESS_PREFIX) : '';
       // update current nonce
 
       // for sending transactions and lifetime of the current nonce
