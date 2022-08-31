@@ -213,11 +213,7 @@ export default class Wallet {
       if (typeof id === 'undefined' || !Number.isInteger(id)) {
         throw new Error('Id must be of type number');
       }
-
-      // if id more then generated accounts
-      if (id > this.depth) {
-        throw new Error(`You have not generated an account with ${id} id`);
-      }
+      console.log(this.wallets[id]);
       if (this.wallets[id].publicKey === null) {
         this.wallets[id] = await initGeneratedLedgerWallet(this.transport, id + 1);
       }
@@ -226,7 +222,7 @@ export default class Wallet {
       // update current wallet
       this.wallet = wallet;
       this.id = id;
-
+      this.depth = id + 1;
       // update current private, public keys, address
       this.privateKey = wallet.privateKey; // current private key
       this.publicKey = wallet.publicKey; // current public key
@@ -330,10 +326,6 @@ export default class Wallet {
           } else {
             wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, _depth - 1);
           }
-
-          // update current wallet
-          this.depth = _depth;
-
           // update wallets
           this.wallets = [...this.wallets, wallet];
         }
