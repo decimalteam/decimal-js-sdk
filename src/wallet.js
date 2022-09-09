@@ -325,8 +325,9 @@ export default class Wallet {
           // current wallet
           let wallet;
           if (this.transport) {
+            // here we can pass true to wallet init, when we want to create empty wallets
             // eslint-disable-next-line no-await-in-loop
-            wallet = await initGeneratedLedgerWallet(this.transport, _depth, true);
+            wallet = await initGeneratedLedgerWallet(this.transport, _depth);
           } else {
             wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, _depth - 1);
           }
@@ -370,7 +371,7 @@ export default class Wallet {
             let wallet;
             if (this.transport) {
               // eslint-disable-next-line no-await-in-loop
-              wallet = await initGeneratedLedgerWallet(this.transport, id + 1, true);
+              wallet = await initGeneratedLedgerWallet(this.transport, id + 1);
             } else {
               wallet = createDecimalWalletFromMnemonic(this.mnemonic, ADDRESS_PREFIX, derivationPath, id);
             }

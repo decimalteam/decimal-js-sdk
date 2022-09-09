@@ -198,7 +198,6 @@ export default class DecimalApp {
     return this.transport.send(CLA, INS.GET_ADDR_SECP256K1, 0, 0, data, [0x9000]).then((response) => {
       const errorCodeData = response.slice(-2);
       const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
-
       const compressedPk = Buffer.from(response.slice(0, 33));
       const bech32Address = Buffer.from(response.slice(33, -2)).toString();
 
