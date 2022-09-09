@@ -563,7 +563,7 @@ export function sendTransaction(type, api, wallet, decimal) {
   };
 }
 
-export function estimateTxFee(api, wallet, decimal) {
+export function estimateTxFee(api, wallet) {
   return async (type, data, options) => {
     try {
       const { feeCoin } = options;

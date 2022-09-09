@@ -194,18 +194,40 @@ export default class DecimalApp {
 
   async getAddressAndPubKey(path, hrp) {
     const serializedPath = await this.serializePath(path);
-    // here may be fail
     const data = Buffer.concat([DecimalApp.serializeHRP(hrp), serializedPath]);
-    const response = await this.transport.send(CLA, INS.GET_ADDR_SECP256K1, 1, 0, data, [0x9000]);
-    const errorCodeData = response.slice(-2);
-    const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
-    const compressedPk = Buffer.from(response.slice(0, 33));
-    const bech32Address = Buffer.from(response.slice(33, -2)).toString();
-    return {
-      bech32_address: bech32Address,
-      compressed_pk: compressedPk,
-      return_code: returnCode,
-    };
+    return this.transport.send(CLA, INS.GET_ADDR_SECP256K1, 0, 0, data, [0x9000]).then((response) => {
+      const errorCodeData = response.slice(-2);
+      const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+
+      const compressedPk = Buffer.from(response.slice(0, 33));
+      const bech32Address = Buffer.from(response.slice(33, -2)).toString();
+
+      return {
+        bech32_address: bech32Address,
+        compressed_pk: compressedPk,
+        return_code: returnCode,
+        error_message: errorCodeToString(returnCode),
+      };
+    }, processErrorResponse);
+  }
+
+  async showAddressAndPubKey(path, hrp) {
+    const serializedPath = await this.serializePath(path);
+    const data = Buffer.concat([DecimalApp.serializeHRP(hrp), serializedPath]);
+    return this.transport.send(CLA, INS.GET_ADDR_SECP256K1, 1, 0, data, [0x9000]).then((response) => {
+      const errorCodeData = response.slice(-2);
+      const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+
+      const compressedPk = Buffer.from(response.slice(0, 33));
+      const bech32Address = Buffer.from(response.slice(33, -2)).toString();
+
+      return {
+        bech32_address: bech32Address,
+        compressed_pk: compressedPk,
+        return_code: returnCode,
+        error_message: errorCodeToString(returnCode),
+      };
+    }, processErrorResponse);
   }
 
   async signSendChunk(chunkIdx, chunkNum, chunk) {
