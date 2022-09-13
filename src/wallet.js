@@ -1,6 +1,7 @@
 import * as bip39 from 'bip39';
 import { createAddress, createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import BluetoothTransport from '@ledgerhq/hw-transport-web-ble';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import {
@@ -20,6 +21,7 @@ const MAX_ACCOUNTS_NUMBER = 20;
 const LEDGER_MODS = {
   usb: 'usb',
   emulator: 'emulator',
+  bluetooth: 'bluetooth',
 };
 
 // generate derivation path for depth method
@@ -110,6 +112,8 @@ export default class Wallet {
     let transport;
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
+    } else if (mode === LEDGER_MODS.bluetooth) {
+      transport = await BluetoothTransport.create();
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
     } else {

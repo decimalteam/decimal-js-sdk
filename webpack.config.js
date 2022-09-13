@@ -41,6 +41,14 @@ const plugins = () => {
         /@ledgerhq\/devices\/hid-framing/,
         '@ledgerhq/devices/lib/hid-framing'
     ),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/ble\/sendAPDU/,
+        '@ledgerhq/devices/lib/ble/sendAPDU'
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/ble\/receiveAPDU/,
+        '@ledgerhq/devices/lib/ble/receiveAPDU'
+    )
   ]
   if (isDev) {
     plugins.push(
@@ -134,8 +142,8 @@ const serverConfig = {
 
 const configs = [clientConfig];
 
-if (isProd) {
-  configs.push(serverConfig);
-}
+// if (isProd) {
+//   configs.push(serverConfig);
+// }
 
 module.exports = configs;
