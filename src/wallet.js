@@ -113,7 +113,13 @@ export default class Wallet {
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
-      transport = await TransportWebBLE.create();
+      try {
+        transport = await TransportWebBLE.create();
+      } catch (e) {
+        console.log('Caugth in initLedger', e);
+        console.log('Error connection Bluetooth, trying to reconnect...');
+        transport = await TransportWebBLE.create();
+      }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
     } else {
