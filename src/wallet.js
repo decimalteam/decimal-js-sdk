@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createAddress, createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
-import BluetoothTransport from '@ledgerhq/hw-transport-web-ble';
+import TransportWebBLE  from '@ledgerhq/hw-transport-web-ble';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import {
@@ -113,7 +113,7 @@ export default class Wallet {
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
-      transport = await BluetoothTransport.create();
+      transport = await TransportWebBLE.create();
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
     } else {
