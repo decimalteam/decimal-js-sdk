@@ -11,6 +11,7 @@ import DecimalApp from './ledger/utils';
 // import WebSocketTransport from './ledger/WebSocketTransport';
 import HttpTransport from './ledger/HttpTransport';
 
+const delay = ms => new Promise(success => setTimeout(success, ms));
 // constants
 const ADDRESS_PREFIX = 'dx';
 const VALIDATOR_ADDRESS_PREFIX = 'dxvaloper';
@@ -115,10 +116,13 @@ export default class Wallet {
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
         transport = await TransportWebBLE.create();
+        window.ledgerTransport = transport;
       } catch (e) {
-        console.log('Caugth in initLedger', e);
+        console.log('Caught in initLedger', e);
         console.log('Error connection Bluetooth, trying to reconnect...');
+        await delay(1000);
         transport = await TransportWebBLE.create();
+        window.ledgerTransport = transport;
       }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
