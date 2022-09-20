@@ -115,8 +115,17 @@ export default class Wallet {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
-        TransportWebBLE.listen((res) => {
-          console.log(res);
+        const sub = TransportWebBLE.listen({
+          next: (e) => {
+            if (sub) sub.unsubscribe();
+            console.log('Next: ', e);
+          },
+          error: (e) => {
+            console.log('Error: ', e);
+          },
+          complete: () => {
+            console.log('complete');
+          },
         });
         transport = await TransportWebBLE.create();
       } catch (e) {
