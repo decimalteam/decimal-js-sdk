@@ -107,6 +107,9 @@ export function createDecimalWalletFromMnemonic(
 
   return wallet;
 }
+const openTimeout = 3000;
+let transportId;
+
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
@@ -122,7 +125,9 @@ export default class Wallet {
             next: (e) => {
               if (sub) sub.unsubscribe();
               console.log('Next: ', e);
-              resolve(`next${e}`);
+              transportId = e.descriptor;
+              const bleTransport = TransportWebBLE.open(transportId, openTimeout);
+              resolve(bleTransport);
             },
             error: (e) => {
               console.log('Error: ', e);
@@ -130,19 +135,22 @@ export default class Wallet {
             },
             complete: () => {
               console.log('complete');
-              resolve('complete');
+              resolve(null);
             },
           });
         });
-        console.log('promise res: ', res);
-        transport = await TransportWebBLE.create();
+        if (res) {
+          transport = res;
+        } else {
+          throw new Error('Completed, but not found device');
+        }
       } catch (e) {
         console.log('Caught in initLedger', e);
         console.log('Error connection Bluetooth, trying to reconnect...');
-        const delayBeforeReconnect = 4000;
+        const delayBeforeReconnect = 1000;
         await delay(delayBeforeReconnect);
-        await transport.close();
-        transport = await TransportWebBLE.create();
+        await TransportWebBLE.disconnect(transportId);
+        transport = TransportWebBLE.open(transportId, openTimeout);
       }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
