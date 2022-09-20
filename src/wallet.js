@@ -109,10 +109,13 @@ export function createDecimalWalletFromMnemonic(
 }
 const openTimeout = 3000;
 let transportId;
-
+let instance;
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
+    if (mode === LEDGER_MODS.bluetooth && instance) {
+      return instance;
+    }
     let transport;
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
@@ -148,11 +151,6 @@ export default class Wallet {
         }
       } catch (e) {
         console.log('Caught in initLedger', e);
-        console.log('Error connection Bluetooth, trying to reconnect...');
-        // const delayBeforeReconnect = 1000;
-        // await delay(delayBeforeReconnect);
-        // await TransportWebBLE.disconnect(transportId);
-        // transport = TransportWebBLE.open(transportId, openTimeout);
       }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
@@ -187,7 +185,8 @@ export default class Wallet {
       wallet,
       decimalNanoApp,
     };
-    return new Wallet('', options, ledgerOptions);
+    instance = new Wallet('', options, ledgerOptions);
+    return instance;
   }
 
   // constructor
