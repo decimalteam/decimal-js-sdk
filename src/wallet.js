@@ -130,6 +130,7 @@ export default class Wallet {
               resolve(bleTransport);
             },
             error: (e) => {
+              TransportWebBLE.disconnect(e.descriptor, openTimeout);
               console.log('Error: ', e);
               reject(e);
             },
