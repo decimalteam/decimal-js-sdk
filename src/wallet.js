@@ -115,15 +115,17 @@ export default class Wallet {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
+        TransportWebBLE.listen((res) => {
+          console.log(res);
+        });
         transport = await TransportWebBLE.create();
-        window.ledgerTransport = transport;
       } catch (e) {
         console.log('Caught in initLedger', e);
         console.log('Error connection Bluetooth, trying to reconnect...');
         const delayBeforeReconnect = 4000;
         await delay(delayBeforeReconnect);
+        await transport.close();
         transport = await TransportWebBLE.create();
-        window.ledgerTransport = transport;
       }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
