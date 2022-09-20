@@ -115,7 +115,9 @@ export default class Wallet {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
+        console.log('Mod Bluetooth');
         const res = await new Promise((resolve, reject) => {
+          console.log('Before listen');
           const sub = TransportWebBLE.listen({
             next: (e) => {
               if (sub) sub.unsubscribe();
