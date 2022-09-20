@@ -140,6 +140,7 @@ export default class Wallet {
           });
         });
         if (res) {
+          console.log('found device in listen module');
           transport = res;
         } else {
           throw new Error('Completed, but not found device');
@@ -147,10 +148,10 @@ export default class Wallet {
       } catch (e) {
         console.log('Caught in initLedger', e);
         console.log('Error connection Bluetooth, trying to reconnect...');
-        const delayBeforeReconnect = 1000;
-        await delay(delayBeforeReconnect);
-        await TransportWebBLE.disconnect(transportId);
-        transport = TransportWebBLE.open(transportId, openTimeout);
+        // const delayBeforeReconnect = 1000;
+        // await delay(delayBeforeReconnect);
+        // await TransportWebBLE.disconnect(transportId);
+        // transport = TransportWebBLE.open(transportId, openTimeout);
       }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
