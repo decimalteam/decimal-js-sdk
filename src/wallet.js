@@ -115,18 +115,24 @@ export default class Wallet {
       transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
-        const sub = TransportWebBLE.listen({
-          next: (e) => {
-            if (sub) sub.unsubscribe();
-            console.log('Next: ', e);
-          },
-          error: (e) => {
-            console.log('Error: ', e);
-          },
-          complete: () => {
-            console.log('complete');
-          },
+        const res = await new Promise((resolve, reject) => {
+          const sub = TransportWebBLE.listen({
+            next: (e) => {
+              if (sub) sub.unsubscribe();
+              console.log('Next: ', e);
+              resolve(`next${e}`);
+            },
+            error: (e) => {
+              console.log('Error: ', e);
+              reject(e);
+            },
+            complete: () => {
+              console.log('complete');
+              resolve('complete');
+            },
+          });
         });
+        console.log('promise res: ', res);
         transport = await TransportWebBLE.create();
       } catch (e) {
         console.log('Caught in initLedger', e);
