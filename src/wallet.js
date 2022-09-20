@@ -2,6 +2,7 @@ import * as bip39 from 'bip39';
 import { createAddress, createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import TransportWebBLE from '@ledgerhq/hw-transport-web-ble';
+import { listen } from '@ledgerhq/logs';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import {
@@ -144,13 +145,17 @@ export default class Wallet {
           });
         });
         if (res) {
+          window.ledgerTransport = transport;
           console.log('found device in listen module');
           transport = res;
           transport.on('disconnect', (e) => {
             console.log('transport event: ', e);
           });
-          transport.observeAvailability((e) => {
+          TransportWebBLE.observeAvailability((e) => {
             console.log('observeAvailability', e);
+          });
+          listen((cb) => {
+            console.log(cb);
           });
         } else {
           throw new Error('Completed, but not found device');
@@ -199,6 +204,9 @@ export default class Wallet {
 
   async disconnectLedger() {
     console.log('disconnect Ledger bluetooth');
+    if (this.transport.device) {
+      console.log('transport device', this.transport.device);
+    }
     await TransportWebBLE.disconnect(this.transportId);
   }
 
