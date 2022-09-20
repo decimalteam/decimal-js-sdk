@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39';
 import { createAddress, createWalletFromMnemonic } from '@tendermint/sig';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
-import TransportWebBLE  from '@ledgerhq/hw-transport-web-ble';
+import TransportWebBLE from '@ledgerhq/hw-transport-web-ble';
 // import SpeculosTransport from '@ledgerhq/hw-transport-node-speculos';
 import proposalAdresses from './proposalAddresses.json';
 import {
@@ -11,7 +11,7 @@ import DecimalApp from './ledger/utils';
 // import WebSocketTransport from './ledger/WebSocketTransport';
 import HttpTransport from './ledger/HttpTransport';
 
-const delay = ms => new Promise(success => setTimeout(success, ms));
+const delay = (ms) => new Promise((success) => setTimeout(success, ms));
 // constants
 const ADDRESS_PREFIX = 'dx';
 const VALIDATOR_ADDRESS_PREFIX = 'dxvaloper';
@@ -120,7 +120,8 @@ export default class Wallet {
       } catch (e) {
         console.log('Caught in initLedger', e);
         console.log('Error connection Bluetooth, trying to reconnect...');
-        await delay(1000);
+        const delayBeforeReconnect = 4000;
+        await delay(delayBeforeReconnect);
         transport = await TransportWebBLE.create();
         window.ledgerTransport = transport;
       }
