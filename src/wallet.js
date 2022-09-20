@@ -112,7 +112,8 @@ let instance;
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
-    let transportId;
+    let transportId = null;
+    let sub = null;
     if (mode === LEDGER_MODS.bluetooth && instance) {
       return instance;
     }
@@ -124,7 +125,7 @@ export default class Wallet {
         console.log('Mod Bluetooth');
         const res = await new Promise((resolve, reject) => {
           console.log('Before listen');
-          const sub = TransportWebBLE.listen({
+          sub = TransportWebBLE.listen({
             next: (e) => {
               console.log('Next: ', e);
               transportId = e.descriptor;
@@ -182,6 +183,7 @@ export default class Wallet {
     const ledgerOptions = {
       transport,
       transportId,
+      sub,
       wallet,
       decimalNanoApp,
     };
@@ -191,7 +193,7 @@ export default class Wallet {
 
   async disconnectLedger() {
     console.log('disconnect Ledger bluetooth');
-    TransportWebBLE.disconnect(this.transportId);
+    await TransportWebBLE.disconnect(this.transportId);
   }
 
   // constructor
@@ -205,6 +207,7 @@ export default class Wallet {
       this.transport = ledgerOptions.transport;
       this.transportId = ledgerOptions.transportId;
       this.nanoApp = ledgerOptions.decimalNanoApp;
+      this.sub = ledgerOptions.sub;
       this.mnemonic = '';
     } else {
       const _mnemonic = mnemonic || generateMnemonic();
