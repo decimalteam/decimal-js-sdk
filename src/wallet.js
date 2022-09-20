@@ -146,7 +146,7 @@ export default class Wallet {
         if (res) {
           console.log('found device in listen module');
           transport = res;
-          transport.addEventListener('disconnect', (e) => {
+          transport.on('disconnect', (e) => {
             console.log('transport event: ', e);
           });
         } else {
