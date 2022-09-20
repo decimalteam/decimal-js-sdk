@@ -149,6 +149,9 @@ export default class Wallet {
           transport.on('disconnect', (e) => {
             console.log('transport event: ', e);
           });
+          transport.observeAvailability((e) => {
+            console.log('observeAvailability', e);
+          });
         } else {
           throw new Error('Completed, but not found device');
         }
