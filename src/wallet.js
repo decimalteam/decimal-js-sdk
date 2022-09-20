@@ -108,11 +108,11 @@ export function createDecimalWalletFromMnemonic(
   return wallet;
 }
 const openTimeout = 3000;
-let transportId;
 let instance;
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
+    let transportId;
     if (mode === LEDGER_MODS.bluetooth && instance) {
       return instance;
     }
@@ -126,18 +126,17 @@ export default class Wallet {
           console.log('Before listen');
           const sub = TransportWebBLE.listen({
             next: (e) => {
-              if (sub) sub.unsubscribe();
               console.log('Next: ', e);
               transportId = e.descriptor;
               const bleTransport = TransportWebBLE.open(transportId, openTimeout);
               resolve(bleTransport);
             },
             error: (e) => {
-              TransportWebBLE.disconnect(e.descriptor, openTimeout);
               console.log('Error: ', e);
               reject(e);
             },
             complete: () => {
+              sub.unsubscribe();
               console.log('complete');
               resolve(null);
             },
@@ -182,11 +181,17 @@ export default class Wallet {
     }
     const ledgerOptions = {
       transport,
+      transportId,
       wallet,
       decimalNanoApp,
     };
     instance = new Wallet('', options, ledgerOptions);
     return instance;
+  }
+
+  async disconnectLedger() {
+    console.log('disconnect Ledger bluetooth');
+    TransportWebBLE.disconnect(this.transportId);
   }
 
   // constructor
@@ -198,6 +203,7 @@ export default class Wallet {
       wallet = ledgerOptions.wallet;
       // generate validator address
       this.transport = ledgerOptions.transport;
+      this.transportId = ledgerOptions.transportId;
       this.nanoApp = ledgerOptions.decimalNanoApp;
       this.mnemonic = '';
     } else {
