@@ -246,7 +246,7 @@ export default class Wallet {
         }
       } catch (e) {
         console.log('Caught in initLedger', e);
-        return null;
+        throw e;
       }
     }
     this.refreshed = true;
