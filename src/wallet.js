@@ -148,9 +148,6 @@ export default class Wallet {
           window.ledgerTransport = transport;
           console.log('found device in listen module');
           transport = res;
-          transport.on('disconnect', (e) => {
-            console.log('transport event: ', e);
-          });
           TransportWebBLE.observeAvailability((e) => {
             console.log('observeAvailability', e);
           });
@@ -171,6 +168,11 @@ export default class Wallet {
     const path = MASTER_DERIVATION_PATH_ARRAY;
     const decimalNanoApp = new DecimalApp(transport);
     let wallet;
+    if (transport) {
+      transport.on('disconnect', (e) => {
+        console.log('transport event: ', e);
+      });
+    }
     if (options.masterAddress) {
       wallet = {
         publicKey: null,
