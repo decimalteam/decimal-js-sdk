@@ -249,6 +249,7 @@ export default class Wallet {
         return null;
       }
     }
+    this.refreshed = true;
     this.decimalNanoApp = new DecimalApp(this.transport);
     return this;
   }
@@ -256,6 +257,7 @@ export default class Wallet {
   // constructor
   constructor(mnemonic, options = null, ledgerOptions = null) {
     let wallet;
+    this.refreshed = false;
     // current mnemonic
     if (ledgerOptions) {
       // generate master wallet

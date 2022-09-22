@@ -161,6 +161,7 @@ export function makeLedgerSignature(api, wallet, decimal, options) {
     if (userSignMeta) {
       signMeta = userSignMeta;
     }
+    console.log('makeLedgerSignature: ', wallet);
     signMeta = await getSignMeta(api, wallet, options)();
     const path = MASTER_DERIVATION_PATH_ARRAY;
     path[path.length - 1] = wallet.id;
