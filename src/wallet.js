@@ -245,6 +245,7 @@ export default class Wallet {
           throw new Error('Completed, but not found device');
         }
         this.decimalNanoApp = new DecimalApp(this.transport);
+        return this;
       } catch (e) {
         console.log('Caught in initLedger', e);
       }
