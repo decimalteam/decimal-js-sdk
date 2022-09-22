@@ -210,6 +210,7 @@ export default class Wallet {
   }
 
   async reconnectLedger(mode) {
+    console.log('Ledger reconnecting, type:', mode);
     if (mode === LEDGER_MODS.usb) {
       this.transport = await TransportWebUSB.create();
     } else if (mode === LEDGER_MODS.bluetooth) {
@@ -241,6 +242,7 @@ export default class Wallet {
         } else {
           throw new Error('Completed, but not found device');
         }
+        this.decimalNanoApp = new DecimalApp(this.transport);
       } catch (e) {
         console.log('Caught in initLedger', e);
       }
