@@ -210,6 +210,7 @@ export default class Wallet {
   }
 
   async reconnectLedger(mode) {
+    console.log('this', JSON.stringify(this));
     console.log('Ledger reconnecting, type:', mode);
     if (mode === LEDGER_MODS.usb) {
       this.transport = await TransportWebUSB.create();
@@ -223,6 +224,7 @@ export default class Wallet {
               console.log('Next: ', e);
               this.transportId = e.descriptor;
               const bleTransport = TransportWebBLE.open(this.transportId, openTimeout);
+              console.log('next: ', bleTransport);
               resolve(bleTransport);
             },
             error: (e) => {
