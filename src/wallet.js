@@ -209,6 +209,44 @@ export default class Wallet {
     await delay(openTimeout);
   }
 
+  async reconnectLedger(mode) {
+    if (mode === LEDGER_MODS.usb) {
+      this.transport = await TransportWebUSB.create();
+    } else if (mode === LEDGER_MODS.bluetooth) {
+      try {
+        console.log('Mod Bluetooth');
+        const res = await new Promise((resolve, reject) => {
+          console.log('Before listen');
+          const sub = TransportWebBLE.listen({
+            next: (e) => {
+              console.log('Next: ', e);
+              this.transportId = e.descriptor;
+              const bleTransport = TransportWebBLE.open(this.transportId, openTimeout);
+              resolve(bleTransport);
+            },
+            error: (e) => {
+              console.log('Error: ', e);
+              reject(e);
+            },
+            complete: () => {
+              sub.unsubscribe();
+              console.log('complete');
+              resolve(null);
+            },
+          });
+        });
+        if (res) {
+          console.log('found device in listen module');
+          this.transport = res;
+        } else {
+          throw new Error('Completed, but not found device');
+        }
+      } catch (e) {
+        console.log('Caught in initLedger', e);
+      }
+    }
+  }
+
   // constructor
   constructor(mnemonic, options = null, ledgerOptions = null) {
     let wallet;
