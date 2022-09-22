@@ -129,10 +129,10 @@ export default class Wallet {
         const res = await new Promise((resolve, reject) => {
           console.log('Before listen');
           const sub = TransportWebBLE.listen({
-            next: async (e) => {
+            next: (e) => {
               console.log('Next: ', e);
               transportId = e.descriptor;
-              const bleTransport = await TransportWebBLE.open(transportId, openTimeout);
+              const bleTransport = TransportWebBLE.open(transportId, openTimeout);
               resolve(bleTransport);
             },
             error: (e) => {
@@ -220,10 +220,10 @@ export default class Wallet {
         const res = await new Promise((resolve, reject) => {
           console.log('Before listen');
           const sub = TransportWebBLE.listen({
-            next: async (e) => {
+            next: (e) => {
               console.log('Next: ', e);
               this.transportId = e.descriptor;
-              const bleTransport = await TransportWebBLE.open(this.transportId, openTimeout);
+              const bleTransport = TransportWebBLE.open(this.transportId, openTimeout);
               console.log('next: ', bleTransport);
               resolve(bleTransport);
             },
