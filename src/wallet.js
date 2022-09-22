@@ -115,8 +115,11 @@ export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
     let transportId = null;
     let sub = null;
-    if (mode === LEDGER_MODS.bluetooth && instance) {
-      return instance;
+    // const needsInstanceRefresh = mode === LEDGER_MODS.bluetooth || (mode === LEDGER_MODS.usb && usbNeedsDisconnect);
+    if (instance) {
+      instance.disconnectLedger(mode);
+      await delay(openTimeout);
+      instance = null;
     }
     let transport;
     if (mode === LEDGER_MODS.usb) {
@@ -204,12 +207,12 @@ export default class Wallet {
     return instance;
   }
 
-  async disconnectLedger() {
-    console.log('disconnect Ledger bluetooth');
-    if (this.transport.device) {
-      console.log('transport device', this.transport.device);
+  async disconnectLedger(mode) {
+    if (mode === LEDGER_MODS.usb) {
+      await TransportWebUSB.create();
+    } else {
+      await TransportWebBLE.disconnect(this.transportId);
     }
-    await TransportWebBLE.disconnect(this.transportId);
   }
 
   // constructor
