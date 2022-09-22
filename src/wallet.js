@@ -250,7 +250,11 @@ export default class Wallet {
       }
     }
     this.refreshed = true;
-    this.decimalNanoApp = new DecimalApp(this.transport);
+    this.nanoApp = new DecimalApp(this.transport);
+    const path = MASTER_DERIVATION_PATH_ARRAY;
+    // eslint-disable-next-line camelcase
+    const { compressed_pk } = await this.nanoApp.getAddressAndPubKey(path, ADDRESS_PREFIX);
+    console.log(compressed_pk);
     return this;
   }
 
