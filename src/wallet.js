@@ -109,18 +109,17 @@ export function createDecimalWalletFromMnemonic(
   return wallet;
 }
 const openTimeout = 3000;
-let instance;
+// let instance;
 // create wallet from mnemonic phrase
 export default class Wallet {
   static async initLedger(mode, options = null, emulatorUrl = 'http://127.0.0.1:5000') {
     let transportId = null;
-    let sub = null;
     // const needsInstanceRefresh = mode === LEDGER_MODS.bluetooth || (mode === LEDGER_MODS.usb && usbNeedsDisconnect);
-    if (instance) {
-      instance.disconnectLedger(mode);
-      await delay(openTimeout);
-      instance = null;
-    }
+    // if (this.instance) {
+    //   console.log(this.instance);
+    //   this.instance.disconnectLedger(mode);
+    //   this.instance = null;
+    // }
     let transport;
     if (mode === LEDGER_MODS.usb) {
       transport = await TransportWebUSB.create();
@@ -129,7 +128,7 @@ export default class Wallet {
         console.log('Mod Bluetooth');
         const res = await new Promise((resolve, reject) => {
           console.log('Before listen');
-          sub = TransportWebBLE.listen({
+          const sub = TransportWebBLE.listen({
             next: (e) => {
               console.log('Next: ', e);
               transportId = e.descriptor;
@@ -199,20 +198,15 @@ export default class Wallet {
     const ledgerOptions = {
       transport,
       transportId,
-      sub,
       wallet,
       decimalNanoApp,
     };
-    instance = new Wallet('', options, ledgerOptions);
-    return instance;
+    return new Wallet('', options, ledgerOptions);
   }
 
-  async disconnectLedger(mode) {
-    if (mode === LEDGER_MODS.usb) {
-      await TransportWebUSB.create();
-    } else {
-      await TransportWebBLE.disconnect(this.transportId);
-    }
+  async disconnectLedger() {
+    await TransportWebBLE.disconnect(this.transportId);
+    await delay(openTimeout);
   }
 
   // constructor
@@ -226,7 +220,6 @@ export default class Wallet {
       this.transport = ledgerOptions.transport;
       this.transportId = ledgerOptions.transportId;
       this.nanoApp = ledgerOptions.decimalNanoApp;
-      this.sub = ledgerOptions.sub;
       this.mnemonic = '';
     } else {
       const _mnemonic = mnemonic || generateMnemonic();
