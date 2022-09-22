@@ -126,42 +126,69 @@ export default class Wallet {
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
         console.log('Mod Bluetooth');
-        const res = await new Promise((resolve, reject) => {
-          console.log('Before listen');
-          const sub = TransportWebBLE.listen({
-            next: async (e) => {
-              console.log('Next: ', e);
-              transportId = e.descriptor;
-              const bleTransport = await TransportWebBLE.open(transportId, openTimeout);
-              resolve(bleTransport);
-            },
-            error: (e) => {
-              console.log('Error: ', e);
-              reject(e);
-            },
-            complete: () => {
-              sub.unsubscribe();
-              console.log('complete');
-              resolve(null);
-            },
-          });
+        console.log('Before listen');
+        let found = false;
+        const sub = await TransportWebBLE.listen({
+          next: async (e) => {
+            found = true;
+            console.log('Next: ', e);
+            transportId = e.descriptor;
+            transport = await TransportWebBLE.open(this.transportId, openTimeout);
+          },
+          error: (e) => {
+            console.log('Error: ', e);
+            throw e;
+          },
+          complete: () => {
+            sub.unsubscribe();
+            console.log('complete');
+            if (!found) {
+              throw new Error('NoDeviceFound');
+            }
+          },
         });
-        if (res) {
-          window.ledgerTransport = transport;
-          console.log('found device in listen module');
-          transport = res;
-          TransportWebBLE.observeAvailability((e) => {
-            console.log('observeAvailability', e);
-          });
-          listen((cb) => {
-            console.log(cb);
-          });
-        } else {
-          throw new Error('Completed, but not found device');
-        }
       } catch (e) {
         console.log('Caught in initLedger', e);
+        throw e;
       }
+      // try {
+      //   console.log('Mod Bluetooth');
+      //   const res = await new Promise((resolve, reject) => {
+      //     console.log('Before listen');
+      //     const sub = TransportWebBLE.listen({
+      //       next: async (e) => {
+      //         console.log('Next: ', e);
+      //         transportId = e.descriptor;
+      //         const bleTransport = await TransportWebBLE.open(transportId, openTimeout);
+      //         resolve(bleTransport);
+      //       },
+      //       error: (e) => {
+      //         console.log('Error: ', e);
+      //         reject(e);
+      //       },
+      //       complete: () => {
+      //         sub.unsubscribe();
+      //         console.log('complete');
+      //         resolve(null);
+      //       },
+      //     });
+      //   });
+      //   if (res) {
+      //     window.ledgerTransport = transport;
+      //     console.log('found device in listen module');
+      //     transport = res;
+      //     TransportWebBLE.observeAvailability((e) => {
+      //       console.log('observeAvailability', e);
+      //     });
+      //     listen((cb) => {
+      //       console.log(cb);
+      //     });
+      //   } else {
+      //     throw new Error('Completed, but not found device');
+      //   }
+      // } catch (e) {
+      //   console.log('Caught in initLedger', e);
+      // }
     } else if (mode === LEDGER_MODS.emulator) {
       transport = await HttpTransport.open(emulatorUrl);
     } else {
@@ -217,40 +244,34 @@ export default class Wallet {
     } else if (mode === LEDGER_MODS.bluetooth) {
       try {
         console.log('Mod Bluetooth');
-        const res = await new Promise((resolve, reject) => {
-          console.log('Before listen');
-          const sub = TransportWebBLE.listen({
-            next: async (e) => {
-              console.log('Next: ', e);
-              this.transportId = e.descriptor;
-              const bleTransport = await TransportWebBLE.open(this.transportId, openTimeout);
-              console.log('next: ', bleTransport);
-              resolve(bleTransport);
-            },
-            error: (e) => {
-              console.log('Error: ', e);
-              reject(e);
-            },
-            complete: () => {
-              sub.unsubscribe();
-              console.log('complete');
-              resolve(null);
-            },
-          });
+        console.log('Before listen');
+        let found = false;
+        const sub = await TransportWebBLE.listen({
+          next: async (e) => {
+            found = true;
+            console.log('Next: ', e);
+            this.transportId = e.descriptor;
+            this.transport = await TransportWebBLE.open(this.transportId, openTimeout);
+          },
+          error: (e) => {
+            console.log('Error: ', e);
+            throw e;
+          },
+          complete: () => {
+            sub.unsubscribe();
+            console.log('complete');
+            if (!found) {
+              throw new Error('NoDeviceFound');
+            }
+          },
         });
-        if (res) {
-          console.log('found device in listen module');
-          this.transport = res;
-        } else {
-          throw new Error('Completed, but not found device');
-        }
       } catch (e) {
         console.log('Caught in initLedger', e);
-        return null;
+        throw e;
       }
     }
     this.refreshed = true;
-    this.decimalNanoApp = new DecimalApp(this.transport);
+    this.nanoApp = new DecimalApp(this.transport);
     return this;
   }
 
