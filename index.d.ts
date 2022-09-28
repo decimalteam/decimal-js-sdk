@@ -16,6 +16,7 @@ export declare class Wallet {
   id: number;
   wallets: Array<Account>;
   address: string;
+  evmAddress: string;
   privateKey: string;
   publicKey: string;
   availableProposalSubmit: boolean;
@@ -23,6 +24,7 @@ export declare class Wallet {
   currentNonce: number;
   currentNonceValidUntil: number;
 
+  static initLedger(mode: string, options?: WalletOptions, emulatorUrl?: string): Wallet;
   getPrivateKeyString(): string;
   getPublicKeyString(): string;
   switchAccount(id: number): void;
@@ -34,7 +36,8 @@ export declare class Wallet {
 }
 
 export interface WalletOptions {
-  gateUrl: string
+  gateUrl: string,
+  masterAddress?: string,
 }
 
 export interface DecimalMeta {

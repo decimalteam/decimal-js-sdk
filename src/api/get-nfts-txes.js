@@ -9,7 +9,7 @@ const DEFAULT_ORDER_DIRECTION = 'DESC';
 const DEFAULT_ORDER = `order[${DEFAULT_ORDER_FIELD}]=${DEFAULT_ORDER_DIRECTION}`;
 
 export default function getNftsTxes(api, wallet) {
-  return (address, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
+  return async (address, limit = 10, offset = 0, order = DEFAULT_ORDER) => {
     try {
       let params = { limit, offset };
 
@@ -27,9 +27,18 @@ export default function getNftsTxes(api, wallet) {
 
         const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-        const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        let signature;
+        const isLedger = !!wallet.nanoApp;
+        if (isLedger) {
+          // signature = await decimal.makeLedgerMsgSignature(msg);
+          signature = wallet.publicKey;
+        } else {
+          signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        }
 
-        params = { ...params, timestamp, signature };
+        params = {
+          ...params, timestamp, signature, isLedger,
+        };
       }
 
       return api.getNftsTxes(address, params, order);

@@ -126,6 +126,15 @@ import { Wallet } from 'decimal-js-sdk';
 const wallet = new Wallet('erase august mask elevator sand picture north there apple equal anchor target');
 ```
 
+### Use wallet with Ledger
+
+```js
+import { Wallet } from 'decimal-js-sdk';
+// you can use one of three mods: emulator, usb, bluetooth
+const wallet = await Wallet.initLedger('emulator');
+```
+
+
 ### Wallet methods
 
 `getPrivateKeyString`

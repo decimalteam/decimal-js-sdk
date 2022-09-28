@@ -3,8 +3,10 @@ import TX_TYPE from './txTypes';
 import TX_BROADCAST_MODES from './txBroadcastModes';
 import ACCOUNT_INFO_MODES from './accountInfoModes';
 import validateTxData from './validator';
-import { formTx, prepareTx, postTx } from './txUtils';
-import { getAmountFromUNI, getAmountToUNI } from './math';
+import {
+  formTx, prepareTx, postTx,
+} from './txUtils';
+import { getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
 import { verifyAddress, verifyCheck } from './utils';
@@ -553,31 +555,34 @@ export function sendTransaction(type, api, wallet, decimal) {
     if (type !== TX_TYPE.SWAP_INIT && type !== TX_TYPE.SWAP_REDEEM) {
       validateData(data);
     }
-
     const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-
+    console.log('ordinary broadcastTx: ', JSON.stringify(broadcastTx));
     const txResult = await postTx(api, wallet)(broadcastTx);
 
     return txResult;
   };
 }
 
-export function estimateTxFee(api, wallet, decimal) {
+export function estimateTxFee(api, wallet) {
   return async (type, data, options) => {
     try {
       const { feeCoin } = options;
-
+      let preparedFeeCoin;
+      // if (feeCoin) {
+      //   const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
+      //   const feeAmounts = broadcastTx.tx.fee.amount;
+      //   const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
+      //
+      //   return getAmountFromUNI(fee);
+      // }
       if (feeCoin) {
-        const broadcastTx = await getTransaction(api, wallet, decimal)(type, data, options);
-        const feeAmounts = broadcastTx.tx.fee.amount;
-        const fee = feeAmounts.length ? feeAmounts[0].amount : '0';
-
-        return getAmountFromUNI(fee);
+        preparedFeeCoin = feeCoin.toLowerCase();
+      } else {
+        preparedFeeCoin = 'del';
       }
-
       const formatted = getValue(type, data, options, wallet);
       const tx = await prepareTx(api)(type, formatted.value, formatted.options);
-      const fee = await getCommission(api)(tx, 'del');
+      const fee = await getCommission(api)(tx, preparedFeeCoin);
 
       return fee.value.times(0.001).toFixed();
     } catch (e) {

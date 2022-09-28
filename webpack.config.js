@@ -37,6 +37,18 @@ const entryFile = () => {
 const plugins = () => {
   const plugins = [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/hid-framing/,
+        '@ledgerhq/devices/lib/hid-framing'
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/ble\/sendAPDU/,
+        '@ledgerhq/devices/lib/ble/sendAPDU'
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/ble\/receiveAPDU/,
+        '@ledgerhq/devices/lib/ble/receiveAPDU'
+    )
   ]
   if (isDev) {
     plugins.push(
@@ -82,7 +94,8 @@ const clientConfig = {
     ]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty'
   }
 }
 
@@ -108,6 +121,10 @@ const serverConfig = {
   },
   plugins:   [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.NormalModuleReplacementPlugin(
+        /@ledgerhq\/devices\/hid-framing/,
+        '@ledgerhq/devices/lib/hid-framing'
+    ),
   ],
   module: {
     rules: [
@@ -118,14 +135,15 @@ const serverConfig = {
     ]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty'
   }
 }
 
 const configs = [clientConfig];
 
-if (isProd) {
-  configs.push(serverConfig);
-}
+// if (isProd) {
+//   configs.push(serverConfig);
+// }
 
 module.exports = configs;

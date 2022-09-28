@@ -19,12 +19,18 @@ export default function getAddress(api, wallet) {
         const msg = {
           timestamp,
         };
-
+        let signature;
+        const isLedger = !!wallet.nanoApp;
         const msgHash = sha3.keccak256(JSON.stringify(msg));
-
-        const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
-
-        params = { ...params, timestamp, signature };
+        if (isLedger) {
+          // signature = await decimal.makeLedgerMsgSignature(msg);
+          signature = wallet.publicKey;
+        } else {
+          signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+        }
+        params = {
+          ...params, timestamp, signature, isLedger,
+        };
       }
 
       return api.getAddress(address, params);

@@ -28,7 +28,7 @@ import {
   prepareTx,
   makeSignature,
   postTx,
-  getSignMeta,
+  getSignMeta, makeLedgerSignature, makeLedgerMsgSignature,
 } from './txUtils';
 
 import { issueCheck } from './check';
@@ -70,6 +70,8 @@ export default class Decimal {
     // tx utils
     this.prepareTx = prepareTx(apiInstance);
     this.makeSignature = makeSignature(apiInstance, wallet, this);
+    this.makeLedgerSignature = makeLedgerSignature(apiInstance, wallet, this);
+    this.makeLedgerMsgSignature = makeLedgerMsgSignature(apiInstance, wallet, this);
     this.postTx = postTx(apiInstance, wallet);
     this.getTransaction = getTransaction(apiInstance, wallet, this);
     this.getTransactionByHash = getTransactionByHash(apiInstance, wallet, this);

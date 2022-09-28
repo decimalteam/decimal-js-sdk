@@ -4,7 +4,7 @@ const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 
 export default function getNftTxes(api, wallet) {
-  return (limit = 10, offset = 0, type = null, q = null) => {
+  return async (limit = 10, offset = 0, type = null, q = null) => {
     try {
       const timestamp = Math.round(new Date().getTime() / 1000.0);
 
@@ -18,10 +18,16 @@ export default function getNftTxes(api, wallet) {
 
       const msgHash = sha3.keccak256(JSON.stringify(msg));
 
-      const signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
-
+      let signature;
+      const isLedger = !!wallet.nanoApp;
+      if (isLedger) {
+        // signature = await decimal.makeLedgerMsgSignature(msg);
+        signature = wallet.publicKey;
+      } else {
+        signature = ec.sign(msgHash, wallet.privateKey, 'hex', { canonical: true });
+      }
       const params = {
-        limit, offset, timestamp, signature, ...(type && { type }), ...(q && { q }),
+        isLedger, limit, offset, timestamp, signature, ...(type && { type }), ...(q && { q }),
       };
 
       return api.getBlockedAddresses(params);
