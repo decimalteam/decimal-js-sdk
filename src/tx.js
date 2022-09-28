@@ -6,7 +6,7 @@ import validateTxData from './validator';
 import {
   formTx, prepareTx, postTx,
 } from './txUtils';
-import { getAmountFromUNI, getAmountToUNI } from './math';
+import { getAmountToUNI } from './math';
 import { redeemCheck } from './check';
 import { getCommission } from './fees';
 import { verifyAddress, verifyCheck } from './utils';
