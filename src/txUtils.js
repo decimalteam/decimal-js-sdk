@@ -168,6 +168,10 @@ export function makeLedgerSignature(api, wallet, decimal, options) {
     const { publicKey } = wallet;
     const signMsg = sortobject(createSignMsg(tx, signMeta));
     const signatureBuffer = await wallet.nanoApp.sign(path, JSON.stringify(signMsg));
+    console.log('sig', signatureBuffer);
+    if (signatureBuffer.error_message !== 'No errors') {
+      throw new Error(signatureBuffer.error_message);
+    }
     const signature = bytesToBase64(secp256k1.signatureImport(signatureBuffer.signature));
     const signatures = [
       {
@@ -215,6 +219,7 @@ export function formTx(api, wallet, decimal) {
     let signedTx;
     if (wallet.transport) {
       signedTx = await makeLedgerSignature(api, wallet, decimal, options)(unsignTx, wallet);
+      console.log('signedTx: ', signedTx);
     } else {
       signedTx = await makeSignature(api, wallet, decimal, options)(unsignTx, wallet);
     }
