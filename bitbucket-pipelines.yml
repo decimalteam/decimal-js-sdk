@@ -4,6 +4,16 @@ pipelines:
   branches:
     master:
       - step:
+          name: Sync GitHub Mirror
+          image: alpine/git:latest
+          clone:
+            enabled: false
+          script:
+            - git clone --bare git@bitbucket.org:decimalteam/decimal-js-sdk.git
+            - cd decimal-js-sdk.git
+            - git push --mirror git@github.com:decimalteam/decimal-js-sdk.git
+
+      - step:
           name: Build & Publish
           caches:
             - node
@@ -15,6 +25,6 @@ pipelines:
             # installs public and private moduless.
             - npm install
             # build dist
-            - npm run build 
+            - npm run build
             # public to NPM
             - npm publish
